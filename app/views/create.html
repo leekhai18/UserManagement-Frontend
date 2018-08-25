@@ -12,13 +12,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>First Name</label>
-                                            <input type="text" class="form-control border-input" placeholder="First Name" value="">
+                                            <input data-bind="value: firstName" type="text" class="form-control border-input" placeholder="First Name" value="">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Last Name</label>
-                                            <input type="text" class="form-control border-input" placeholder="Last Name" value="">
+                                            <input data-bind="value: lastName" type="text" class="form-control border-input" placeholder="Last Name" value="">
                                         </div>
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                                             
                                             <div data-bind="foreach: groups" >
                                                 <div class="input-group" style="float: left">
-                                                    <input data-bind="value: nameGroup" type="text" class="form-control border-input" placeholder="Group / Department" value="">
+                                                    <input data-bind="value: value" type="text" class="form-control border-input" placeholder="Group / Department" value="">
                                                     <span class="input-group-btn">
                                                         <button data-bind="click: $root.removeGroup" class="btn btn-default" type="button">X</button>
                                                     </span>
@@ -63,9 +63,16 @@
                                         <div class="form-group">
                                             <div class="icon-container">
                                                 <label>Role / Job Title</label>
-                                                <span class="ti-plus" style="margin-left: 10px"></span>
+                                                <span data-bind="click: addRole" class="ti-plus" style="margin-left: 10px"></span>
                                             </div>  
-                                            <input type="text" class="form-control border-input" placeholder="Role / Job Title" value="">
+                                            <div data-bind="foreach: roles" >
+                                                <div class="input-group" style="float: left">
+                                                    <input data-bind="value: value" type="text" class="form-control border-input" placeholder="Role / Job Title" value="">
+                                                    <span class="input-group-btn">
+                                                        <button data-bind="click: $root.removeRole" class="btn btn-default" type="button">X</button>
+                                                    </span>
+                                                </div>  
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -75,18 +82,32 @@
                                         <div class="form-group">
                                             <div class="icon-container">
                                                 <label>Work phone number</label>
-                                                <span class="ti-plus" style="margin-left: 10px"></span>
+                                                <span data-bind="click: addWorkPhoneNumber" class="ti-plus" style="margin-left: 10px"></span>
                                             </div>  
-                                            <input type="text" class="form-control border-input" placeholder="+49-591-9136-007" value="">
+                                            <div data-bind="foreach: workPhoneNumbers" >
+                                                <div class="input-group" style="float: left">
+                                                    <input data-bind="value: value" type="text" class="form-control border-input" placeholder="+49-151-1265-007" value="">
+                                                    <span class="input-group-btn">
+                                                        <button data-bind="click: $root.removeWorkPhoneNumber" class="btn btn-default" type="button">X</button>
+                                                    </span>
+                                                </div>  
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="icon-container">
                                                 <label>Mobile number</label>
-                                                <span class="ti-plus" style="margin-left: 10px"></span>
+                                                <span data-bind="click: addMobileNumber" class="ti-plus" style="margin-left: 10px"></span>
                                             </div> 
-                                            <input type="text" class="form-control border-input" placeholder="+49-151-1265489" value="">
+                                            <div data-bind="foreach: mobileNumbers" >
+                                                <div class="input-group" style="float: left">
+                                                    <input data-bind="value: value" type="text" class="form-control border-input" placeholder="+49-151-1265498" value="">
+                                                    <span class="input-group-btn">
+                                                        <button data-bind="click: $root.removeMobileNumber" class="btn btn-default" type="button">X</button>
+                                                    </span>
+                                                </div>  
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -96,16 +117,23 @@
                                         <div class="form-group">
                                             <div class="icon-container">
                                                 <label>Work E-Mail</label>
-                                                <span class="ti-plus" style="margin-left: 10px"></span>
+                                                <span data-bind="click: addWorkEmail" class="ti-plus" style="margin-left: 10px"></span>
                                             </div> 
-                                            <input type="text" class="form-control border-input" placeholder="Work E-Mail" value="">
+                                            <div data-bind="foreach: workEmails" >
+                                                <div class="input-group" style="float: left">
+                                                    <input data-bind="value: value" type="text" class="form-control border-input" placeholder="Work E-Mail" value="">
+                                                    <span class="input-group-btn">
+                                                        <button data-bind="click: $root.removeWorkEmail" class="btn btn-default" type="button">X</button>
+                                                    </span>
+                                                </div>  
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                             
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-info btn-fill btn-wd">Create</button>
+                                    <button data-bind="click: create" type="submit" class="btn btn-info btn-fill btn-wd">Create</button>
                                 </div>
                                 <div class="clearfix"></div>
                             </form>
@@ -123,9 +151,8 @@
                     <div class="content">
                         <div class="author">
                             <img class="avatar border-white" src="assets/img/faces/face-2.jpg" alt="..."/>
-                            <h4 class="title">Full Name<br />
-                                <a href="#"><small>Main email</small></a>
-                            </h4>
+                            <h4 data-bind="text: fullName()" class="title">Full Name</h4>
+                            <!-- <h5><small data-bind="text: workEmails()[0].value">Main email</small></h5> -->
                         </div>
                         <p class="description text-center">
                             "I like the way you work it <br>
