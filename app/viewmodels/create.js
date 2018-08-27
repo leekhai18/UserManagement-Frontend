@@ -28,6 +28,7 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
         // 
         // START UPLOAD IMAGE
         self.photoUrl = ko.observable();
+        self.profileImage = "";
 
         self.imageUpload = function (data, e) {
             var file = e.target.files[0];
@@ -38,8 +39,8 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
             var reader = new FileReader();
 
             reader.onloadend = function (onloadend_e) {
-                var result = reader.result; // Here is your base 64 encoded file
-                self.photoUrl(result);
+                self.profileImage = reader.result; // Here is your base 64 encoded file
+                self.photoUrl(self.profileImage);
             };
 
             if (file) {
@@ -141,10 +142,11 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
                             email: {
                                 main: ko.toJS(self.workEmails())[0].value,
                                 emails: reduceJSON(ko.toJS(self.workEmails()))
-                            }
+                            },
+                            profileImage: self.profileImage
                         };
 
-                        console.log(JSON.stringify(newProfile));
+                        console.log(newProfile);
                     }
                 });
             }
