@@ -36,7 +36,9 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Organization / Company</label>
-                                            <select data-bind="options: availableOrganization, valueUpdate: 'afterkeydown', optionsText: 'name', value: 'selectedOrganization'" class="form-control border-input"></select>
+                                            <select data-bind=" options: availableOrganizations,
+                                                                optionsText: 'name',
+                                                                value: selectedOrganization" class="form-control border-input"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -49,11 +51,13 @@
                                                 <span data-bind="click: addGroup" class="ti-plus" style="margin-left: 10px"></span>
                                             </div>     
                                             
-                                            <div data-bind="foreach: groups" >
+                                            <div data-bind="foreach: selectedGroups" >
                                                 <div class="input-group" style="float: left">
-                                                    <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Group / Department" value="">
+                                                    <select data-bind=" options: $root.availableGroups,
+                                                                        optionsText: 'name',
+                                                                        value: value" class="form-control border-input"></select>
                                                     <span class="input-group-btn">
-                                                        <button data-bind="click: $root.removeGroup" class="btn btn-default" type="button">X</button>
+                                                        <button data-bind="click: $root.removeGroup, enable: $root.selectedGroups().length > 1" class="btn btn-default" type="button">X</button>
                                                     </span>
                                                 </div>  
                                             </div>
@@ -65,11 +69,13 @@
                                                 <label>Role / Job Title</label>
                                                 <span data-bind="click: addRole" class="ti-plus" style="margin-left: 10px"></span>
                                             </div>  
-                                            <div data-bind="foreach: roles" >
+                                            <div data-bind="foreach: selectedRoles" >
                                                 <div class="input-group" style="float: left">
-                                                    <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Role / Job Title" value="">
+                                                    <select data-bind=" options: $root.availableRoles,
+                                                                        optionsText: 'name',
+                                                                        value: value" class="form-control border-input"></select>
                                                     <span class="input-group-btn">
-                                                        <button data-bind="click: $root.removeRole" class="btn btn-default" type="button">X</button>
+                                                        <button data-bind="click: $root.removeRole, enable: $root.selectedRoles().length > 1" class="btn btn-default" type="button">X</button>
                                                     </span>
                                                 </div>  
                                             </div>
@@ -113,7 +119,24 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="icon-container">
+                                                <label>Private phone number</label>
+                                                <span data-bind="click: addPrivatePhoneNumber" class="ti-plus" style="margin-left: 10px"></span>
+                                            </div>  
+                                            <div data-bind="foreach: privatePhoneNumbers" >
+                                                <div class="input-group" style="float: left">
+                                                    <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="+49-151-1265-007" value="">
+                                                    <span class="input-group-btn">
+                                                        <button data-bind="click: $root.removePrivatePhoneNumber, enable: $root.privatePhoneNumbers().length > 1" class="btn btn-default" type="button">X</button>
+                                                    </span>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="icon-container">
                                                 <label>Work E-Mail</label>

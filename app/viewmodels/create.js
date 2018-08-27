@@ -11,6 +11,16 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
         this.id = id;
         this.name = name;
     };
+
+    var Group = function(id, name) {
+        this.id = id;
+        this.name = name;
+    };
+
+    var Role = function(id, name) {
+        this.id = id;
+        this.name = name;
+    };
     
     var ProfileModel = function (){
         var self = this;
@@ -23,26 +33,28 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
             return self.firstName() + " " + self.lastName();
         });
 
-        self.availableOrganization = ko.observableArray([
-            new Organization('iduit', 'UIT'),
-            new Organization('idrs', 'ROSEN'),
-        ]);
-        self.selectedOrganization = ko.observable("");
+        self.availableOrganizations = [  new Organization('iduit', 'UIT'),
+                                        new Organization('idrs', 'ROSEN')];
+        self.selectedOrganization = ko.observable();
 
-        self.groups = ko.observableArray([{value: ko.observable("").extend({ required: { params: true, message: 'This field is required.' } })}]);
+        self.availableGroups = [new Group('id1', 'group1'),
+                                new Group('id2', 'group2')];
+        self.selectedGroups = ko.observableArray([{value: ko.observable("")}]);
         self.addGroup = function() {
-            self.groups.push({value: ko.observable("").extend({ required: { params: true, message: 'This field is required.' } })});
+            self.selectedGroups.push({value: ko.observable()});
         };
         self.removeGroup = function(group) {
-            self.groups.remove(group);
+            self.selectedGroups.remove(group);
         };
 
-        self.roles = ko.observableArray([{value: ko.observable("").extend({ required: { params: true, message: 'This field is required.' } })}]);
+        self.availableRoles = [ new Role('id1', 'role1'),
+                                new Role('id2', 'role2')];
+        self.selectedRoles = ko.observableArray([{value: ko.observable("")}]);
         self.addRole = function() {
-            self.roles.push({value: ko.observable("").extend({ required: { params: true, message: 'This field is required.' } })});
+            self.selectedRoles.push({value: ko.observable("")});
         };
         self.removeRole = function(role) {
-            self.roles.remove(role);
+            self.selectedRoles.remove(role);
         };
 
         self.workPhoneNumbers = ko.observableArray([{value: ko.observable("").extend({ required: { params: true, message: 'This field is required.' } })}]);
@@ -51,6 +63,14 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
         };
         self.removeWorkPhoneNumber = function(workPhoneNumber) {
             self.workPhoneNumbers.remove(workPhoneNumber);
+        };
+
+        self.privatePhoneNumbers = ko.observableArray([{value: ko.observable("")}]);
+        self.addPrivatePhoneNumber = function() {
+            self.privatePhoneNumbers.push({value: ko.observable("")});
+        };
+        self.removePrivatePhoneNumber = function(privatePhoneNumber) {
+            self.privatePhoneNumbers.remove(privatePhoneNumber);
         };
 
         self.mobileNumbers = ko.observableArray([{value: ko.observable("").extend({ required: { params: true, message: 'This field is required.' } })}]);
@@ -72,33 +92,47 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
         self.validated = ko.validatedObservable(self);
 
         self.create = function() {
-            // if (!self.validated.isValid()) {
-            //     self.validated.errors.showAllMessages();
-            // } else {
-            //     app.showMessage('Are you sure you want to create new User?', 'Verify', ['Yes', 'No']).then(function(result) {
-            //         if (result == 'Yes') {
+            if (!self.validated.isValid()) {
+                self.validated.errors.showAllMessages();
+            } else {
+                app.showMessage('Are you sure you want to create new User?', 'Verify', ['Yes', 'No']).then(function(result) {
+                    if (result == 'Yes') {
+                        var newProfile = {
+                            firstName: self.firstName(),
+                            lastName: self.lastName(),
+                            organization: self.selectedOrganization(),
+                            mainGroup: ko.toJS(self.selectedGroups())[0].value,
+                            groups: reduceJSON(ko.toJS(self.selectedGroups())),
+                            mainRole: ko.toJS(self.selectedRoles())[0].value,
+                            roles: reduceJSON(ko.toJS(self.selectedRoles())),
+                            phone: {
+                                main: ko.toJS(self.workPhoneNumbers())[0].value,
+                                work: reduceJSON(ko.toJS(self.workPhoneNumbers())),
+                                private: reduceJSON(ko.toJS(self.privatePhoneNumbers()))
+                            },
+                            mobile: {
+                                main: ko.toJS(self.mobileNumbers())[0].value,
+                                mobiles: reduceJSON(ko.toJS(self.mobileNumbers()))
+                            },
+                            email: {
+                                main: ko.toJS(self.workEmails())[0].value,
+                                emails: reduceJSON(ko.toJS(self.workEmails()))
+                            }
+                        };   
+                        
+                        console.log(JSON.stringify(newProfile));
+                    }
+                });
+            }   
 
-            //         }
-            //     });
-            // }   
+            var reduceJSON = function(baseArray) {
+                var result = [];
+                for (i = 0; i < baseArray.length; i++) {
+                    result.push(baseArray[i].value);
+                }
 
-            var newProfile = {
-                firstName: self.firstName(),
-                lastName: self.lastName(),
-                organization: self.selectedOrganization(),
-                // mainGroup: ko.toJS(self.groups())[0].value,
-                // groups: ko.toJS(self.groups()),
-                // mainRole: ko.toJS(self.roles())[0].value,
-                // roles: ko.toJS(self.roles()),
-                // mainWorkPhoneNumber: ko.toJS(self.workPhoneNumbers())[0].value,
-                // workPhoneNumbers: ko.toJS(self.workPhoneNumbers()),
-                // mainMobilePhone: ko.toJS(self.mobileNumbers())[0].value,
-                // mobilePhones: ko.toJS(self.mobileNumbers()),
-                // mainWorkEmail: ko.toJS(self.workEmails())[0].value,
-                // workEmails: ko.toJS(self.workEmails()),
-            };   
-            
-            console.log(JSON.stringify(newProfile));
+                return result;
+            };
         }
     }
     
