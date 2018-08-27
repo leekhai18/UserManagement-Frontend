@@ -12,13 +12,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>First Name</label>
-                                            <input data-bind="value: firstName" type="text" class="form-control border-input" placeholder="First Name" value="">
+                                            <input data-bind="textInput: firstName, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="First Name" value="">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Last Name</label>
-                                            <input data-bind="value: lastName" type="text" class="form-control border-input" placeholder="Last Name" value="">
+                                            <input data-bind="textInput: lastName, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Last Name" value="">
                                         </div>
                                     </div>
                                 </div>
@@ -36,7 +36,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Organization / Company</label>
-                                            <input type="text" class="form-control border-input" placeholder="Organization / Company" value="">
+                                            <select data-bind="options: availableOrganization, valueUpdate: 'afterkeydown', optionsText: 'name', value: 'selectedOrganization'" class="form-control border-input"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                                             
                                             <div data-bind="foreach: groups" >
                                                 <div class="input-group" style="float: left">
-                                                    <input data-bind="value: value" type="text" class="form-control border-input" placeholder="Group / Department" value="">
+                                                    <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Group / Department" value="">
                                                     <span class="input-group-btn">
                                                         <button data-bind="click: $root.removeGroup" class="btn btn-default" type="button">X</button>
                                                     </span>
@@ -67,7 +67,7 @@
                                             </div>  
                                             <div data-bind="foreach: roles" >
                                                 <div class="input-group" style="float: left">
-                                                    <input data-bind="value: value" type="text" class="form-control border-input" placeholder="Role / Job Title" value="">
+                                                    <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Role / Job Title" value="">
                                                     <span class="input-group-btn">
                                                         <button data-bind="click: $root.removeRole" class="btn btn-default" type="button">X</button>
                                                     </span>
@@ -86,9 +86,9 @@
                                             </div>  
                                             <div data-bind="foreach: workPhoneNumbers" >
                                                 <div class="input-group" style="float: left">
-                                                    <input data-bind="value: value" type="text" class="form-control border-input" placeholder="+49-151-1265-007" value="">
+                                                    <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="+49-151-1265-007" value="">
                                                     <span class="input-group-btn">
-                                                        <button data-bind="click: $root.removeWorkPhoneNumber" class="btn btn-default" type="button">X</button>
+                                                        <button data-bind="click: $root.removeWorkPhoneNumber, enable: $root.workPhoneNumbers().length > 1" class="btn btn-default" type="button">X</button>
                                                     </span>
                                                 </div>  
                                             </div>
@@ -102,9 +102,9 @@
                                             </div> 
                                             <div data-bind="foreach: mobileNumbers" >
                                                 <div class="input-group" style="float: left">
-                                                    <input data-bind="value: value" type="text" class="form-control border-input" placeholder="+49-151-1265498" value="">
+                                                    <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="+49-151-1265498" value="">
                                                     <span class="input-group-btn">
-                                                        <button data-bind="click: $root.removeMobileNumber" class="btn btn-default" type="button">X</button>
+                                                        <button data-bind="click: $root.removeMobileNumber, enable: $root.mobileNumbers().length > 1" class="btn btn-default" type="button">X</button>
                                                     </span>
                                                 </div>  
                                             </div>
@@ -121,9 +121,9 @@
                                             </div> 
                                             <div data-bind="foreach: workEmails" >
                                                 <div class="input-group" style="float: left">
-                                                    <input data-bind="value: value" type="text" class="form-control border-input" placeholder="Work E-Mail" value="">
+                                                    <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Work E-Mail" value="">
                                                     <span class="input-group-btn">
-                                                        <button data-bind="click: $root.removeWorkEmail" class="btn btn-default" type="button">X</button>
+                                                        <button data-bind="click: $root.removeWorkEmail, enable: $root.workEmails().length > 1" class="btn btn-default" type="button">X</button>
                                                     </span>
                                                 </div>  
                                             </div>
