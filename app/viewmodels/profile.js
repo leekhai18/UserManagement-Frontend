@@ -58,9 +58,11 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
             return self.firstName() + " " + self.lastName();
         });
 
+        self.personnelID = "ID100Co";
+
         self.availableOrganizations = [new Organization('iduit', 'UIT'),
         new Organization('idrs', 'ROSEN')];
-        self.selectedOrganization = ko.observable();
+        self.selectedOrganization = ko.observable(new Organization('iduit', 'UIT'));
 
         self.availableGroups = [new Group('id1', 'group1'),
         new Group('id2', 'group2')];
@@ -74,7 +76,8 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
 
         self.availableRoles = [new Role('id1', 'role1'),
         new Role('id2', 'role2')];
-        self.selectedRoles = ko.observableArray([{ value: ko.observable("") }]);
+        self.selectedRoles = ko.observableArray([{ value: ko.observable(new Role('id1', 'role1')) },
+        { value: ko.observable(new Role('id1', 'role1')) }]);
         self.addRole = function () {
             self.selectedRoles.push({ value: ko.observable("") });
         };
@@ -120,7 +123,7 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
             if (!self.validated.isValid()) {
                 self.validated.errors.showAllMessages();
             } else {
-                app.showMessage('Are you sure you want to create new User?', 'Verify', ['Yes', 'No']).then(function (result) {
+                app.showMessage('Are you sure you want to edit profile?', 'Verify', ['Yes', 'No']).then(function (result) {
                     if (result == 'Yes') {
                         var newProfile = {
                             firstName: self.firstName(),
@@ -147,6 +150,8 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
                         };
 
                         console.log(newProfile);
+
+                        self.visible(!self.visible());
                     }
                 });
             }
@@ -158,17 +163,23 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
                 }
 
                 return result;
-            };
-
-            self.visible(!self.visible());
+            };   
         }
 
         self.edit = function() {
-            self.visible(!self.visible());
+            app.showMessage('Make sure?', 'Verify', ['Yes', 'No']).then(function (result) {
+                if (result == "Yes") {
+                    self.visible(!self.visible());
+                }
+            });
         }
 
         self.delete = function() {
-            self.visible(!self.visible());
+            app.showMessage('REALLY. You want to DELETE this profile?', 'Verify', ['Yes', 'No']).then(function (result) {
+                if (result == "Yes") {
+                    self.visible(!self.visible());
+                }
+            });
         }
 
         self.visible = ko.observable(false);
