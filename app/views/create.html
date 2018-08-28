@@ -182,7 +182,7 @@
                     <div class="content">
                         <div class="author">
                             <img class="avatar border-white" data-bind="attr: {src:photoUrl() || 'assets/img/faces/face-2.jpg'}" />
-                            <input type="file" accept="image/*" style="margin: 0 auto;    padding-bottom: 20px;color:transparent; width:70px;" data-bind="event:{change: imageUpload}">
+                            <input type="file" accept="image/*" style="margin: 0 auto;    padding-bottom: 20px;color:transparent; width:70px;" data-bind="event:{change: imageUpload}, visible: $root.visible">
                             <h4 data-bind="text: fullName()" class="title">Full Name</h4>
                             <!-- <h5><small data-bind="text: workEmails()[0].value">Main email</small></h5> -->
                         </div>
