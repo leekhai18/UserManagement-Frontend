@@ -10,8 +10,8 @@
             router.map([
                 { route: '', moduleId: 'viewmodels/list', nav: true },
                 //{ route: 'flickr', moduleId: 'viewmodels/flickr', nav: true },
-                //{ route: 'profile', title:'Profile', moduleId: 'viewmodels/profile', nav: true },
-                //{ route: 'create', title:'Create', moduleId: 'viewmodels/create', nav: true },
+                { route: 'profile', title:'Profile', moduleId: 'viewmodels/profile', nav: true },
+                { route: 'create', title:'Create', moduleId: 'viewmodels/create', nav: true },
                 // { route: 'btnAdd', moduleId: 'viewmodels/create', nav: true }
             ]).buildNavigationModel();
             

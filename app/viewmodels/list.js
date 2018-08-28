@@ -33,6 +33,6 @@ define(['knockout', 'plugins/router', 'knockout.validation'], function (ko, rout
        	
         // gotoCreate: gotoCreate,
         lUsers: lUsers,
-        activate: activate,
+        // activate: activate,
     };
 });
