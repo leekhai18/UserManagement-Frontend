@@ -16,12 +16,18 @@ define(['knockout', 'plugins/router', 'knockout.validation'], function (ko, rout
         self.image = ko.observable(data.image);
     }
 
-    function activate(data) {
-        $.getJSON("/lUsers", function(allData) {
-            var mappedUsers = $.map(allData, function(item) { return new userInfo(item) });
-            console.log(lUsers);
-            self.lUsers(mappedUsers);
-        });
+    // function activate(data) {
+    //     $.getJSON("/lUsers", function(allData) {
+    //         var mappedUsers = $.map(allData, function(item) { return new userInfo(item) });
+    //         console.log(lUsers);
+    //         self.lUsers(mappedUsers);
+    //     });
+    // }
+
+    var addUser = function() {
+        console.log("sadfasd");
+        router.navigate("create");
+
     }
 
     return {
@@ -33,6 +39,7 @@ define(['knockout', 'plugins/router', 'knockout.validation'], function (ko, rout
        	
         // gotoCreate: gotoCreate,
         lUsers: lUsers,
+        addUser: addUser,
         // activate: activate,
     };
 });
