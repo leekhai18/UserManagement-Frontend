@@ -20,7 +20,7 @@
         <!--User's Image-->
         <td id="col1">
           <img class="img-circle"
-            data-bind="attr:{src: image}"
+            data-bind="attr:{src: profileImage}"
             alt="User Pic"/>
         </td>
         <!-- End image -->
@@ -28,9 +28,9 @@
         <!--Info-->
         <td id="col2">
           <strong data-bind="text: firstName + ' ' + lastName"></strong><br/>
-          <span data-bind="text: role"></span><br/>
-          <span class="text-muted" data-bind="text: group"></span><br/>
-          <span class="text-muted" data-bind="text: organization"></span>
+          <span data-bind="text: roles[0].name"></span><br/>
+          <span class="text-muted" data-bind="text: mainGroup.name"></span><br/>
+          <span class="text-muted" data-bind="text: organization.name"></span>
         </td>
         <!-- End Info -->
 
