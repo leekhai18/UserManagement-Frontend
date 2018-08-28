@@ -34,6 +34,10 @@ define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
                         lUsers.push(element);
                     });
 
+                    // test 
+                    lUsers.push(u[0]); 
+                    lUsers.push(u[0]); 
+
                 });
         }
 

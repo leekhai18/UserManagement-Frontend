@@ -1,0 +1,17 @@
+
+/* List user  */
+
+.user-row tr {
+    padding: 12px 0;
+    display: inline-block;
+    border-bottom: 1px solid #e2e2e2b0;
+}
+
+.user-row tr:last-child {
+    border-bottom: none;
+}
+
+.user-row tr:hover {
+    background: #e2e2e22e;
+    cursor: pointer;
+}
