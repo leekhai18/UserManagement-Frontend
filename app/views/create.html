@@ -1,139 +1,201 @@
-<div >
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar bar1"></span>
-                    <span class="icon-bar bar2"></span>
-                    <span class="icon-bar bar3"></span>
-                </button>
-                <a class="navbar-brand" href="#">Create A New User Profile</a>
-            </div>
-        </div>
-    </nav>
+<div class="content">
+    <div class="container-fluid">
+        <h2 class="col-lg-8 col-md-7">Create A New User Profile</h2>
+        <div class="row">
 
-
-    <div class="content">
-        <div class="container-fluid">
-            <div class="row">
-
-                <!-- Profile -->
-                <div class="col-lg-8 col-md-7">
-                        <div class="card">
-                            <div class="content">
-                                <form>
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <div class="form-group">
-                                                <label>Company</label>
-                                                <input type="text" class="form-control border-input" disabled placeholder="Company" value="Creative Code Inc.">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>Username</label>
-                                                <input type="text" class="form-control border-input" placeholder="Username" value="michael23">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Email address</label>
-                                                <input type="email" class="form-control border-input" placeholder="Email">
-                                            </div>
-                                        </div>
+            <!-- Profile -->
+            <div class="col-lg-8 col-md-7">
+                <div class="card">
+                    <div class="content">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>First Name</label>
+                                        <input data-bind="textInput: firstName, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="First Name"
+                                            value="">
                                     </div>
-    
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>First Name</label>
-                                                <input type="text" class="form-control border-input" placeholder="Company" value="Chet">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Last Name</label>
-                                                <input type="text" class="form-control border-input" placeholder="Last Name" value="Faker">
-                                            </div>
-                                        </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Last Name</label>
+                                        <input data-bind="textInput: lastName, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Last Name"
+                                            value="">
                                     </div>
-    
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Address</label>
-                                                <input type="text" class="form-control border-input" placeholder="Home Address" value="Melbourne, Australia">
-                                            </div>
-                                        </div>
-                                    </div>
-    
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>City</label>
-                                                <input type="text" class="form-control border-input" placeholder="City" value="Melbourne">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Country</label>
-                                                <input type="text" class="form-control border-input" placeholder="Country" value="Australia">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Postal Code</label>
-                                                <input type="number" class="form-control border-input" placeholder="ZIP Code">
-                                            </div>
-                                        </div>
-                                    </div>
-    
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>About Me</label>
-                                                <textarea rows="5" class="form-control border-input" placeholder="Here can be your description" value="Mike">Oh so, your weak rhyme
-    You doubt I'll bother, reading into it
-    I'll probably won't, left to my own devices
-    But that's the difference in our opinions.</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-info btn-fill btn-wd">Create</button>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </form>
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                <!-- Avatar -->
-                <div class="col-lg-4 col-md-5">
-                    <br>
-                    <div class="card card-user">
-                        <div class="image">
-                            <img src="assets/img/background.jpg" alt="..."/>
-                        </div>
-                        <div class="content">
-                            <div class="author">
-                              <img class="avatar border-white" src="assets/img/faces/face-2.jpg" alt="..."/>
-                              <h4 class="title">Chet Faker<br />
-                                 <a href="#"><small>@chetfaker</small></a>
-                              </h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Personnel ID</label>
+                                        <input type="text" class="form-control border-input" disabled placeholder="Company" value="Automatically Generated">
+                                    </div>
+                                </div>
                             </div>
-                            <p class="description text-center">
-                                "I like the way you work it <br>
-                                No diggity <br>
-                                I wanna bag it up"
-                            </p>
-                        </div>
-                        <hr><br>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Organization / Company</label>
+                                        <select data-bind=" options: availableOrganizations,
+                                                                optionsText: 'name',
+                                                                value: selectedOrganization" class="form-control border-input"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="icon-container">
+                                            <label>Group / Department</label>
+                                            <span data-bind="click: addGroup" class="ti-plus" style="margin-left: 10px"></span>
+                                        </div>
+
+                                        <div data-bind="foreach: selectedGroups">
+                                            <div class="input-group" style="float: left">
+                                                <select data-bind=" options: $root.availableGroups,
+                                                                        optionsText: 'name',
+                                                                        value: value" class="form-control border-input"></select>
+                                                <span class="input-group-btn">
+                                                    <button data-bind="click: $root.removeGroup, enable: $root.selectedGroups().length > 1" class="btn btn-default" type="button">X</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="icon-container">
+                                            <label>Role / Job Title</label>
+                                            <span data-bind="click: addRole" class="ti-plus" style="margin-left: 10px"></span>
+                                        </div>
+                                        <div data-bind="foreach: selectedRoles">
+                                            <div class="input-group" style="float: left">
+                                                <select data-bind=" options: $root.availableRoles,
+                                                                        optionsText: 'name',
+                                                                        value: value" class="form-control border-input"></select>
+                                                <span class="input-group-btn">
+                                                    <button data-bind="click: $root.removeRole, enable: $root.selectedRoles().length > 1" class="btn btn-default" type="button">X</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="icon-container">
+                                            <label>Work phone number</label>
+                                            <span data-bind="click: addWorkPhoneNumber" class="ti-plus" style="margin-left: 10px"></span>
+                                        </div>
+                                        <div data-bind="foreach: workPhoneNumbers">
+                                            <div class="input-group" style="float: left">
+                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="+49-151-1265-007"
+                                                    value="">
+                                                <span class="input-group-btn">
+                                                    <button data-bind="click: $root.removeWorkPhoneNumber, enable: $root.workPhoneNumbers().length > 1" class="btn btn-default"
+                                                        type="button">X</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="icon-container">
+                                            <label>Mobile number</label>
+                                            <span data-bind="click: addMobileNumber" class="ti-plus" style="margin-left: 10px"></span>
+                                        </div>
+                                        <div data-bind="foreach: mobileNumbers">
+                                            <div class="input-group" style="float: left">
+                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="+49-151-1265498"
+                                                    value="">
+                                                <span class="input-group-btn">
+                                                    <button data-bind="click: $root.removeMobileNumber, enable: $root.mobileNumbers().length > 1" class="btn btn-default" type="button">X</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="icon-container">
+                                            <label>Private phone number</label>
+                                            <span data-bind="click: addPrivatePhoneNumber" class="ti-plus" style="margin-left: 10px"></span>
+                                        </div>
+                                        <div data-bind="foreach: privatePhoneNumbers">
+                                            <div class="input-group" style="float: left">
+                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="+49-151-1265-007"
+                                                    value="">
+                                                <span class="input-group-btn">
+                                                    <button data-bind="click: $root.removePrivatePhoneNumber, enable: $root.privatePhoneNumbers().length > 1" class="btn btn-default"
+                                                        type="button">X</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="icon-container">
+                                            <label>Work E-Mail</label>
+                                            <span data-bind="click: addWorkEmail" class="ti-plus" style="margin-left: 10px"></span>
+                                        </div>
+                                        <div data-bind="foreach: workEmails">
+                                            <div class="input-group" style="float: left">
+                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Work E-Mail"
+                                                    value="">
+                                                <span class="input-group-btn">
+                                                    <button data-bind="click: $root.removeWorkEmail, enable: $root.workEmails().length > 1" class="btn btn-default" type="button">X</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="text-center">
+                                <button data-bind="click: create" type="submit" class="btn btn-info btn-fill btn-wd">Create</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
                     </div>
                 </div>
-
             </div>
+
+            <!-- Avatar -->
+            <div class="col-lg-4 col-md-5">
+                <br>
+                <div class="card card-user">
+                    <div class="image">
+                        <img src="assets/img/background.jpg" alt="..." />
+                    </div>
+                    <div class="content">
+                        <div class="author">
+                            <img class="avatar border-white" data-bind="attr: {src:photoUrl() || 'assets/img/faces/face-2.jpg'}" />
+                            <input type="file" accept="image/*" style="margin: 0 auto;    padding-bottom: 20px;color:transparent; width:70px;" data-bind="event:{change: imageUpload}">
+                            <h4 data-bind="text: fullName()" class="title">Full Name</h4>
+                            <!-- <h5><small data-bind="text: workEmails()[0].value">Main email</small></h5> -->
+                        </div>
+
+                        <p class="description text-center">
+                            "I like the way you work it <br> No diggity <br> I wanna bag it up"
+                        </p>
+                    </div>
+                    <hr><br>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </div>
