@@ -198,18 +198,18 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
 
                 return result;
             };   
-        }
+        };
 
         self.edit = function() {
-            app.showMessage('Make sure?', 'Verify', ['Yes', 'No']).then(function (result) {
+            app.showMessage('Make sure you want to EDIT', 'Verify', ['Yes', 'No']).then(function (result) {
                 if (result == "Yes") {
                     self.visible(!self.visible());
                 }
             });
-        }
+        };
 
-        self.delete = function() {
-            app.showMessage('REALLY. You want to DELETE this profile?', 'Verify', ['Yes', 'No']).then(function (result) {
+        self.deleteProfile = function() {
+            app.showMessage('REALLY. Make sure you want to DELETE?', 'Verify', ['Yes', 'No']).then(function (result) {
                 if (result == "Yes") {
                     self.visible(!self.visible());
                 }
@@ -217,7 +217,7 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
         }
 
         self.visible = ko.observable(false);
-    }
+    };
 
     return new ProfileModel();
 });
