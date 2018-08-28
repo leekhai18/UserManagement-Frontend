@@ -4,6 +4,11 @@
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details
  */
 
+.input-group-btn {
+    vertical-align: top
+}
+
+
 .splash {
     text-align: center;
     margin: 10% 0 0 0;
