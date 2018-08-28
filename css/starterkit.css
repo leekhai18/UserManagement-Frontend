@@ -63,3 +63,30 @@ section {
     padding: 5px;
     height: 100%;
 }
+
+.user-row {
+    display: block;
+    width: auto;
+}
+
+#btnAdd {
+    margin-right: 10%;
+}
+
+table {
+    width: 100%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+#col1 {
+    width: 80px;
+}
+
+#col2 {
+    width: 800px;
+}
+
+#col3 {
+    width: 30px;
+}

@@ -1,36 +1,49 @@
 <section>
   <br/><br/>
 
-  <!--Add Butoon-->
+  <!--Button which to add user-->
   <!--Click here to transfer to Create-->
   <div>
-    <a href="#" class="btn btn-info btn-lg pull-right">
+    <!-- <a class="btn btn-info btn-lg pull-right" id="btnAdd" data-bind="click: gotoCreate"> -->
+    <a class="btn btn-info btn-lg pull-right" id="btnAdd">
       <span class="glyphicon glyphicon-plus-sign"></span> Add
     </a>
   </div>
+  <!-- end button -->
 
    <br/><br/><br/>
 
   <!--User Info-->
-	<div class="row user-row">
-    <!--User's Image-->
-    <div class="col-xs-3 col-sm-2 col-md-1 col-lg-1">
-      <img class="img-circle"
-        src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=50"
-        alt="User Pic"/>
-    </div>
-    <!--Info-->
-    <div class="col-xs-8 col-sm-9 col-md-10 col-lg-10">
-      <strong data-bind="text: firstName + ' ' + lastName"></strong><br/>
-      <span data-bind="text: role"></span><br/>
-      <span class="text-muted" data-bind="text: group"></span><br/>
-      <span class="text-muted" data-bind="text: organization"></span>
-    </div>
-    <!--Click here to transfer to detail Info-->
-    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user">
-      <a href="#">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-      </a>
-    </div>
-  </div>
+  <table>
+    <tbody class="row user-row" data-bind="foreach: lUsers, visible: lUsers().length > 0">
+      <tr>
+        <!--User's Image-->
+        <td id="col1">
+          <img class="img-circle"
+            data-bind="attr:{src: image}"
+            alt="User Pic"/>
+        </td>
+        <!-- End image -->
+
+        <!--Info-->
+        <td id="col2">
+          <strong data-bind="text: firstName + ' ' + lastName"></strong><br/>
+          <span data-bind="text: role"></span><br/>
+          <span class="text-muted" data-bind="text: group"></span><br/>
+          <span class="text-muted" data-bind="text: organization"></span>
+        </td>
+        <!-- End Info -->
+
+        <!--Click here to transfer to detail Info-->
+        <td id="col3">
+          <a href="#">
+            <span class="glyphicon glyphicon-chevron-right" id="btnMore"></span>
+          </a>
+        </td>
+        <!-- End More Info -->
+        
+      </tr>
+    </tbody>
+  </table>
+  <!-- End -->
 </section>
