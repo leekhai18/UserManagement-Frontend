@@ -1,4 +1,4 @@
-define(['knockout', 'plugins/router', 'durandal/app', 'knockout.validation'], function (ko, router, app){
+define(['knockout', 'plugins/router', 'plugins/http', 'knockout.validation'], function (ko, router, http){
     //list of users
     var lUsers = ko.observableArray([]);
     var val = ko.observable();
@@ -14,30 +14,67 @@ define(['knockout', 'plugins/router', 'durandal/app', 'knockout.validation'], fu
         self.image = ko.observable(data.image);
     }
 
-    // function activate(data) {
-    //     $.getJSON("/lUsers", function(allData) {
-    //         var mappedUsers = $.map(allData, function(item) { return new userInfo(item) });
-    //         console.log(lUsers);
-    //         self.lUsers(mappedUsers);
-    //     });
-    // }
+    var addUser = function () {
+        router.navigate("create");
+    }
+
+    var getAllUsers = function () {
+
+        //clear
+        lUsers.removeAll();
+
+        // use plugin HTTP of Durandaljs
+        // http.get('http://localhost:16567/api/user')
+
+        http.get('https://localhost:5001/api/user')
+            .then(function (u) {
+
+                console.log(u);
+
+                u.forEach(element => {
+                    lUsers.push(element);
+                });
+
+            }, function (error) {
+                alert("Error: Can't connect to server.");
+            });
+    }
+
+    var searchUsers = function() {
+        http.get('')
+            .then(function (u) {
+
+                console.log(u);
+
+                u.forEach(element => {
+                    lUsers.push(element);
+                });
+
+            }, function (error) {
+                alert("Error: Can't connect to server.");
+            });
+    }
+
+    var viewProfile = function (profile) {
+        console.log(profile);
+        router.navigate("profile/" + profile.id);
+    }
 
     return {
-        // Array of users
-        // users : ko.observableArray([
-        //     {firstName, lastName, role, group, organization, image},
-       	// 	// {firstName: 'Anh', lastName: 'Bui', role: 'Developer', group: 'Frontend', organization: 'UIT', image: "https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=50"},
-       	// 	// {firstName: 'Anh', lastName: 'Bui', role: 'Developer', group: 'Frontend', organization: 'University of Information Technology', image: "https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=50"}
-       	// 	]),
-       	
-        // gotoCreate: gotoCreate,
+        activate: function () {
+            // console.log('Activate Page');
+            getAllUsers();
+        },
+
         lUsers: lUsers,
+
+        addUser: addUser,
+
+        viewProfile: viewProfile,
 
         val: val,
 
         search: function(data, event) {
-            //It's really easy to show a message box.
-            //You can add custom options too. Also, it returns a promise for the user's response.
             console.log(this.val());
             //app.showMessage('Search not yet implemented...');
 
@@ -49,7 +86,7 @@ define(['knockout', 'plugins/router', 'durandal/app', 'knockout.validation'], fu
             //         li[i].style.display = "none";
             //     }
             // }
+            searchUsers();
         },
-        // activate: activate,
     };
 });
