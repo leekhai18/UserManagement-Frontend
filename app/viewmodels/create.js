@@ -1,4 +1,4 @@
-define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (ko, $, app) {
+define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validation'], function (ko, $, app, http) {
     var knockoutValidationSettings = {
         grouping: {
             deep: true,
@@ -58,12 +58,10 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
             return self.firstName() + " " + self.lastName();
         });
 
-        self.availableOrganizations = [new Organization('iduit', 'UIT'),
-        new Organization('idrs', 'ROSEN')];
+        self.availableOrganizations = [];
         self.selectedOrganization = ko.observable();
 
-        self.availableGroups = [new Group('id1', 'group1'),
-        new Group('id2', 'group2')];
+        self.availableGroups = [];
         self.selectedGroups = ko.observableArray([{ value: ko.observable("") }]);
         self.addGroup = function () {
             self.selectedGroups.push({ value: ko.observable() });
@@ -72,8 +70,7 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
             self.selectedGroups.remove(group);
         };
 
-        self.availableRoles = [new Role('id1', 'role1'),
-        new Role('id2', 'role2')];
+        self.availableRoles = [];
         self.selectedRoles = ko.observableArray([{ value: ko.observable("") }]);
         self.addRole = function () {
             self.selectedRoles.push({ value: ko.observable("") });
@@ -180,7 +177,15 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
                             profileImage: self.profileImage
                         };
 
-                        console.log(newProfile);
+                        http.post('https://localhost:5001/api/user', newProfile)
+                        .then(function(response) {
+                            app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
+                                //navigate
+                            });
+                        },
+                        function(error) {
+                            console.log(error);
+                        });
                     }
                 });
             }
@@ -194,7 +199,41 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
                 return result;
             };
         }
+
+        self.activate = function() {
+            http.get('https://localhost:5001/api/organization')
+            .then(function(response) {
+                response.forEach(organization => {
+                    self.availableOrganizations.push(new Organization(organization.id, organization.name));
+                });
+            },
+            function(error) {
+                console.log(error);
+            });
+
+            http.get('https://localhost:5001/api/group')
+            .then(function(response) {
+                response.forEach(group => {
+                    self.availableGroups.push(new Group(group.id, group.name));
+                });
+            },
+            function(error) {
+                console.log(error);
+            });
+
+            http.get('https://localhost:5001/api/role')
+            .then(function(response) {
+                response.forEach(role => {
+                    self.availableRoles.push(new Role(role.id, role.name));
+                });
+            },
+            function(error) {
+                console.log(error);
+            });
+        }
     }
+
+    
 
     return new ProfileModel();
 });

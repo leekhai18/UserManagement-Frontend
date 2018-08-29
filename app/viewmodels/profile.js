@@ -77,7 +77,7 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
         self.availableRoles = [new Role('id1', 'role1'),
         new Role('id2', 'role2')];
         self.selectedRoles = ko.observableArray([{ value: ko.observable(new Role('id1', 'role1')) },
-        { value: ko.observable(new Role('id1', 'role1')) }]);
+        { value: ko.observable(new Role('id2', 'role2')) }]);
         self.addRole = function () {
             self.selectedRoles.push({ value: ko.observable("") });
         };
