@@ -12,15 +12,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>First Name</label>
-                                        <input data-bind="textInput: firstName, valueUpdate: 'afterkeydown', enable: visible" type="text" class="form-control border-input" placeholder="First Name"
-                                            value="">
+                                        <input data-bind="textInput: firstName, valueUpdate: 'afterkeydown', enable: visible" type="text" class="form-control border-input">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Last Name</label>
-                                        <input data-bind="textInput: lastName, valueUpdate: 'afterkeydown', enable: visible" type="text" class="form-control border-input" placeholder="Last Name"
-                                            value="">
+                                        <input data-bind="textInput: lastName, valueUpdate: 'afterkeydown', enable: visible" type="text" class="form-control border-input">
                                     </div>
                                 </div>
                             </div>
@@ -29,7 +27,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Personnel ID</label>
-                                        <input type="text" class="form-control border-input" disabled placeholder="Company" value="Automatically Generated">
+                                        <input data-bind="value: personnelID" type="text" class="form-control border-input" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -39,8 +37,9 @@
                                     <div class="form-group">
                                         <label>Organization / Company</label>
                                         <select data-bind=" options: availableOrganizations,
-                                                                optionsText: 'name', enable: visible,
+                                                                optionsText: 'name', visible: visible,
                                                                 value: selectedOrganization" class="form-control border-input"></select>
+                                        <input data-bind="textInput: selectedOrganization().name, visible: !visible()" type="text" class="form-control border-input" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -54,13 +53,16 @@
                                         </div>
 
                                         <div data-bind="foreach: selectedGroups">
-                                            <div class="input-group" style="float: left">
+                                            <div data-bind="visible: $root.visible" class="input-group" style="float: left">
                                                 <select data-bind=" options: $root.availableGroups,
-                                                                        optionsText: 'name', enable: $root.visible,
+                                                                        optionsText: 'name',
                                                                         value: value" class="form-control border-input"></select>
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeGroup, enable: $root.selectedGroups().length > 1 && $root.visible" class="btn btn-default" type="button">X</button>
+                                                    <button data-bind="click: $root.removeGroup, enable: $root.selectedGroups().length > 1" class="btn btn-default" type="button">X</button>
                                                 </span>
+                                            </div>
+                                            <div data-bind="visible: !$root.visible()" class="form-group">
+                                                <input data-bind="textInput: value().name" type="text" class="form-control border-input" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -72,13 +74,16 @@
                                             <span data-bind="click: addRole, visible: visible" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <div data-bind="foreach: selectedRoles">
-                                            <div class="input-group" style="float: left">
+                                            <div data-bind="visible: $root.visible" class="input-group" style="float: left">
                                                 <select data-bind=" options: $root.availableRoles,
-                                                                        optionsText: 'name', enable: $root.visible,
+                                                                        optionsText: 'name',
                                                                         value: value" class="form-control border-input"></select>
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeRole, enable: $root.selectedRoles().length > 1 && $root.visible" class="btn btn-default" type="button">X</button>
+                                                    <button data-bind="click: $root.removeRole, enable: $root.selectedRoles().length > 1" class="btn btn-default" type="button">X</button>
                                                 </span>
+                                            </div>
+                                            <div data-bind="visible: !$root.visible()" class="form-group">
+                                                <input data-bind="textInput: value().name" type="text" class="form-control border-input" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -93,13 +98,15 @@
                                             <span data-bind="click: addWorkPhoneNumber, visible: visible" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <div data-bind="foreach: workPhoneNumbers">
-                                            <div class="input-group" style="float: left">
-                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown', enable: $root.visible" type="text" class="form-control border-input" placeholder="+49-151-1265-007"
-                                                    value="">
+                                            <div data-bind="visible: $root.visible" class="input-group" style="float: left">
+                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input">
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeWorkPhoneNumber, enable: $root.workPhoneNumbers().length > 1 && $root.visible" class="btn btn-default"
+                                                    <button data-bind="click: $root.removeWorkPhoneNumber, enable: $root.workPhoneNumbers().length > 1" class="btn btn-default"
                                                         type="button">X</button>
                                                 </span>
+                                            </div>
+                                            <div data-bind="visible: !$root.visible()" class="form-group">
+                                                <input data-bind="textInput: value()" type="text" class="form-control border-input" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -111,12 +118,14 @@
                                             <span data-bind="click: addMobileNumber, visible: visible" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <div data-bind="foreach: mobileNumbers">
-                                            <div class="input-group" style="float: left">
-                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown', enable: $root.visible" type="text" class="form-control border-input" placeholder="+49-151-1265498"
-                                                    value="">
+                                            <div data-bind="visible: $root.visible" class="input-group" style="float: left">
+                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input">
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeMobileNumber, enable: $root.mobileNumbers().length > 1 && $root.visible" class="btn btn-default" type="button">X</button>
+                                                    <button data-bind="click: $root.removeMobileNumber, enable: $root.mobileNumbers().length > 1" class="btn btn-default" type="button">X</button>
                                                 </span>
+                                            </div>
+                                            <div data-bind="visible: !$root.visible()" class="form-group">
+                                                <input data-bind="textInput: value()" type="text" class="form-control border-input" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -131,13 +140,15 @@
                                             <span data-bind="click: addPrivatePhoneNumber, visible: visible" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <div data-bind="foreach: privatePhoneNumbers">
-                                            <div class="input-group" style="float: left">
-                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown', enable: $root.visible" type="text" class="form-control border-input" placeholder="+49-151-1265-007"
-                                                    value="">
+                                            <div data-bind="visible: $root.visible" class="input-group" style="float: left">
+                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input">
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removePrivatePhoneNumber, enable: $root.privatePhoneNumbers().length > 1 && $root.visible" class="btn btn-default"
+                                                    <button data-bind="click: $root.removePrivatePhoneNumber, enable: $root.privatePhoneNumbers().length > 1" class="btn btn-default"
                                                         type="button">X</button>
                                                 </span>
+                                            </div>
+                                            <div data-bind="visible: !$root.visible()" class="form-group">
+                                                <input data-bind="textInput: value()" type="text" class="form-control border-input" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -150,12 +161,14 @@
                                             <span data-bind="click: addWorkEmail, visible: visible" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <div data-bind="foreach: workEmails">
-                                            <div class="input-group" style="float: left">
-                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown', enable: $root.visible" type="text" class="form-control border-input" placeholder="Work E-Mail"
-                                                    value="">
+                                            <div data-bind="visible: $root.visible" class="input-group" style="float: left">
+                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input">
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeWorkEmail, enable: $root.workEmails().length > 1 && $root.visible" class="btn btn-default" type="button">X</button>
+                                                    <button data-bind="click: $root.removeWorkEmail, enable: $root.workEmails().length > 1" class="btn btn-default" type="button">X</button>
                                                 </span>
+                                            </div>
+                                            <div data-bind="visible: !$root.visible()" class="form-group">
+                                                <input data-bind="textInput: value()" type="text" class="form-control border-input" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -164,9 +177,9 @@
 
 
                             <div class="text-center">
-                                <button data-bind="click: edit, visible: !visible()" type="submit" class="btn btn-warning btn-fill btn-wd">Edit</button>
+                                <button data-bind="click: edit, visible: !visible()" class="btn btn-warning btn-fill btn-wd">Edit</button>
                                 <button data-bind="click: save, visible: visible" type="submit" class="btn btn-success btn-fill btn-wd">Save</button>
-                                <button data-bind="visible: visible" type="submit" class="btn btn-danger btn-fill btn-wd" >Delete</button>
+                                <button data-bind="click: deleteProfile, visible: visible" class="btn btn-danger btn-fill btn-wd" >Delete</button>
                             </div>
                             <div class="clearfix"></div>
                         </form>
@@ -184,7 +197,7 @@
                     <div class="content">
                         <div class="author">
                             <img class="avatar border-white" data-bind="attr: {src:photoUrl() || 'assets/img/faces/face-2.jpg'}" />
-                            <input type="file" accept="image/*" style="margin: 0 auto;    padding-bottom: 20px;color:transparent; width:70px;" data-bind="event:{change: imageUpload}">
+                            <input type="file" accept="image/*" style="margin: 0 auto;    padding-bottom: 20px;color:transparent; width:70px;" data-bind="event:{change: imageUpload}, , visible: visible">
                             <h4 data-bind="text: fullName()" class="title">Full Name</h4>
                             <!-- <h5><small data-bind="text: workEmails()[0].value">Main email</small></h5> -->
                         </div>
