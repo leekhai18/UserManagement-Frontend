@@ -16,10 +16,10 @@
   <!--User Info-->
   <table>
     <tbody class="row user-row" data-bind="foreach: lUsers, visible: lUsers().length > 0">
-      <tr>
+      <tr data-bind="click: $root.viewProfile">
         <!--User's Image-->
         <td id="col1">
-          <img class="img-circle"
+          <img class="image-profile"
             data-bind="attr:{src: profileImage}"
             alt="User Pic"/>
         </td>

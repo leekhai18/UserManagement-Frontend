@@ -15,3 +15,8 @@
     background: #e2e2e22e;
     cursor: pointer;
 }
+
+.image-profile {
+    width: inherit;
+}
+

@@ -25,20 +25,47 @@ define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
             lUsers.removeAll();
 
             // use plugin HTTP of Durandaljs
-            http.get('http://localhost:16567/api/user')
-                .then(function (u) {
+            // http.get('http://localhost:16567/api/user')
 
+            // http.get('https://localhost:5001/api/user')
+            //     .then(function (u) {
+
+            //         console.log(u);
+
+            //         u.forEach(element => {
+            //             lUsers.push(element);
+            //         });
+
+            //     });
+
+
+            $.ajax({
+                url: 'https://localhost:5001/api/user',
+                // data: this.toJSON(data),
+                type: 'GET',
+                contentType: 'application/json',
+                dataType: 'json',
+                // headers: ko.toJS(headers),
+                success: function (u) {
                     console.log(u);
 
                     u.forEach(element => {
                         lUsers.push(element);
                     });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    // if (jqXHR.status === '401') {
+                    // }
+                    
+                    alert("Error: Can't connect to server.");
+                }
 
-                    // test 
-                    lUsers.push(u[0]); 
-                    lUsers.push(u[0]); 
+            });
+        }
 
-                });
+        var viewProfile = function (profile) {
+            console.log(profile);
+            router.navigate("profile/" + profile.id);
         }
 
         return {
@@ -50,5 +77,7 @@ define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
 
             lUsers: lUsers,
             addUser: addUser,
+
+            viewProfile: viewProfile
         };
     });
