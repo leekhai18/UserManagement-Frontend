@@ -75,7 +75,12 @@ section {
 }
 
 #btnAdd {
+    margin-left: 10%;
+}
+
+#frSearch {
     margin-right: 10%;
+    border-top-color: black;
 }
 
 table {
