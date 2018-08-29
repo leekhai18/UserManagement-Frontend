@@ -9,9 +9,9 @@
       <span class="glyphicon glyphicon-plus-sign"></span> Add
     </a>
 
-    <form class="navbar-form navbar-right" role="search" data-bind="submit:search" id="frSearch">
+    <form class="navbar-form navbar-right" role="search" id="frSearch">
       <div class="form-group">
-          <input style="color:black;" type="text" class="form-control" placeholder="Search">
+          <input style="color:black;" type="text" class="form-control" placeholder="Search" title="Search User" data-bind="event: { keyup: search }">
       </div>
   </form>
   </div>
