@@ -1,6 +1,7 @@
 define(['knockout', 'plugins/router', 'durandal/app', 'knockout.validation'], function (ko, router, app){
     //list of users
     var lUsers = ko.observableArray([]);
+    var val = ko.observable();
 
     //Info of user
     function userInfo(data) {
@@ -32,11 +33,22 @@ define(['knockout', 'plugins/router', 'durandal/app', 'knockout.validation'], fu
         // gotoCreate: gotoCreate,
         lUsers: lUsers,
 
+        val: val,
+
         search: function(data, event) {
             //It's really easy to show a message box.
             //You can add custom options too. Also, it returns a promise for the user's response.
-            console.log('search');
+            console.log(this.val());
             //app.showMessage('Search not yet implemented...');
+
+            // for (i = 0; i < li.length; i++) {
+            //     a = li[i].getElementsByTagName("a")[0];
+            //     if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            //         li[i].style.display = "";
+            //     } else {
+            //         li[i].style.display = "none";
+            //     }
+            // }
         },
         // activate: activate,
     };
