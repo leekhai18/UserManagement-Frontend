@@ -41,6 +41,8 @@ define(['knockout', 'plugins/router', 'plugins/http', 'knockout.validation'], fu
     }
 
     var searchUsers = function() {
+        lUsers.removeAll();
+
         http.get('')
             .then(function (u) {
 
