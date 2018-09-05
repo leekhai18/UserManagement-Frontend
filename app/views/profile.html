@@ -37,9 +37,11 @@
                                     <div class="form-group">
                                         <label>Organization / Company</label>
                                         <select data-bind=" options: availableOrganizations,
-                                                                optionsText: 'name', visible: visible,
+                                                                optionsText: 'name',
+                                                                optionsValue: 'id', 
+                                                                enable: visible,
                                                                 value: selectedOrganization" class="form-control border-input"></select>
-                                        <input data-bind="textInput: selectedOrganization().name, visible: !visible()" type="text" class="form-control border-input" disabled>
+                                        <!-- <input data-bind="textInput: selectedOrganization().name, visible: !visible()" type="text" class="form-control border-input" disabled> -->
                                     </div>
                                 </div>
                             </div>
@@ -179,7 +181,7 @@
                             <div class="text-center">
                                 <button data-bind="click: edit, visible: !visible()" class="btn btn-warning btn-fill btn-wd">Edit</button>
                                 <button data-bind="click: save, visible: visible" type="submit" class="btn btn-success btn-fill btn-wd">Save</button>
-                                <button data-bind="click: deleteProfile, visible: visible" class="btn btn-danger btn-fill btn-wd" >Delete</button>
+                                <button data-bind="click: deleteProfile, visible: visible" class="btn btn-danger btn-fill btn-wd">Delete</button>
                             </div>
                             <div class="clearfix"></div>
                         </form>
