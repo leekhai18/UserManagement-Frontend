@@ -85,70 +85,98 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
             self.selectedRoles.remove(role);
         };
 
-        self.workPhoneNumbers = ko.observableArray([{ value: ko.observable("")
-                .extend({   required: true,
-                            pattern: {
-                                message: 'This number is wrong.',
-                                params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                            }}) }]);
+        self.workPhoneNumbers = ko.observableArray([{
+            value: ko.observable("")
+                .extend({
+                    required: true,
+                    pattern: {
+                        message: 'This number is wrong.',
+                        params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
+                    }
+                })
+        }]);
         self.addWorkPhoneNumber = function () {
-        self.workPhoneNumbers.push({ value: ko.observable("")
-                .extend({   required: true,
-                            pattern: {
-                                message: 'This number is wrong.',
-                                params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                            }}) });
+            self.workPhoneNumbers.push({
+                value: ko.observable("")
+                    .extend({
+                        required: true,
+                        pattern: {
+                            message: 'This number is wrong.',
+                            params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
+                        }
+                    })
+            });
         };
         self.removeWorkPhoneNumber = function (workPhoneNumber) {
-        self.workPhoneNumbers.remove(workPhoneNumber);
+            self.workPhoneNumbers.remove(workPhoneNumber);
         };
 
-        self.privatePhoneNumbers = ko.observableArray([{ value: ko.observable("")
-                .extend({   required: false,
-                            pattern: {
-                                message: 'This number is wrong.',
-                                params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                            }}) }]);
+        self.privatePhoneNumbers = ko.observableArray([{
+            value: ko.observable("")
+                .extend({
+                    required: false,
+                    pattern: {
+                        message: 'This number is wrong.',
+                        params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
+                    }
+                })
+        }]);
         self.addPrivatePhoneNumber = function () {
-        self.privatePhoneNumbers.push({ value: ko.observable("")
-                .extend({   required: false,
-                            pattern: {
-                                message: 'This number is wrong.',
-                                params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                            }}) });
+            self.privatePhoneNumbers.push({
+                value: ko.observable("")
+                    .extend({
+                        required: false,
+                        pattern: {
+                            message: 'This number is wrong.',
+                            params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
+                        }
+                    })
+            });
         };
         self.removePrivatePhoneNumber = function (privatePhoneNumber) {
-        self.privatePhoneNumbers.remove(privatePhoneNumber);
+            self.privatePhoneNumbers.remove(privatePhoneNumber);
         };
 
-        self.mobileNumbers = ko.observableArray([{ value: ko.observable("")
-                .extend({   required: true,
-                            pattern: {
-                                message: 'This number is wrong.',
-                                params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                            }}) }]);
+        self.mobileNumbers = ko.observableArray([{
+            value: ko.observable("")
+                .extend({
+                    required: true,
+                    pattern: {
+                        message: 'This number is wrong.',
+                        params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
+                    }
+                })
+        }]);
         self.addMobileNumber = function () {
-        self.mobileNumbers.push({ value: ko.observable("")
-                .extend({   required: true,
-                            pattern: {
-                                message: 'This number is wrong.',
-                                params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                            }}) });
+            self.mobileNumbers.push({
+                value: ko.observable("")
+                    .extend({
+                        required: true,
+                        pattern: {
+                            message: 'This number is wrong.',
+                            params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
+                        }
+                    })
+            });
         };
         self.removeMobileNumber = function (mobileNumber) {
-        self.mobileNumbers.remove(mobileNumber);
+            self.mobileNumbers.remove(mobileNumber);
         };
 
-        self.workEmails = ko.observableArray([{ value: ko.observable("")
+        self.workEmails = ko.observableArray([{
+            value: ko.observable("")
                 .extend({ required: { params: true, message: 'This field is required.' } })
-                .extend({ email: { params: true, message: 'This email is wrong.' } }) }]);
+                .extend({ email: { params: true, message: 'This email is wrong.' } })
+        }]);
         self.addWorkEmail = function () {
-        self.workEmails.push({ value: ko.observable("")
-                .extend({ required: { params: true, message: 'This field is required.' } })
-                .extend({ email: { params: true, message: 'This email is wrong.' } }) });
+            self.workEmails.push({
+                value: ko.observable("")
+                    .extend({ required: { params: true, message: 'This field is required.' } })
+                    .extend({ email: { params: true, message: 'This email is wrong.' } })
+            });
         };
         self.removeWorkEmail = function (workEmail) {
-        self.workEmails.remove(workEmail);
+            self.workEmails.remove(workEmail);
         };
 
         self.validated = ko.validatedObservable(self);
@@ -197,10 +225,10 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
                 }
 
                 return result;
-            };   
+            };
         };
 
-        self.edit = function() {
+        self.edit = function () {
             app.showMessage('Make sure you want to EDIT', 'Verify', ['Yes', 'No']).then(function (result) {
                 if (result == "Yes") {
                     self.visible(!self.visible());
@@ -208,7 +236,7 @@ define(['knockout', 'jquery', 'durandal/app', 'knockout.validation'], function (
             });
         };
 
-        self.deleteProfile = function() {
+        self.deleteProfile = function () {
             app.showMessage('REALLY. Make sure you want to DELETE?', 'Verify', ['Yes', 'No']).then(function (result) {
                 if (result == "Yes") {
                     self.visible(!self.visible());
