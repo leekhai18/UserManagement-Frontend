@@ -255,12 +255,13 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
             function(error) {
                 app.showMessage(error, 'Error!', ['Yes']);
             });
-
-            http.get('https://localhost:5001/api/group')
+            
+            http.get('https://localhost:5001/api/group/org/' + self.availableOrganizations[0].id)
+            // http.get('https://localhost:5001/api/group')
             .then(function(response) {
                 self.availableGroups.length = 0;
                 response.forEach(group => {
-                    self.availableGroups.push(new Group(group.id, group.name));
+                        self.availableGroups.push(new Group(group.id, group.name));
                 });
             },
             function(error) {

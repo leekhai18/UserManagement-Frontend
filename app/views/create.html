@@ -40,7 +40,8 @@
                                         <label>Organization / Company</label>
                                         <select data-bind=" options: availableOrganizations,
                                                                 optionsText: 'name',
-                                                                value: selectedOrganization" class="form-control border-input"></select>
+                                                                value: selectedOrganization,
+                                                                event: { change: selectionChanged }" class="form-control border-input"></select>
                                     </div>
                                 </div>
                             </div>
