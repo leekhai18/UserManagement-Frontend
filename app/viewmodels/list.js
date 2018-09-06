@@ -27,40 +27,42 @@ define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
             // use plugin HTTP of Durandaljs
             // http.get('http://localhost:16567/api/user')
 
-            // http.get('https://localhost:5001/api/user')
-            //     .then(function (u) {
+            http.get('https://localhost:5001/api/user')
+                .then(function (u) {
 
-            //         console.log(u);
-
-            //         u.forEach(element => {
-            //             lUsers.push(element);
-            //         });
-
-            //     });
-
-
-            $.ajax({
-                url: 'https://localhost:5001/api/user',
-                // data: this.toJSON(data),
-                type: 'GET',
-                contentType: 'application/json',
-                dataType: 'json',
-                // headers: ko.toJS(headers),
-                success: function (u) {
                     console.log(u);
 
                     u.forEach(element => {
                         lUsers.push(element);
                     });
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    // if (jqXHR.status === '401') {
-                    // }
-                    
-                    alert("Error: Can't connect to server.");
-                }
 
-            });
+                }, function (error) {
+                    alert("Error: Can't connect to server.");
+                });
+
+
+            // $.ajax({
+            //     url: 'https://localhost:5001/api/user',
+            //     // data: this.toJSON(data),
+            //     type: 'GET',
+            //     contentType: 'application/json',
+            //     dataType: 'json',
+            //     // headers: ko.toJS(headers),
+            //     success: function (u) {
+            //         console.log(u);
+
+            //         u.forEach(element => {
+            //             lUsers.push(element);
+            //         });
+            //     },
+            //     error: function (jqXHR, textStatus, errorThrown) {
+            //         // if (jqXHR.status === '401') {
+            //         // }
+
+            //         alert("Error: Can't connect to server.");
+            //     }
+
+            // });
         }
 
         var viewProfile = function (profile) {
