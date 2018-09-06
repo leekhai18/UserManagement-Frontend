@@ -259,7 +259,6 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
 
             self.visible = ko.observable(false);
 
-            // ////// /////
             self.getAllOrganizations = function () {
                 var Ors = ko.observableArray([]);
 
@@ -271,12 +270,9 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 // get organization from server
                 http.get('https://localhost:5001/api/organization')
                     .then(function (u) {
-
                         u.forEach(element => {
                             Ors.push(new Organization(element.id, element.name))
                         });
-                        // Ors(u);
-
                     });
 
                 return Ors();
@@ -290,69 +286,32 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 self.personnelID(u.id);
                 self.photoUrl(u.profileImage);
 
-                //// binding for condition
-                // self.availableOrganizations = ko.observableArray([new Organization("aab", "")]);
-                // setTimeout(function () {
-                //     self.availableOrganizations([
-                //         new Organization("sdafasdf", "pencils"),
-                //         new Organization("asdfasdf", "pen"),
-                //         new Organization("aab", "marker"),
-                //         new Organization("yddb", "crayon")
-                //     ]);
-                // }, 500);
-
-                // self.availableOrganizations = ([
-                //     new Organization("T5TSS", "one"),
-                //     // new Organization(u.organization.id, "two"),
-                //     new Organization("JZFUT", "twosss"),
-                //     new Organization("12345", "three"),
-                //     { id: "WPMGE", name: "four" },
-                //     // { id: "3r", name: "three" }
-                // ]);
-
-                // self.availableOrganizations = ([
-                //     new Organization("c00af6d2-5c26-44cc-8414-dbb420d0f942", "Rosen"),
-                //     new Organization("a7bd1b7b-1110-4c6c-9fd6-f47a9cc7fbda", "UIT"),
-                // ]);
-
-                // console.log("----------------aALLLLL");
-                // console.log(self.getAllOrganizations());
-                // console.log(u.organization.id + " " + u.organization.name);
-                // setTimeout(function() {
-
-                // console.log("biv--------------------------------");
-                // }, 2000);
-     
+                //// crazy
                 self.availableOrganizations = ko.observableArray(self.getAllOrganizations());
                 self.selectedOrganization = ko.observable(u.organization.id);
-                //  self.selectedOrganization = ko.observable(u);
+
             }
 
             self.bindingDataByID = function (id) {
-
                 // recieve data from server 
                 http.get('https://localhost:5001/api/user/' + id)
                     .then(function (u) {
-
-                        console.log("------------ profile");
-                        console.log(u);
-
                         self.mapDataByObject(u);
-
                     });
-
             }
 
             self.activate = function (id) {
 
                 self.bindingDataByID(id);
-                // self.mapDataByObject(id);
 
             };
 
+            self.canDeactivate = function () {
+            //    self.availableOrganizations([]);
+                return true;
+            }
 
         };
-
 
 
         return new ProfileModel();
