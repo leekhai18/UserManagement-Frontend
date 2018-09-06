@@ -76,7 +76,7 @@
                                         <div data-bind="foreach: selectedRoles">
                                             <div data-bind="visible: $root.visible" class="input-group" style="float: left">
                                                 <select data-bind=" options: $root.availableRoles,
-                                                                        optionsText: 'name',
+                                                                        optionsText: 'name', 
                                                                         value: value" class="form-control border-input"></select>
                                                 <span class="input-group-btn">
                                                     <button data-bind="click: $root.removeRole, enable: $root.selectedRoles().length > 1" class="btn btn-default" type="button">X</button>
