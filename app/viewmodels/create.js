@@ -12,9 +12,10 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
         this.name = name;
     };
 
-    var Group = function (id, name) {
+    var Group = function (id, name, organization) {
         this.id = id;
         this.name = name;
+        this.organization = organization;
     };
 
     var Role = function (id, name) {
@@ -33,6 +34,15 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
             });
 
             self.selectedOrganization = ko.observable();
+
+            self.selectedOrganization.subscribe(function(){
+                self.availableGroupsBelongOrg([]);
+                for (i = 0; i < self.availableGroups.length; i++) {
+                    if (self.availableGroups[i].organization.id == self.selectedOrganization().id) {
+                        self.availableGroupsBelongOrg.push(self.availableGroups[i]);
+                    }
+                }
+            });
 
             self.selectedGroups = ko.observableArray([{ value: ko.observable("") }]);
             
@@ -89,10 +99,12 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
         // END UPLOAD IMAGE
         //    
 
-        // Init on load
-        self.availableOrganizations = [];
-        self.availableGroups = [];
-        self.availableRoles = [];
+         // Init on load
+         self.availableOrganizations = [];
+         self.availableGroups = [];
+         self.availableRoles = [];
+         self.availableGroupsBelongOrg = ko.observableArray([]);
+
         
         // Functions on Group
         self.addGroup = function () {
@@ -171,7 +183,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
                             lastName: self.lastName(),
                             organization: self.selectedOrganization(),
                             mainGroup: ko.toJS(self.selectedGroups())[0].value,
-                            groups: handleJSON(ko.toJS(self.selectedGroups())),
+                            groups: handleJSONForGroup(ko.toJS(self.selectedGroups())),
                             mainRole: ko.toJS(self.selectedRoles())[0].value,
                             roles: handleJSON(ko.toJS(self.selectedRoles())),
                             workPhone: handleJSONForNumber(ko.toJS(self.workPhoneNumbers())),
@@ -184,11 +196,13 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
                         http.post('https://localhost:5001/api/user', newProfile)
                         .then(function(response) {
                             app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
-                                //refreshView
-                                self.init();
-                                
-                                //navigateToProfile
-                                navigateToProfile(result);
+                                if (result == 'Yes') {
+                                    //refreshView
+                                    self.init();
+                                                            
+                                    //navigateToProfile
+                                    navigateToProfile(response);
+                                }
                             });
                         },
                         function(error) {
@@ -202,6 +216,16 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
                 var result = [];
                 for (i = 0; i < baseArray.length; i++) {
                     result.push(baseArray[i].value);
+                }
+
+                return result;
+            };
+
+            var handleJSONForGroup = function (baseArray) {
+                var result = [];
+                for (i = 0; i < baseArray.length; i++) {
+                    result.push({   id: baseArray[i].value.id,
+                                    name: baseArray[i].value.name});
                 }
 
                 return result;
@@ -256,12 +280,11 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
                 app.showMessage(error, 'Error!', ['Yes']);
             });
             
-            http.get('https://localhost:5001/api/group/org/' + self.availableOrganizations[0].id)
-            // http.get('https://localhost:5001/api/group')
+            http.get('https://localhost:5001/api/group')
             .then(function(response) {
                 self.availableGroups.length = 0;
                 response.forEach(group => {
-                        self.availableGroups.push(new Group(group.id, group.name));
+                    self.availableGroups.push(new Group(group.id, group.name, group.organization));
                 });
             },
             function(error) {
@@ -278,6 +301,8 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
             function(error) {
                 app.showMessage(error, 'Error!', ['Yes']);
             });
+
+           
         };
 
         // init validated all form
