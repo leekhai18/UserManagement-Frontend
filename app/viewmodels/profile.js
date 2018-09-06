@@ -71,7 +71,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
 
             self.personnelID = ko.observable("");
 
-            self.availableOrganizations = null;
+            self.availableOrganizations = ko.observableArray([]);
             self.selectedOrganization = ko.observable();
 
             self.availableGroups = [new Group('id1', 'group1'),
@@ -259,10 +259,14 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
 
             self.visible = ko.observable(false);
 
-            // 
-
+            // ////// /////
             self.getAllOrganizations = function () {
-                var Ors = [];
+                var Ors = ko.observableArray([]);
+
+                //the router's activator calls this function and waits for it to complete before proceding
+                if (Ors().length > 0) {
+                    return;
+                }
 
                 // get organization from server
                 http.get('https://localhost:5001/api/organization')
@@ -271,10 +275,11 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                         u.forEach(element => {
                             Ors.push(new Organization(element.id, element.name))
                         });
+                        // Ors(u);
 
                     });
 
-                return Ors;
+                return Ors();
             }
 
             self.mapDataByObject = function (u) {
@@ -297,20 +302,30 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 // }, 500);
 
                 // self.availableOrganizations = ([
-                //     new Organization("asd", "one"),
-                //     new Organization(u.organization.id, "two"),
-                //     new Organization("3r", "three"),
-                //     // { id: "a1d", name: "two" },
+                //     new Organization("T5TSS", "one"),
+                //     // new Organization(u.organization.id, "two"),
+                //     new Organization("JZFUT", "twosss"),
+                //     new Organization("12345", "three"),
+                //     { id: "WPMGE", name: "four" },
                 //     // { id: "3r", name: "three" }
                 // ]);
 
-                console.log("----------------aALLLLL");
-                console.log(self.getAllOrganizations());
-                console.log(u.organization.id + " " + u.organization.name);
+                // self.availableOrganizations = ([
+                //     new Organization("c00af6d2-5c26-44cc-8414-dbb420d0f942", "Rosen"),
+                //     new Organization("a7bd1b7b-1110-4c6c-9fd6-f47a9cc7fbda", "UIT"),
+                // ]);
 
+                // console.log("----------------aALLLLL");
+                // console.log(self.getAllOrganizations());
+                // console.log(u.organization.id + " " + u.organization.name);
+                // setTimeout(function() {
+
+                // console.log("biv--------------------------------");
+                // }, 2000);
+     
                 self.availableOrganizations = ko.observableArray(self.getAllOrganizations());
-
                 self.selectedOrganization = ko.observable(u.organization.id);
+                //  self.selectedOrganization = ko.observable(u);
             }
 
             self.bindingDataByID = function (id) {
@@ -331,6 +346,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
             self.activate = function (id) {
 
                 self.bindingDataByID(id);
+                // self.mapDataByObject(id);
 
             };
 
