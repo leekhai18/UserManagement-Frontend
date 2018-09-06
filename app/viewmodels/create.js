@@ -183,7 +183,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
                             lastName: self.lastName(),
                             organization: self.selectedOrganization(),
                             mainGroup: ko.toJS(self.selectedGroups())[0].value,
-                            groups: handleJSONForGroup(ko.toJS(self.selectedGroups())),
+                            groups: handleJSON(ko.toJS(self.selectedGroups())),
                             mainRole: ko.toJS(self.selectedRoles())[0].value,
                             roles: handleJSON(ko.toJS(self.selectedRoles())),
                             workPhone: handleJSONForNumber(ko.toJS(self.workPhoneNumbers())),
@@ -216,16 +216,6 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
                 var result = [];
                 for (i = 0; i < baseArray.length; i++) {
                     result.push(baseArray[i].value);
-                }
-
-                return result;
-            };
-
-            var handleJSONForGroup = function (baseArray) {
-                var result = [];
-                for (i = 0; i < baseArray.length; i++) {
-                    result.push({   id: baseArray[i].value.id,
-                                    name: baseArray[i].value.name});
                 }
 
                 return result;
