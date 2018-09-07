@@ -74,50 +74,30 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
 
             self.availableOrganizations = ko.observableArray([]);
             self.selectedOrganization = ko.observable();
-            /////
-            // self.availableGroups = [new Group('f90317a4-a87c-4800-8d24-8e7c5e84073e', 'ComputerEngineer', {
-            //     "id": "a7bd1b7b-1110-4c6c-9fd6-f47a9cc7fbda",
-            //     "name": "UIT"
-            // }),
-            // new Group('abba6119-b935-4870-9c06-be6b8872fb32', 'group2', {
-            //     "id": "a7bd1b7b-1110-4c6c-9fd6-f47a9cc7fbda",
-            //     "name": "UIT"
-            // })];
-
-
-            // self.GroupsForMe = ko.observableArray([{
-            //     value: ko.observable(new Group('f90317a4-a87c-4800-8d24-8e7c5e84073e', 'ComputerEngineer', {
-            //         "id": "a7bd1b7b-1110-4c6c-9fd6-f47a9cc7fbda",
-            //         "name": "UIT"
-            //     }))
-            // }, {
-            //     value: ko.observable(new Group('abba6119-b935-4870-9c06-be6b8872fb32', 'group2', {
-            //         "id": "a7bd1b7b-1110-4c6c-9fd6-f47a9cc7fbda",
-            //         "name": "UIT"
-            //     }))
-            // }]);
 
             self.GroupsForMe = ko.observableArray();
             self.availableGroups = ko.observableArray();
 
             self.addGroup = function () {
-                // self.GroupsForMe.push({ value: ko.observable() });
+                self.GroupsForMe.push(new Group("", "", {}));
             };
 
             self.removeGroup = function (group) {
-                // self.GroupsForMe.remove(group);
+                self.GroupsForMe.remove(group);
             };
-            ///////////////////
-            self.availableRoles = [new Role('id1', 'role1'),
-            new Role('id2', 'role2')];
-            self.selectedRoles = ko.observableArray([{ value: ko.observable(new Role('id1', 'role1')) },
-            { value: ko.observable(new Role('id1', 'role1')) }]);
+            /////////////////////////  //////  //////  //////  //////  //////  //////  
+
+            self.RolesForMe = ko.observableArray();
+            self.availableRoles = ko.observableArray();
+
             self.addRole = function () {
-                self.selectedRoles.push({ value: ko.observable("") });
+                self.RolesForMe.push(new Role("", ""));
             };
             self.removeRole = function (role) {
-                self.selectedRoles.remove(role);
+                self.RolesForMe.remove(role);
             };
+
+            //////  //////  //////  //////  //////  //////  //////  //////  //////  //////  
 
             self.workPhoneNumbers = ko.observableArray([{
                 value: ko.observable("")
@@ -226,10 +206,10 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                                     firstName: self.firstName(),
                                     lastName: self.lastName(),
                                     organization: self.selectedOrganization(),
-                                    mainGroup: ko.toJS(self.GroupsForMe())[0].value,
-                                    groups: reduceJSON(ko.toJS(self.GroupsForMe())),
-                                    mainRole: ko.toJS(self.selectedRoles())[0].value,
-                                    roles: reduceJSON(ko.toJS(self.selectedRoles())),
+                                    mainGroup: ko.toJS(self.GroupsForMe())[0],
+                                    groups: ko.toJS(self.GroupsForMe()),
+                                    mainRole: ko.toJS(self.RolesForMe())[0],
+                                    roles: ko.toJS(self.RolesForMe()),
                                     phone: {
                                         main: ko.toJS(self.workPhoneNumbers())[0].value,
                                         work: reduceJSON(ko.toJS(self.workPhoneNumbers())),
@@ -246,7 +226,9 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                                     profileImage: self.profileImage
                                 };
 
+                                console.log(ko.toJS(self.GroupsForMe()));
                                 console.log(newProfile);
+
 
                                 self.visible(!self.visible());
                             }
@@ -327,6 +309,27 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 return Grs;
             }
 
+            self.getAllRoles = function () {
+                let Ros = [];
+
+                //the router's activator calls this function and waits for it to complete before proceding
+                if (Ros.length > 0) {
+                    return;
+                }
+
+                // get Group list from server
+                http.get('https://localhost:5001/api/role')
+                    .then(function (u) {
+
+                        u.forEach(element => {
+                            Ros.push(new Role(element.id, element.name))
+                        });
+                        // Ros(u);
+                    });
+
+                return Ros;
+            }
+
             self.mapDataByObject = function (u) {
 
                 //// simple
@@ -335,101 +338,30 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 self.personnelID(u.id);
                 self.photoUrl(u.profileImage);
 
-
+                // crazy
                 self.availableOrganizations = ko.observableArray(self.getAllOrganizations());
                 self.selectedOrganization = ko.observable(u.organization.id);
-
-                // 
-
-                console.log("-----------------------");
-                console.log(u.groups);
-
-
-
-                // self.availableGroups ([
-                //     {
-                //         "id": "ab2ace08-2daf-4422-9242-293025aab9f6",
-                //         "name": "HR",
-                //         "organization": {
-                //             "id": "c00af6d2-5c26-44cc-8414-dbb420d0f942",
-                //             "name": "Rosen"
-                //         }
-                //     },
-                //     {
-                //         "id": "f90317a4-a87c-4800-8d24-8e7c5e84073e",
-                //         "name": "ComputerEngineer",
-                //         "organization": {
-                //             "id": "a7bd1b7b-1110-4c6c-9fd6-f47a9cc7fbda",
-                //             "name": "UIT"
-                //         }
-                //     },
-                //     {
-                //         "id": "abba6119-b935-4870-9c06-be6b8872fb32",
-                //         "name": "SoftwareEngineer",
-                //         "organization": {
-                //             "id": "a7bd1b7b-1110-4c6c-9fd6-f47a9cc7fbda",
-                //             "name": "UIT"
-                //         }
-                //     },
-                //     {
-                //         "id": "3777ec35-2393-4053-95ad-cc587d87a3e3",
-                //         "name": "Technical",
-                //         "organization": {
-                //             "id": "c00af6d2-5c26-44cc-8414-dbb420d0f942",
-                //             "name": "Rosen"
-                //         }
-                //     }
-                // ]);
-
-
-                // self.GroupForMe = function (g) {
-                //     var that = this;
-                //     that.id = g.id;
-                //     that.name = g.name;
-                //     that.organization = g.organization;
-                // }
-
-
-
-                // self.availableGroups([
-                //     new Group("f90317a4-a87c-4800-8d24-8e7c5e84073e", "Technical", {
-                //         "id": "c00af6d2-5c26-44cc-8414-dbb420d0f942",
-                //         "name": "Rosen"
-                //     }),
-                //     new Group("abba6119-b935-4870-9c06-be6b8872fb32", "SoftwareEnginessser", {
-                //         "id": "a7bd1b7b-1110-4c6c-9fd6-f47a9cc7fbda",
-                //         "name": "Rosen"
-                //     }),
-                //     new Group("3777ec35-2393-4053-95ad-cc587d87a3e3", "HR", {
-                //         "id": "c00af6d2-5c26-44cc-8414-dbb420d0f942",
-                //         "name": "Rosen"
-                //     })]);
 
                 console.log("-----------------------------------------");
                 console.log(self.getAllGroups());
                 console.log(u.groups);
 
                 self.availableGroups(self.getAllGroups());
-
-
-
                 u.groups.forEach(element => {
                     // self.GroupsForMe.push(element);
                     self.GroupsForMe.push(new Group(element.id, element.name, element.organization));
-
                 })
 
-                // self.GroupsForMe.push(
-                //     new Group("3777ec35-2393-4053-95ad-cc587d87a3e3", "SoftwareEngineer", {
-                //         "id": "c00af6d2-5c26-44cc-8414-dbb420d0f942",
-                //         "name": "Rosen"
-                //     }),
-                //     new Group("abba6119-b935-4870-9c06-be6b8872fb32", "HR", {
-                //         "id": "c00af6d2-5c26-44cc-8414-dbb420d0f942",
-                //         "name": "Rosen"
-                //     }));
 
+                console.log("-----------------------------------------");
+                console.log(self.getAllRoles());
+                console.log(u.roles);
 
+                self.availableRoles(self.getAllRoles());
+                u.roles.forEach(element => {
+                    // self.RolesForMe.push(element);
+                    self.RolesForMe.push(new Role(element.id, element.name));
+                })
             }
 
             self.bindingDataByID = function (id) {

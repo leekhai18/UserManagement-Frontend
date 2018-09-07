@@ -77,18 +77,20 @@
                                             <label>Role / Job Title</label>
                                             <span data-bind="click: addRole, visible: visible" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
-                                        <div data-bind="foreach: selectedRoles">
-                                            <div data-bind="visible: $root.visible" class="input-group" style="float: left">
+                                        <div data-bind="foreach: RolesForMe">
+                                            <div class="input-group" style="float: left">
                                                 <select data-bind=" options: $root.availableRoles,
                                                                         optionsText: 'name', 
-                                                                        value: value" class="form-control border-input"></select>
+                                                                        optionsValue: 'id',
+                                                                        enable: $root.visible,,
+                                                                        value: id" class="form-control border-input"></select>
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeRole, enable: $root.selectedRoles().length > 1" class="btn btn-default" type="button">X</button>
+                                                    <button data-bind="click: $root.removeRole, enable: $root.RolesForMe().length > 1" class="btn btn-default" type="button">X</button>
                                                 </span>
                                             </div>
-                                            <div data-bind="visible: !$root.visible()" class="form-group">
+                                            <!-- <div data-bind="visible: !$root.visible()" class="form-group">
                                                 <input data-bind="textInput: value().name" type="text" class="form-control border-input" disabled>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
