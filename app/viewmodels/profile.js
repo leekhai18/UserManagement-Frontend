@@ -99,16 +99,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
 
             //////  //////  //////  //////  //////  //////  //////  //////  //////  //////  
 
-            self.workPhoneNumbers = ko.observableArray([{
-                value: ko.observable("")
-                    .extend({
-                        required: true,
-                        pattern: {
-                            message: 'This number is wrong.',
-                            params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                        }
-                    })
-            }]);
+            self.workPhoneNumbers = ko.observableArray();
             self.addWorkPhoneNumber = function () {
                 self.workPhoneNumbers.push({
                     value: ko.observable("")
@@ -125,16 +116,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 self.workPhoneNumbers.remove(workPhoneNumber);
             };
 
-            self.privatePhoneNumbers = ko.observableArray([{
-                value: ko.observable("")
-                    .extend({
-                        required: false,
-                        pattern: {
-                            message: 'This number is wrong.',
-                            params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                        }
-                    })
-            }]);
+            self.privatePhoneNumbers = ko.observableArray([]);
             self.addPrivatePhoneNumber = function () {
                 self.privatePhoneNumbers.push({
                     value: ko.observable("")
@@ -151,16 +133,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 self.privatePhoneNumbers.remove(privatePhoneNumber);
             };
 
-            self.mobileNumbers = ko.observableArray([{
-                value: ko.observable("")
-                    .extend({
-                        required: true,
-                        pattern: {
-                            message: 'This number is wrong.',
-                            params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                        }
-                    })
-            }]);
+            self.mobileNumbers = ko.observableArray();
             self.addMobileNumber = function () {
                 self.mobileNumbers.push({
                     value: ko.observable("")
@@ -177,11 +150,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 self.mobileNumbers.remove(mobileNumber);
             };
 
-            self.workEmails = ko.observableArray([{
-                value: ko.observable("")
-                    .extend({ required: { params: true, message: 'This field is required.' } })
-                    .extend({ email: { params: true, message: 'This email is wrong.' } })
-            }]);
+            self.workEmails = ko.observableArray();
             self.addWorkEmail = function () {
                 self.workEmails.push({
                     value: ko.observable("")
@@ -332,6 +301,10 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
 
             self.mapDataByObject = function (u) {
 
+                console.log("-----------------------------------------");
+                console.log(u);
+
+
                 //// simple
                 self.firstName(u.firstName);
                 self.lastName(u.lastName);
@@ -362,6 +335,56 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                     // self.RolesForMe.push(element);
                     self.RolesForMe.push(new Role(element.id, element.name));
                 })
+
+                // self.workPhoneNumbers
+
+                u.workPhone.forEach(element => {
+                    self.workPhoneNumbers.push({
+                        value: ko.observable(element.number)
+                            .extend({
+                                required: true,
+                                pattern: {
+                                    message: 'This number is wrong.',
+                                    params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
+                                }
+                            })
+                    });
+                });
+
+                u.mobile.forEach(element => {
+                    self.mobileNumbers.push({
+                        value: ko.observable(element.number)
+                            .extend({
+                                required: true,
+                                pattern: {
+                                    message: 'This number is wrong.',
+                                    params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
+                                }
+                            })
+                    });
+                });
+
+                u.privatePhone.forEach(element => {
+                    self.privatePhoneNumbers.push({
+                        value: ko.observable(element.number)
+                            .extend({
+                                required: false,
+                                pattern: {
+                                    message: 'This number is wrong.',
+                                    params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
+                                }
+                            })
+                    });
+                });
+
+                u.email.forEach(element => {
+                    self.workEmails.push({
+                        value: ko.observable(element.address)
+                            .extend({ required: { params: true, message: 'This field is required.' } })
+                            .extend({ email: { params: true, message: 'This email is wrong.' } })
+                    });
+                });
+
             }
 
             self.bindingDataByID = function (id) {
