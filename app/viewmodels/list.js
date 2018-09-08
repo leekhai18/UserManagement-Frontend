@@ -1,94 +1,104 @@
-define(['knockout', 'plugins/router', 'plugins/http', 'knockout.validation'], function (ko, router, http){
-    //list of users
-    var lUsers = ko.observableArray([]);
-    var val = ko.observable();
+define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
+    function (ko, http, router) {
+        //list of users
+        var lUsers = ko.observableArray([]);
 
-    //Info of user
-    function userInfo(data) {
-    	var self = this;
-    	self.firstName = ko.observable(data.firstName);
-    	self.lastName = ko.observable(data.lastName);
-    	self.role = ko.observable(data.role);
-    	self.group = ko.observable(data.group);
-        self.organization = ko.observable(data.organization);
-        self.image = ko.observable(data.image);
-    }
+        //Info of user
+        function userInfo(data) {
+            var self = this;
+            self.firstName = ko.observable(data.firstName);
+            self.lastName = ko.observable(data.lastName);
+            self.role = ko.observable(data.role);
+            self.group = ko.observable(data.group);
+            self.organization = ko.observable(data.organization);
+            self.image = ko.observable(data.image);
+        }
 
-    var addUser = function () {
-        router.navigate("create");
-    }
+        var addUser = function () {
+            // console.log("Add User");
+            router.navigate("create");
+        }
 
-    var getAllUsers = function () {
+        var getAllUsers = function () {
 
-        //clear
-        lUsers.removeAll();
+            //clear
+            lUsers.removeAll();
 
-        // use plugin HTTP of Durandaljs
-        // http.get('http://localhost:16567/api/user')
+            // use plugin HTTP of Durandaljs
+            // http.get('http://localhost:16567/api/user')
 
-        http.get('https://localhost:5001/api/user')
-            .then(function (u) {
+            http.get('https://localhost:5001/api/user')
+                .then(function (u) {
 
-                console.log(u);
+                    console.log(u);
 
-                u.forEach(element => {
-                    lUsers.push(element);
+                    u.forEach(element => {
+                        lUsers.push(element);
+                    });
+
+                }, function (error) {
+                    alert("Error: Can't connect to server.");
                 });
 
-            }, function (error) {
-                alert("Error: Can't connect to server.");
-            });
-    }
 
-    var searchUsers = function() {
-        lUsers.removeAll();
+            // $.ajax({
+            //     url: 'https://localhost:5001/api/user',
+            //     // data: this.toJSON(data),
+            //     type: 'GET',
+            //     contentType: 'application/json',
+            //     dataType: 'json',
+            //     // headers: ko.toJS(headers),
+            //     success: function (u) {
+            //         console.log(u);
 
-        http.get('')
-            .then(function (u) {
+            //         u.forEach(element => {
+            //             lUsers.push(element);
+            //         });
+            //     },
+            //     error: function (jqXHR, textStatus, errorThrown) {
+            //         // if (jqXHR.status === '401') {
+            //         // }
 
-                console.log(u);
-
-                u.forEach(element => {
-                    lUsers.push(element);
-                });
-
-            }, function (error) {
-                alert("Error: Can't connect to server.");
-            });
-    }
-
-    var viewProfile = function (profile) {
-        console.log(profile);
-        router.navigate("profile/" + profile.id);
-    }
-
-    return {
-        activate: function () {
-            // console.log('Activate Page');
-            getAllUsers();
-        },
-
-        lUsers: lUsers,
-
-        addUser: addUser,
-
-        viewProfile: viewProfile,
-
-        val: val,
-
-        search: function(data, event) {
-            console.log(this.val());
-            //app.showMessage('Search not yet implemented...');
-
-            // for (i = 0; i < li.length; i++) {
-            //     a = li[i].getElementsByTagName("a")[0];
-            //     if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-            //         li[i].style.display = "";
-            //     } else {
-            //         li[i].style.display = "none";
+            //         alert("Error: Can't connect to server.");
             //     }
-            // }
-            searchUsers();
-        },
-    };
-});
+
+            // });
+        }
+
+        var searchUser = function(){
+            http.get('https://localhost:5001/api/search')
+                .then(function (u) {
+
+                    console.log(u);
+
+                    u.forEach(element => {
+                        lUsers.push(element);
+                    });
+
+                }, function (error) {
+                    alert("Error: Can't connect to server.");
+                });
+        }
+
+        var viewProfile = function (profile) {
+            console.log(profile);
+            router.navigate("profile/" + profile.id);
+        }
+
+        return {
+
+            activate: function () {
+                // console.log('Activate Page');
+                getAllUsers();
+            },
+
+            lUsers: lUsers,
+            addUser: addUser,
+
+            viewProfile: viewProfile,
+
+            search: function(event){
+                searchUser();
+            }
+        };
+    });

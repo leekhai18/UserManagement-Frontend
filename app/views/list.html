@@ -4,16 +4,15 @@
   <!--Button which to add user-->
   <!--Click here to transfer to Create-->
   <div>
-    <!-- <a class="btn btn-info btn-lg pull-right" id="btnAdd" data-bind="click: gotoCreate"> -->
-    <a class="btn btn-info btn-lg" id="btnAdd">
+    <a data-bind="click: addUser"  class="btn btn-info btn-lg pull-right" id="btnAdd">
       <span class="glyphicon glyphicon-plus-sign"></span> Add
     </a>
 
     <form class="navbar-form navbar-right" role="search" id="frSearch">
       <div class="form-group">
-          <input style="color:black;" type="text" class="form-control" placeholder="Search" title="Search User" data-bind="event: { keyup: search }, value: val, valuaUpdate: keyup">
+          <input style="color:black;" type="text" class="form-control" placeholder="Search" title="Search User" data-bind="event: { keyup: search }, valuaUpdate: keyup">
       </div>
-  </form>
+    </form>
   </div>
   <!-- end button -->
 
@@ -22,11 +21,11 @@
   <!--User Info-->
   <table>
     <tbody class="row user-row" data-bind="foreach: lUsers, visible: lUsers().length > 0">
-      <tr>
+      <tr data-bind="click: $root.viewProfile">
         <!--User's Image-->
         <td id="col1">
-          <img class="img-circle"
-            data-bind="attr:{src: image}"
+          <img class="image-profile"
+            data-bind="attr:{src: profileImage}"
             alt="User Pic"/>
         </td>
         <!-- End image -->
@@ -34,9 +33,9 @@
         <!--Info-->
         <td id="col2">
           <strong data-bind="text: firstName + ' ' + lastName"></strong><br/>
-          <span data-bind="text: role"></span><br/>
-          <span class="text-muted" data-bind="text: group"></span><br/>
-          <span class="text-muted" data-bind="text: organization"></span>
+          <span data-bind="text: roles[0].name"></span><br/>
+          <span class="text-muted" data-bind="text: mainGroup.name"></span><br/>
+          <span class="text-muted" data-bind="text: organization.name"></span>
         </td>
         <!-- End Info -->
 
