@@ -2,6 +2,7 @@ define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
     function (ko, http, router) {
         //list of users
         var lUsers = ko.observableArray([]);
+        var keySearch = ko.observable();
 
         //Info of user
         function userInfo(data) {
@@ -66,7 +67,9 @@ define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
         }
 
         var searchUser = function(){
-            http.get('https://localhost:5001/api/search')
+            lUsers.removeAll();
+
+            http.get('https://localhost:5001/api/search?[name=' + keySearch + ']&[organizationName=' + keySearch + ']')
                 .then(function (u) {
 
                     console.log(u);
@@ -96,6 +99,8 @@ define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
             addUser: addUser,
 
             viewProfile: viewProfile,
+
+            keySearch: keySearch,
 
             search: function(event){
                 searchUser();
