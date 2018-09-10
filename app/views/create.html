@@ -69,7 +69,7 @@
                                     <div class="form-group">
                                         <div class="icon-container">
                                             <label>Role / Job Title</label>
-                                            <span data-bind="click: addRole, visible: RolesForMe().length < availableRoles().length" class="ti-plus" style="margin-left: 10px"></span>
+                                            <span data-bind="click: addRole, visible: selectedRoles().length < availableRoles.length" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <div data-bind="foreach: selectedRoles">
                                             <div class="input-group" style="float: left">

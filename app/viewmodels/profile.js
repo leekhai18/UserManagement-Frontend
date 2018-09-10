@@ -202,7 +202,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
 
             self.validated = ko.validatedObservable(self);
 
-
+            // Check unique array   
             var isUniqueValuesArray = function (arr) {
 
                 for (i = 0; i < arr.length - 1; i++) {
@@ -214,6 +214,16 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
 
                 return true;
             }
+
+            // Handle to format contract
+            var reduceJSON = function (baseArray) {
+                var result = [];
+                for (i = 0; i < baseArray.length; i++) {
+                    result.push(baseArray[i].value);
+                }
+
+                return result;
+            };
 
             self.save = function () {
 
@@ -261,15 +271,6 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                             }
                         });
                 }
-
-                var reduceJSON = function (baseArray) {
-                    var result = [];
-                    for (i = 0; i < baseArray.length; i++) {
-                        result.push(baseArray[i].value);
-                    }
-
-                    return result;
-                };
             };
 
             self.edit = function () {

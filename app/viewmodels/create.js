@@ -172,17 +172,71 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
             self.workEmails.remove(workEmail);
         };
 
+        // Check unique array
+        var isUniqueValuesArray = function (arr) {
+            for (i = 0; i < arr.length - 1; i++) {
+                for (j = i + 1; j < arr.length; j++) {
+                    if (arr[i].id == arr[j].id)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Handle for format contract
+        var handleJSON = function (baseArray) {
+            var result = [];
+            for (i = 0; i < baseArray.length; i++) {
+                result.push(baseArray[i].value);
+            }
+
+            return result;
+        };
+
+        var handleJSONForEmail = function (baseArray) {
+            var result = [];
+
+            result.push({   address: baseArray[0].value,
+                            isMain: true});
+
+            for (i = 1; i < baseArray.length; i++) {
+                result.push({   address: baseArray[i].value,
+                                isMain: false});
+            }
+
+            return result;
+        };
+
+        var handleJSONForNumber = function (baseArray) {
+            var result = [];
+
+            result.push({   number: baseArray[0].value,
+                            isMain: true});
+
+            for (i = 1; i < baseArray.length; i++) {
+                result.push({   number: baseArray[i].value,
+                                isMain: false});
+            }
+
+            return result;
+        };
+
+        var navigateToProfile = function(id) {
+            router.navigate('profile/' + id);
+        }
+
         // Submit form
         self.create = function () {
             if (!self.validated.isValid()) {
                 self.validated.errors.showAllMessages();
             } else {
-                if (!isUniqueValuesArray(self.selectedGroups())) {
+                if ( !isUniqueValuesArray(handleJSON(ko.toJS(self.selectedGroups())) )) {
                     app.showMessage('Group / Department must be Unique values!', 'Warning', ['Yes']);
                     return;
                 }
 
-                if (!isUniqueValuesArray(self.selectedRoles())) {
+                if ( !isUniqueValuesArray(handleJSON(ko.toJS(self.selectedRoles())) )) {
                     app.showMessage('Role / Job Title must be Unique values!', 'Warning', ['Yes']);
                     return;
                 }
@@ -221,59 +275,6 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
                         });
                     }
                 });
-            }
-
-            var isUniqueValuesArray = function (arr) {
-
-                for (i = 0; i < arr.length - 1; i++) {
-                    for (j = i + 1; j < arr.length; j++) {
-                        if (arr[i].id == arr[j].id)
-                            return false;
-                    }
-                }
-
-                return true;
-            }
-
-            var handleJSON = function (baseArray) {
-                var result = [];
-                for (i = 0; i < baseArray.length; i++) {
-                    result.push(baseArray[i].value);
-                }
-
-                return result;
-            };
-
-            var handleJSONForEmail = function (baseArray) {
-                var result = [];
-
-                result.push({   address: baseArray[0].value,
-                                isMain: true});
-
-                for (i = 1; i < baseArray.length; i++) {
-                    result.push({   address: baseArray[i].value,
-                                    isMain: false});
-                }
-
-                return result;
-            };
-
-            var handleJSONForNumber = function (baseArray) {
-                var result = [];
-
-                result.push({   number: baseArray[0].value,
-                                isMain: true});
-
-                for (i = 1; i < baseArray.length; i++) {
-                    result.push({   number: baseArray[i].value,
-                                    isMain: false});
-                }
-
-                return result;
-            };
-
-            var navigateToProfile = function(id) {
-                router.navigate('profile/' + id);
             }
         };
 
