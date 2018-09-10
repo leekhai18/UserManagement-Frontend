@@ -37,6 +37,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
 
             self.selectedOrganization.subscribe(function(){
                 self.availableGroupsBelongOrg([]);
+
                 for (i = 0; i < self.availableGroups.length; i++) {
                     if (self.availableGroups[i].organization.id == self.selectedOrganization().id) {
                         self.availableGroupsBelongOrg.push(self.availableGroups[i]);
@@ -176,6 +177,16 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
             if (!self.validated.isValid()) {
                 self.validated.errors.showAllMessages();
             } else {
+                if (!isUniqueValuesArray(self.selectedGroups())) {
+                    app.showMessage('Group / Department must be Unique values!', 'Warning', ['Yes']);
+                    return;
+                }
+
+                if (!isUniqueValuesArray(self.selectedRoles())) {
+                    app.showMessage('Role / Job Title must be Unique values!', 'Warning', ['Yes']);
+                    return;
+                }
+
                 app.showMessage('Are you sure you want to create new User?', 'Verify', ['Yes', 'No']).then(function (result) {
                     if (result == 'Yes') {
                         var newProfile = {
@@ -210,6 +221,18 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
                         });
                     }
                 });
+            }
+
+            var isUniqueValuesArray = function (arr) {
+
+                for (i = 0; i < arr.length - 1; i++) {
+                    for (j = i + 1; j < arr.length; j++) {
+                        if (arr[i].id == arr[j].id)
+                            return false;
+                    }
+                }
+
+                return true;
             }
 
             var handleJSON = function (baseArray) {
@@ -276,6 +299,14 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
                 response.forEach(group => {
                     self.availableGroups.push(new Group(group.id, group.name, group.organization));
                 });
+
+                self.availableGroupsBelongOrg([]);
+
+                for (i = 0; i < self.availableGroups.length; i++) {
+                    if (self.availableGroups[i].organization.id == self.availableOrganizations[0].id) {
+                        self.availableGroupsBelongOrg.push(self.availableGroups[i]);
+                    }
+                }
             },
             function(error) {
                 app.showMessage(error, 'Error!', ['Yes']);

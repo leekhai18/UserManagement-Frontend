@@ -51,18 +51,20 @@
                                     <div class="form-group">
                                         <div class="icon-container">
                                             <label>Group / Department</label>
-                                            <span data-bind="click: addGroup, visible: visible" class="ti-plus" style="margin-left: 10px"></span>
+                                            <span data-bind="click: addGroup, visible: (GroupsForMe().length < availableGroupsBelongOrg().length) && ($root.visible)"
+                                                class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
 
                                         <div data-bind="foreach: GroupsForMe">
                                             <div class="input-group" style="float: left">
-                                                <select data-bind=" options: $root.availableGroups,
+                                                <select data-bind=" options: $root.availableGroupsBelongOrg,
                                                                         optionsText: 'name',
                                                                         optionsValue: 'id',
                                                                         enable: $root.visible,
                                                                         value: id" class="form-control border-input"></select>
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeGroup, enable: $root.GroupsForMe().length > 1" class="btn btn-default" type="button">X</button>
+                                                    <button data-bind="click: $root.removeGroup, enable: ($root.GroupsForMe().length > 1) && ($root.visible)" class="btn btn-default"
+                                                        type="button">X</button>
                                                 </span>
                                             </div>
                                             <!-- <div data-bind="visible: !$root.visible()" class="form-group">
@@ -75,17 +77,19 @@
                                     <div class="form-group">
                                         <div class="icon-container">
                                             <label>Role / Job Title</label>
-                                            <span data-bind="click: addRole, visible: visible" class="ti-plus" style="margin-left: 10px"></span>
+                                            <span data-bind="click: addRole, visible: (RolesForMe().length < availableRoles().length) && ($root.visible)" class="ti-plus"
+                                                style="margin-left: 10px"></span>
                                         </div>
                                         <div data-bind="foreach: RolesForMe">
                                             <div class="input-group" style="float: left">
                                                 <select data-bind=" options: $root.availableRoles,
                                                                         optionsText: 'name', 
                                                                         optionsValue: 'id',
-                                                                        enable: $root.visible,,
+                                                                        enable: $root.visible,
                                                                         value: id" class="form-control border-input"></select>
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeRole, enable: $root.RolesForMe().length > 1" class="btn btn-default" type="button">X</button>
+                                                    <button data-bind="click: $root.removeRole, enable: ($root.RolesForMe().length > 1) && ($root.visible)" class="btn btn-default"
+                                                        type="button">X</button>
                                                 </span>
                                             </div>
                                             <!-- <div data-bind="visible: !$root.visible()" class="form-group">

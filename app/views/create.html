@@ -50,14 +50,13 @@
                                     <div class="form-group">
                                         <div class="icon-container">
                                             <label>Group / Department</label>
-                                            <span data-bind="click: addGroup" class="ti-plus" style="margin-left: 10px"></span>
+                                            <span data-bind="click: addGroup, visible: selectedGroups().length < availableGroupsBelongOrg().length" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
 
                                         <div data-bind="foreach: selectedGroups">
                                             <div class="input-group" style="float: left">
                                                 <select data-bind=" options: $root.availableGroupsBelongOrg,
                                                                         optionsText: 'name',
-                                                                       
                                                                         value: value" class="form-control border-input"></select>
                                                 <span class="input-group-btn">
                                                     <button data-bind="click: $root.removeGroup, enable: $root.selectedGroups().length > 1" class="btn btn-default" type="button">X</button>
@@ -70,7 +69,7 @@
                                     <div class="form-group">
                                         <div class="icon-container">
                                             <label>Role / Job Title</label>
-                                            <span data-bind="click: addRole" class="ti-plus" style="margin-left: 10px"></span>
+                                            <span data-bind="click: addRole, visible: RolesForMe().length < availableRoles().length" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <div data-bind="foreach: selectedRoles">
                                             <div class="input-group" style="float: left">
