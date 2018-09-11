@@ -1,5 +1,5 @@
-define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validation'],
-    function (ko, $, app, http) {
+define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet','knockout.validation'],
+    function (ko, $, app, http, httpGet) {
         var knockoutValidationSettings = {
             grouping: {
                 deep: true,
@@ -52,10 +52,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
             // END UPLOAD IMAGE
             //    
 
-            self.GroupsForMe = ko.observableArray();
-            self.availableGroups = [];
-            self.availableGroupsBelongOrg = ko.observableArray([]);
-
+            // Init For Name
             self.firstName = ko.observable("").extend({
                 required: {
                     params: true,
@@ -74,16 +71,22 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 return self.firstName() + " " + self.lastName();
             });
 
+            // Init Id
             self.personnelID = ko.observable("");
 
-            self.availableOrganizations = ko.observableArray([]);
-            self.selectedOrganization = ko.observable();
+            // Init for available
+            self.availableGroups = [];
+            self.availableGroupsBelongOrg = ko.observableArray([]);
+            self.availableOrganizations = ko.observableArray();
+            self.availableRoles = ko.observableArray();
 
+            // Init for selected
+            self.RolesForMe = ko.observableArray();
+            self.GroupsForMe = ko.observableArray();
+            self.selectedOrganization = ko.observable();
             self.selectedOrganization.subscribe(function () {
                 if (self.visible()) {
 
-                    // self.GroupsForMe([]);
-                    // self.addGroup();
                     self.availableGroupsBelongOrg([]);
 
                     for (i = 0; i < self.availableGroups.length; i++) {
@@ -94,27 +97,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 }
             });
 
-            self.getAllGroupsByOrganizationID = function (oId) {
-                let Grs = [];
-
-                //the router's activator calls this function and waits for it to complete before proceding
-                if (Grs.length > 0) {
-                    return;
-                }
-
-                // get Group list from server
-                http.get('https://localhost:5001/api/group/org/' + oId)
-                    .then(function (u) {
-
-                        u.forEach(element => {
-                            Grs.push(new Group(element.id, element.name, element.organization))
-                        });
-                        // Grs(u);
-                    });
-
-                return Grs;
-
-            }
+            /////////////////////////  //////  //////  //////  //////  //////  //////  
 
             self.addGroup = function () {
                 self.GroupsForMe.push(new Group("", "", {}));
@@ -123,10 +106,8 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
             self.removeGroup = function (group) {
                 self.GroupsForMe.remove(group);
             };
-            /////////////////////////  //////  //////  //////  //////  //////  //////  
 
-            self.RolesForMe = ko.observableArray();
-            self.availableRoles = ko.observableArray();
+            /////////////////////////  //////  //////  //////  //////  //////  //////  
 
             self.addRole = function () {
                 self.RolesForMe.push(new Role("", ""));
@@ -154,6 +135,8 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 self.workPhoneNumbers.remove(workPhoneNumber);
             };
 
+            /////////////////////////  //////  //////  //////  //////  //////  //////  
+
             self.privatePhoneNumbers = ko.observableArray([]);
             self.addPrivatePhoneNumber = function () {
                 self.privatePhoneNumbers.push({
@@ -171,6 +154,8 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 self.privatePhoneNumbers.remove(privatePhoneNumber);
             };
 
+            /////////////////////////  //////  //////  //////  //////  //////  //////  
+
             self.mobileNumbers = ko.observableArray();
             self.addMobileNumber = function () {
                 self.mobileNumbers.push({
@@ -187,6 +172,8 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
             self.removeMobileNumber = function (mobileNumber) {
                 self.mobileNumbers.remove(mobileNumber);
             };
+
+            /////////////////////////  //////  //////  //////  //////  //////  //////  
 
             self.workEmails = ko.observableArray();
             self.addWorkEmail = function () {
@@ -225,6 +212,8 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 return result;
             };
 
+
+            // Save func
             self.save = function () {
 
                 if (!self.validated.isValid()) {
@@ -273,6 +262,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 }
             };
 
+            // Edit profile func
             self.edit = function () {
                 app.showMessage('Make sure you want to EDIT', 'Verify', ['Yes', 'No'])
                     .then(function (result) {
@@ -282,6 +272,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                     });
             };
 
+            // Delete profile func
             self.deleteProfile = function () {
                 app.showMessage('REALLY. Make sure you want to DELETE?', 'Verify', ['Yes', 'No'])
                     .then(function (result) {
@@ -291,76 +282,16 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                     });
             }
 
+            // Cancle func
+            self.cancle = function () {
+                self.visible(false);
+            }
+
+            // Flag to switch edit, can
             self.visible = ko.observable(false);
 
-            // ////// /////
-            self.getAllOrganizations = function () {
-                let Ors = ko.observableArray([]);
-
-                //the router's activator calls this function and waits for it to complete before proceding
-                if (Ors().length > 0) {
-                    return;
-                }
-
-                // get organization from server
-                http.get('https://localhost:5001/api/organization')
-                    .then(function (u) {
-
-                        u.forEach(element => {
-                            Ors.push(new Organization(element.id, element.name))
-                        });
-                        // Ors(u);
-
-                    });
-
-                return Ors();
-            }
-
-            self.getAllGroups = function () {
-                let Grs = [];
-
-                //the router's activator calls this function and waits for it to complete before proceding
-                if (Grs.length > 0) {
-                    return;
-                }
-
-                // get Group list from server
-                http.get('https://localhost:5001/api/group')
-                    .then(function (u) {
-
-                        u.forEach(element => {
-                            Grs.push(new Group(element.id, element.name, element.organization))
-                        });
-                        // Grs(u);
-                    });
-
-                return Grs;
-            }
-
-            self.getAllRoles = function () {
-                let Ros = [];
-
-                //the router's activator calls this function and waits for it to complete before proceding
-                if (Ros.length > 0) {
-                    return;
-                }
-
-                // get Group list from server
-                http.get('https://localhost:5001/api/role')
-                    .then(function (u) {
-
-                        u.forEach(element => {
-                            Ros.push(new Role(element.id, element.name))
-                        });
-                        // Ros(u);
-                    });
-
-                return Ros;
-            }
-
+            // Mapping data func
             self.mapDataByObject = function (u) {
-                console.log(u.groups);
-
                 // 
                 // 
                 // simple
@@ -377,10 +308,8 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 // 
                 // 
 
-                self.availableOrganizations = ko.observableArray(self.getAllOrganizations());
+                self.availableOrganizations(httpGet.availableOrganizations);
                 self.selectedOrganization(u.organization.id);
-
-
 
                 // 
                 // 
@@ -388,26 +317,18 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 // 
                 // 
 
-                http.get('https://localhost:5001/api/group')
-                    .then(function (response) {
-                        response.forEach(group => {
-                            self.availableGroups.push(new Group(group.id, group.name, group.organization));
-                        });
+                self.availableGroups = httpGet.availableGroups;
+                self.availableGroupsBelongOrg([]);
+                for (i = 0; i < self.availableGroups.length; i++) {
+                    if (self.availableGroups[i].organization.id == self.selectedOrganization()) {
+                        self.availableGroupsBelongOrg.push(self.availableGroups[i]);
+                    }
+                }
 
-                        self.availableGroupsBelongOrg([]);
-                        for (i = 0; i < self.availableGroups.length; i++) {
-                            if (self.availableGroups[i].organization.id == self.selectedOrganization()) {
-                                self.availableGroupsBelongOrg.push(self.availableGroups[i]);
-                            }
-                        }
-
-                        u.groups.forEach(element => {
-                            self.GroupsForMe.push(new Group(element.id, element.name, element.organization));
-                        })
-
-                    }, function (error) {
-                        app.showMessage(error, 'Error!', ['Yes']);
-                    });
+                self.GroupsForMe([]);
+                u.groups.forEach(element => {
+                    self.GroupsForMe.push(new Group(element.id, element.name, element.organization));
+                })
 
                 // 
                 // 
@@ -415,7 +336,9 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 // 
                 // 
 
-                self.availableRoles(self.getAllRoles());
+                self.availableRoles(httpGet.availableRoles);
+
+                self.RolesForMe([]);
                 u.roles.forEach(element => {
                     self.RolesForMe.push(new Role(element.id, element.name));
                 })
@@ -426,6 +349,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 // 
                 // 
 
+                self.workPhoneNumbers([]);
                 u.workPhone.forEach(element => {
                     self.workPhoneNumbers.push({
                         value: ko.observable(element.number)
@@ -445,6 +369,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 // 
                 // 
 
+                self.mobileNumbers([]);
                 u.mobile.forEach(element => {
                     self.mobileNumbers.push({
                         value: ko.observable(element.number)
@@ -464,6 +389,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 // 
                 // 
 
+                self.privatePhoneNumbers([]);
                 u.privatePhone.forEach(element => {
                     self.privatePhoneNumbers.push({
                         value: ko.observable(element.number)
@@ -483,6 +409,8 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
                 // workEmails
                 // 
                 // 
+
+                self.workEmails([]);
                 u.email.forEach(element => {
                     self.workEmails.push({
                         value: ko.observable(element.address)
@@ -493,28 +421,21 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'knockout.validati
 
             }
 
+            
             self.bindingDataByID = function (id) {
-
                 // recieve data from server 
                 http.get('https://localhost:5001/api/user/' + id)
                     .then(function (u) {
-
                         self.mapDataByObject(u);
-
                     });
-
             }
 
             self.activate = function (id) {
-
                 self.bindingDataByID(id);
-
             };
 
 
         };
-
-
 
         return new ProfileModel();
     });
