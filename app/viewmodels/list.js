@@ -66,10 +66,10 @@ define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
             // });
         }
 
-        var searchUser = function(){
+        var searchUser = function(keySearch){
             lUsers.removeAll();
 
-            http.get('https://localhost:5001/api/search?[name=' + keySearch + ']&[organizationName=' + keySearch + ']')
+            http.get('https://localhost:5001/api/search?name=' + keySearch)
                 .then(function (u) {
 
                     console.log(u);
@@ -102,8 +102,9 @@ define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
 
             keySearch: keySearch,
 
-            search: function(event){
-                searchUser();
+            search: function(keySearch){
+                console.log(this.keySearch());
+                searchUser(this.keySearch());
             }
         };
     });
