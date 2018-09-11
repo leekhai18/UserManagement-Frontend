@@ -1,7 +1,8 @@
-define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
-    function (ko, http, router) {
+define(['knockout', 'plugins/http', 'plugins/router', 'jquery', 'knockout.validation'],
+    function (ko, http, router, $) {
         //list of users
         var lUsers = ko.observableArray([]);
+        var keySearch = ko.observable();
 
         //Info of user
         function userInfo(data) {
@@ -15,7 +16,6 @@ define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
         }
 
         var addUser = function () {
-            // console.log("Add User");
             router.navigate("create");
         }
 
@@ -23,9 +23,6 @@ define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
 
             //clear
             lUsers.removeAll();
-
-            // use plugin HTTP of Durandaljs
-            // http.get('http://localhost:16567/api/user')
 
             http.get('https://localhost:5001/api/user')
                 .then(function (u) {
@@ -65,21 +62,39 @@ define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
             // });
         }
 
+        var searchUser = function(keySearch){
+            lUsers.removeAll();
+
+            http.get('https://localhost:5001/api/search?name=' + keySearch)
+                .then(function (u) {
+
+                    console.log(u);
+
+                    u.forEach(element => {
+                        lUsers.push(element);
+                    });
+
+                }, function (error) {
+                    alert("Error: Can't connect to server.");
+                });
+        }
+
         var viewProfile = function (profile) {
             console.log(profile);
             router.navigate("profile/" + profile.id);
         }
 
         return {
-
             activate: function () {
-                // console.log('Activate Page');
                 getAllUsers();
             },
-
             lUsers: lUsers,
             addUser: addUser,
-
-            viewProfile: viewProfile
+            viewProfile: viewProfile,
+            keySearch: keySearch,
+            search: function(keySearch){
+                console.log(this.keySearch());
+                searchUser(this.keySearch());
+            },
         };
     });

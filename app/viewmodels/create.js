@@ -1,4 +1,4 @@
-define(['knockout', 'jquery', 'durandal/app', './httpGet', 'plugins/router', 'knockout.validation'], function (ko, $, app, httpGet, router) {
+define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plugins/router', 'knockout.validation'], function (ko, $, app, http, httpGet, router) {
     var knockoutValidationSettings = {
         grouping: {
             deep: true,
