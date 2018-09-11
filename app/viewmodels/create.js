@@ -1,4 +1,4 @@
-define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 'knockout.validation'], function (ko, $, app, http, router) {
+define(['knockout', 'jquery', 'durandal/app', './httpGet', 'plugins/router', 'knockout.validation'], function (ko, $, app, httpGet, router) {
     var knockoutValidationSettings = {
         grouping: {
             deep: true,
@@ -6,22 +6,6 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
         }
     };
     ko.validation.init(knockoutValidationSettings, true);
-
-    var Organization = function (id, name) {
-        this.id = id;
-        this.name = name;
-    };
-
-    var Group = function (id, name, organization) {
-        this.id = id;
-        this.name = name;
-        this.organization = organization;
-    };
-
-    var Role = function (id, name) {
-        this.id = id;
-        this.name = name;
-    };
 
     var ProfileModel = function () {
         var self = this;
@@ -33,8 +17,14 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
                 return self.firstName() + " " + self.lastName();
             });
 
-            self.selectedOrganization = ko.observable();
+            // Init for available
+            self.availableOrganizations = httpGet.availableOrganizations;
+            self.availableGroups = httpGet.availableGroups;
+            self.availableRoles = httpGet.availableRoles;
+            self.availableGroupsBelongOrg = ko.observableArray([]);
 
+            //  Init for selected
+            self.selectedOrganization = ko.observable();
             self.selectedOrganization.subscribe(function(){
                 self.availableGroupsBelongOrg([]);
 
@@ -46,7 +36,6 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
             });
 
             self.selectedGroups = ko.observableArray([{ value: ko.observable("") }]);
-            
             self.selectedRoles = ko.observableArray([{ value: ko.observable("") }]);
             
             self.workPhoneNumbers = ko.observableArray([{ value: ko.observable("")
@@ -99,13 +88,6 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
         }
         // END UPLOAD IMAGE
         //    
-
-         // Init on load
-         self.availableOrganizations = [];
-         self.availableGroups = [];
-         self.availableRoles = [];
-         self.availableGroupsBelongOrg = ko.observableArray([]);
-
         
         // Functions on Group
         self.addGroup = function () {
@@ -117,7 +99,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
         
         // Functions on Role
         self.addRole = function () {
-            self.selectedRoles.push({ value: ko.observable("") });
+            self.selectedRoles.push({ value: ko.observable() });
         };
         self.removeRole = function (role) {
             self.selectedRoles.remove(role);
@@ -278,53 +260,8 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
             }
         };
 
-        
-        //Get available organization, groups, roles
         self.activate = function() {
             self.init();
-
-            http.get('https://localhost:5001/api/organization')
-            .then(function(response) {
-                self.availableOrganizations.length = 0;
-                response.forEach(organization => {
-                    self.availableOrganizations.push(new Organization(organization.id, organization.name));
-                });
-            },
-            function(error) {
-                app.showMessage(error, 'Error!', ['Yes']);
-            });
-            
-            http.get('https://localhost:5001/api/group')
-            .then(function(response) {
-                self.availableGroups.length = 0;
-                response.forEach(group => {
-                    self.availableGroups.push(new Group(group.id, group.name, group.organization));
-                });
-
-                self.availableGroupsBelongOrg([]);
-
-                for (i = 0; i < self.availableGroups.length; i++) {
-                    if (self.availableGroups[i].organization.id == self.availableOrganizations[0].id) {
-                        self.availableGroupsBelongOrg.push(self.availableGroups[i]);
-                    }
-                }
-            },
-            function(error) {
-                app.showMessage(error, 'Error!', ['Yes']);
-            });
-
-            http.get('https://localhost:5001/api/role')
-            .then(function(response) {
-                self.availableRoles.length = 0;
-                response.forEach(role => {
-                    self.availableRoles.push(new Role(role.id, role.name));
-                });
-            },
-            function(error) {
-                app.showMessage(error, 'Error!', ['Yes']);
-            });
-
-           
         };
 
         // init validated all form
@@ -332,8 +269,6 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', 'plugins/router', 
             self.validated = ko.validatedObservable(self);
         };
     }
-
-    
 
     return new ProfileModel();
 });
