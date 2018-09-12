@@ -75,7 +75,15 @@ section {
 }
 
 #btnAdd {
+    margin-left: 10%;
+}
+
+#frSearch {
     margin-right: 10%;
+    border: 1px;
+    border-style: solid;
+    border-color: #bdc7d8;
+    font-size: 18px;
 }
 
 table {
