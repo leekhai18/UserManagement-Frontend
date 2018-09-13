@@ -26,8 +26,9 @@ define(['knockout', 'plugins/http', 'plugins/router', 'jquery', 'knockout.valida
 
             http.get('https://localhost:5001/api/user')
                 .then(function (u) {
-
+                    console.log('Getting all user by id');
                     console.log(u);
+                    console.log('----------------------');
 
                     u.forEach(element => {
                         lUsers.push(element);

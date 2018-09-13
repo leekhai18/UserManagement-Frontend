@@ -283,36 +283,38 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
                             profileImage: self.profileImage
                         };
 
-                        console.log(newProfile);
-
                         http.post('https://localhost:5001/api/user', newProfile)
                             .then(function (response) {
-                                // Fixing........................
-                                // response = userobject ???? why?
-                                // need response is ID user
-                                // response = object maybe make promise is fail
-
+                                // Why not going here
+                                console.log('Creatting new user');
                                 console.log(response);
+                                console.log('------------------');
 
-                                app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
-                                    if (result == 'Yes') {
-                                        console.log(newProfile);
+                            }, function (response) {
+                                if (response.status == 200) {
+                                    // statusText: 'OK'
+                                    // Created new user
 
-                                        //refreshView
-                                        self.init();
+                                    app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
+                                        if (result == 'Yes') {
+                                            console.log('New user')
+                                            console.log(newProfile);
+                                            console.log('--------');
+    
+                                            //refreshView
+                                            self.init();
+    
+                                            //navigateToProfile
+                                            navigateToProfile(response.responseText);
+                                        }
+                                    });
+                                } else {
+                                    console.log('ERROR when Create new user');
+                                    console.log(response);
+                                    console.log('--------------------------');
 
-                                        //navigateToProfile
-                                        navigateToProfile(response);
-                                    }
-                                });
-
-                            }, function (error) {
-                                // Error is http response,
-                                // status = 200 => 'OK',
-                                // responseText = userID
-
-                                console.log('err');
-                                console.log(error);
+                                    //app.showMessage('!', 'Successfully', ['Yes'])
+                                }    
                             });
                     }
                 });

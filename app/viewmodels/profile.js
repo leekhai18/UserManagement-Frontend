@@ -1,5 +1,5 @@
-define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'knockout.validation'],
-    function (ko, $, app, http, httpGet) {
+define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plugins/router', 'knockout.validation'],
+    function (ko, $, app, http, httpGet, router) {
         var knockoutValidationSettings = {
             grouping: {
                 deep: true,
@@ -292,15 +292,22 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'knoc
 
                                 http.put('https://localhost:5001/api/user/' + self.personnelID(), editedProfile)
                                     .then(function (response) {
+                                        console.log('Updating user by id');
+                                        console.log(response);
+                                        console.log('-------------------');
+
                                         app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
                                             if (result == 'Yes') {
+                                                console.log(editedProfile);
+                                                self.visible(!self.visible());
                                             }
-
-                                            console.log(editedProfile);
-                                            self.visible(!self.visible());
                                         });
                                     },
                                     function (error) {
+                                        console.log('ERROR when Update user by id');
+                                        console.log(error);
+                                        console.log('----------------------------');
+
                                         app.showMessage(error.responseText, 'Error!', ['Yes']);
                                     });
                             }
@@ -325,9 +332,13 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'knoc
                         if (result == "Yes") {
                             self.visible(!self.visible());
                             if (self.personnelID()) {
-                                console.log(self.personnelID());
+                                
                                 http.remove('https://localhost:5001/api/user/' + self.personnelID())
-                                    .then(function (respone) {
+                                    .then(function (response) {
+                                        console.log('Deleting user by id');
+                                        console.log(response);
+                                        console.log('-------------------');
+
                                         app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
                                             if (result == 'Yes') {
                                                 // navigate to home page
@@ -336,6 +347,10 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'knoc
                                         });
                                     }, 
                                     function (error) {
+                                        console.log('Error when Delete user by id');
+                                        console.log(error);
+                                        console.log('----------------------------');
+
                                         app.showMessage(error.responseText, 'Error!', ['Yes']);
                                     });
                             }
@@ -487,10 +502,18 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'knoc
                 // recieve data from server 
                 http.get('https://localhost:5001/api/user/' + id)
                     .then(function (u) {
+                        console.log('Geting user by id');
+                        console.log(u);
+                        console.log('-----------------');
+
                         self.mapDataByObject(u);
                     },
                     function (error) {
-                        app.showMessage(error.responseText, 'Error!', ['Yes']);
+                        console.log('Error when Get user by id');
+                        console.log(error);
+                        console.log('-------------------------');
+
+                        app.showMessage(error.statusText + " " + error.responseText, 'Error!', ['Yes']);
                     });
             }
 
