@@ -1,19 +1,26 @@
-<section>
+<section class="container">
   <br /><br />
 
   <!--Button which to add user-->
   <!--Click here to transfer to Create-->
-  <div>
-    <a data-bind="click: addUser" class="btn btn-info btn-lg pull-right" id="btnAdd">
-      <span class="glyphicon glyphicon-plus-sign"></span> Add
-    </a>
+  <div class="row">
 
-    <form class="navbar-form navbar-right" role="search" id="frSearch">
-      <div class="form-group">
-        <input id="searchId" style="color:black;" type="text" class="form-control" placeholder="Search" title="Search User"
-          data-bind="textInput: keySearch, event: { keyup: search }, valuaUpdate: keyup">
-      </div>
-    </form>
+    <div class="col-md-3 col-md-offset-1">
+      <a data-bind="click: addUser" class="btn btn-info">
+        <span class="glyphicon glyphicon-plus-sign"></span> Add
+      </a>
+    </div>
+
+    <div class="col-md-4">
+      <input id="searchId" style="color:black; border: 1px #bdc7d8 solid" type="text" class="form-control" placeholder="Search"
+        title="Search User" data-bind="textInput: keySearch, event: { keyup: search }, valuaUpdate: keyup">
+    </div>
+
+    <div class="col-md-3">
+      <button class="btn btn-info">Advanced search</button>
+    </div>
+
+
   </div>
   <!-- end button -->
 
