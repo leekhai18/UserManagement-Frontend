@@ -1,100 +1,85 @@
-define(['knockout', 'plugins/http', 'plugins/router', 'jquery', 'knockout.validation'],
-    function (ko, http, router, $) {
-        //list of users
-        var lUsers = ko.observableArray([]);
-        var keySearch = ko.observable();
+define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'knockout.validation', 'bootstrap.multiselect'],
+    function (ko, http, httpGet, router, $) {
 
-        //Info of user
-        function userInfo(data) {
+        var ProfileModel = function () {
             var self = this;
-            self.firstName = ko.observable(data.firstName);
-            self.lastName = ko.observable(data.lastName);
-            self.role = ko.observable(data.role);
-            self.group = ko.observable(data.group);
-            self.organization = ko.observable(data.organization);
-            self.image = ko.observable(data.image);
-        }
 
-        var addUser = function () {
-            router.navigate("create");
-        }
+            // intit
 
-        var getAllUsers = function () {
+            //list of users
+            self.lUsers = ko.observableArray([]);
+            self.keySearch = ko.observable();
+            self.selectedOrganization = ko.observable();
+            self.availableOrganizations = ko.observableArray([]);
+            self.availableGroups = ko.observableArray([]);
+            self.isShowAdvancedSearch = ko.observable(false);
 
-            //clear
-            lUsers.removeAll();
+            self.addUser = function () {
+                router.navigate("create");
+            }
 
-            http.get('https://localhost:5001/api/user')
-                .then(function (u) {
+            self.getAllUsers = function () {
 
-                    console.log(u);
+                //clear
+                self.lUsers.removeAll();
 
-                    u.forEach(element => {
-                        lUsers.push(element);
+                http.get('https://localhost:5001/api/user')
+                    .then(function (u) {
+
+                        console.log(u);
+
+                        u.forEach(element => {
+                            self.lUsers.push(element);
+                        });
+
+                    }, function (error) {
+                        alert("Error: Can't connect to server.");
                     });
+            }
 
-                }, function (error) {
-                    alert("Error: Can't connect to server.");
-                });
+            self.searchUser = function (keySearch) {
+                self.lUsers.removeAll();
 
+                http.get('https://localhost:5001/api/search?name=' + keySearch)
+                    .then(function (u) {
 
-            // $.ajax({
-            //     url: 'https://localhost:5001/api/user',
-            //     // data: this.toJSON(data),
-            //     type: 'GET',
-            //     contentType: 'application/json',
-            //     dataType: 'json',
-            //     // headers: ko.toJS(headers),
-            //     success: function (u) {
-            //         console.log(u);
+                        console.log(u);
 
-            //         u.forEach(element => {
-            //             lUsers.push(element);
-            //         });
-            //     },
-            //     error: function (jqXHR, textStatus, errorThrown) {
-            //         // if (jqXHR.status === '401') {
-            //         // }
+                        u.forEach(element => {
+                            self.lUsers.push(element);
+                        });
 
-            //         alert("Error: Can't connect to server.");
-            //     }
-
-            // });
-        }
-
-        var searchUser = function(keySearch){
-            lUsers.removeAll();
-
-            http.get('https://localhost:5001/api/search?name=' + keySearch)
-                .then(function (u) {
-
-                    console.log(u);
-
-                    u.forEach(element => {
-                        lUsers.push(element);
+                    }, function (error) {
+                        alert("Error: Can't connect to server.");
                     });
+            }
 
-                }, function (error) {
-                    alert("Error: Can't connect to server.");
-                });
+            self.viewProfile = function (profile) {
+                console.log(profile);
+                router.navigate("profile/" + profile.id);
+            }
+
+
+            self.toggleVisibility = function () {
+                console.log("adfsdf")
+                self.isShowAdvancedSearch(!self.isShowAdvancedSearch());
+            };
+
+            self.activate = function () {
+                self.getAllUsers();
+            };
+
+            self.search = function () {
+                console.log(self.keySearch());
+                searchUser(self.keySearch());
+            };
+
+            // get data from server
+            self.availableOrganizations(httpGet.availableOrganizations);
+            self.availableGroups(httpGet.availableGroups);
+
+
         }
 
-        var viewProfile = function (profile) {
-            console.log(profile);
-            router.navigate("profile/" + profile.id);
-        }
-
-        return {
-            activate: function () {
-                getAllUsers();
-            },
-            lUsers: lUsers,
-            addUser: addUser,
-            viewProfile: viewProfile,
-            keySearch: keySearch,
-            search: function(keySearch){
-                console.log(this.keySearch());
-                searchUser(this.keySearch());
-            },
-        };
+        return new ProfileModel();
     });

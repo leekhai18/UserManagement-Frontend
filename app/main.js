@@ -6,6 +6,7 @@
         'transitions' : '../lib/durandal/js/transitions',
         'knockout': '../lib/knockout/knockout-3.4.0',
         'bootstrap': '../assets/js/bootstrap.min',
+        'bootstrap.multiselect': '../assets/js/bootstrap-multiselect',
         // 'bootstrap': '../lib/bootstrap/js/bootstrap',
         // 'jquery': '../lib/jquery/jquery-1.9.1',
         'jquery': '../assets/js/jquery-1.10.2',
