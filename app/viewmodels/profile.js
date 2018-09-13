@@ -1,4 +1,4 @@
-define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet','knockout.validation'],
+define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'knockout.validation'],
     function (ko, $, app, http, httpGet) {
         var knockoutValidationSettings = {
             grouping: {
@@ -203,10 +203,55 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet','knock
             }
 
             // Handle to format contract
-            var reduceJSON = function (baseArray) {
+            var handleJSON = function (baseArray) {
                 var result = [];
-                for (i = 0; i < baseArray.length; i++) {
-                    result.push(baseArray[i].value);
+
+                result.push({
+                    id: baseArray[0].id,
+                    isMain: true
+                });
+
+                for (i = 1; i < baseArray.length; i++) {
+                    result.push({
+                        id: baseArray[i].id,
+                        isMain: false
+                    });
+                }
+
+                return result;
+            };
+
+            var handleJSONForEmail = function (baseArray) {
+                var result = [];
+
+                result.push({
+                    address: baseArray[0].value,
+                    isMain: true
+                });
+
+                for (i = 1; i < baseArray.length; i++) {
+                    result.push({
+                        address: baseArray[i].value,
+                        isMain: false
+                    });
+                }
+
+                return result;
+            };
+
+            var handleJSONForNumber = function (baseArray) {
+                var result = [];
+
+                result.push({
+                    number: baseArray[0].value,
+                    isMain: true
+                });
+
+                for (i = 1; i < baseArray.length; i++) {
+                    result.push({
+                        number: baseArray[i].value,
+                        isMain: false
+                    });
                 }
 
                 return result;
@@ -232,33 +277,38 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet','knock
                     app.showMessage('Are you sure you want to edit profile?', 'Verify', ['Yes', 'No'])
                         .then(function (result) {
                             if (result == 'Yes') {
-                                var newProfile = {
+                                var editedProfile = {
                                     firstName: self.firstName(),
                                     lastName: self.lastName(),
                                     organization: self.selectedOrganization(),
-                                    mainGroup: ko.toJS(self.GroupsForMe())[0],
-                                    groups: ko.toJS(self.GroupsForMe()),
-                                    mainRole: ko.toJS(self.RolesForMe())[0],
-                                    roles: ko.toJS(self.RolesForMe()),
-                                    phone: {
-                                        main: ko.toJS(self.workPhoneNumbers())[0].value,
-                                        work: reduceJSON(ko.toJS(self.workPhoneNumbers())),
-                                        private: reduceJSON(ko.toJS(self.privatePhoneNumbers()))
-                                    },
-                                    mobile: {
-                                        main: ko.toJS(self.mobileNumbers())[0].value,
-                                        mobiles: reduceJSON(ko.toJS(self.mobileNumbers()))
-                                    },
-                                    email: {
-                                        main: ko.toJS(self.workEmails())[0].value,
-                                        emails: reduceJSON(ko.toJS(self.workEmails()))
-                                    },
+                                    groups: handleJSON(ko.toJS(self.GroupsForMe())),
+                                    roles: handleJSON(ko.toJS(self.RolesForMe())),
+                                    workPhone: handleJSONForNumber(ko.toJS(self.workPhoneNumbers())),
+                                    privatePhone: handleJSONForNumber(ko.toJS(self.privatePhoneNumbers())),
+                                    mobile: handleJSONForNumber(ko.toJS(self.mobileNumbers())),
+                                    email: handleJSONForEmail(ko.toJS(self.workEmails())),
                                     profileImage: self.profileImage
                                 };
 
-                                self.visible(!self.visible());
+                                http.put('https://localhost:5001/api/user/' + self.personnelID(), editedProfile)
+                                    .then(function (response) {
+                                        app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
+                                            if (result == 'Yes') {
+                                            }
+
+                                            console.log(editedProfile);
+                                            self.visible(!self.visible());
+                                        });
+                                    },
+                                        function (error) {
+                                            app.showMessage('Cannot create user because of Interrupted Server', 'Error!', ['Yes']);
+                                        });
                             }
-                        });
+                        },
+                            function (error) {
+                                app.showMessage(error, 'Error!', ['Yes']);
+                            }
+                        );
                 }
             };
 
@@ -274,11 +324,25 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet','knock
 
             // Delete profile func
             self.deleteProfile = function () {
-                app.showMessage('REALLY. Make sure you want to DELETE?', 'Verify', ['Yes', 'No'])
+                app.showMessage('Do you really want to delete this user profile permanently?', 'Verify', ['Yes', 'Can'])
                     .then(function (result) {
                         if (result == "Yes") {
                             self.visible(!self.visible());
+                            if (self.personnelID()) {
+                                console.log(self.personnelID());
+                                http.remove('https://localhost:5001/api/user/' + self.personnelID())
+                                    .then(function (respone) {
+                                        app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
+                                            if (result == 'Yes') {
+                                                // navigate to home page
+                                                router.navigate('');
+                                            }
+                                        });
+                                    });
+                            }
                         }
+                    }, function (error) {
+                        app.showMessage(error, 'Error!', ['Yes']);
                     });
             }
 
@@ -421,7 +485,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet','knock
 
             }
 
-            
+
             self.bindingDataByID = function (id) {
                 // recieve data from server 
                 http.get('https://localhost:5001/api/user/' + id)

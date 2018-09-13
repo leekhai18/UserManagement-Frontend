@@ -29,7 +29,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
                 self.availableGroupsBelongOrg([]);
 
                 for (i = 0; i < self.availableGroups.length; i++) {
-                    if (self.availableGroups[i].organization.id == self.selectedOrganization().id) {
+                    if (self.availableGroups[i].organization.id == self.selectedOrganization()) {
                         self.availableGroupsBelongOrg.push(self.availableGroups[i]);
                     }
                 }
@@ -169,8 +169,13 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
         // Handle for format contract
         var handleJSON = function (baseArray) {
             var result = [];
-            for (i = 0; i < baseArray.length; i++) {
-                result.push(baseArray[i].value);
+
+            result.push({   id: baseArray[0].value.id,
+                            isMain: true});
+
+            for (i = 1; i < baseArray.length; i++) {
+                result.push({   id: baseArray[i].value.id,
+                                isMain: false});
             }
 
             return result;
@@ -229,9 +234,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
                             firstName: self.firstName(),
                             lastName: self.lastName(),
                             organization: self.selectedOrganization(),
-                            mainGroup: ko.toJS(self.selectedGroups())[0].value,
                             groups: handleJSON(ko.toJS(self.selectedGroups())),
-                            mainRole: ko.toJS(self.selectedRoles())[0].value,
                             roles: handleJSON(ko.toJS(self.selectedRoles())),
                             workPhone: handleJSONForNumber(ko.toJS(self.workPhoneNumbers())),
                             privatePhone: handleJSONForNumber(ko.toJS(self.privatePhoneNumbers())),
@@ -241,20 +244,23 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
                         };
 
                         http.post('https://localhost:5001/api/user', newProfile)
-                        .then(function(response) {
+                        .then(function(response) {     
                             app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
                                 if (result == 'Yes') {
-                                    //refreshView
-                                    self.init();
-                                                            
-                                    //navigateToProfile
-                                    navigateToProfile(response);
                                 }
+
+                                console.log(newProfile);
+                            
+                                //refreshView
+                                self.init();
+                                                            
+                                //navigateToProfile
+                                navigateToProfile(response);
                             });
                         },
                         function(error) {
-                            app.showMessage(error, 'Error!', ['Yes']);
-                        });
+                            app.showMessage('Cannot create user because of Interrupted Server', 'Error!', ['Yes']);
+                        });  
                     }
                 });
             }
