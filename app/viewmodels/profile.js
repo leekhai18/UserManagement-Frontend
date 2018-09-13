@@ -280,7 +280,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'knoc
                                 var editedProfile = {
                                     firstName: self.firstName(),
                                     lastName: self.lastName(),
-                                    organization: self.selectedOrganization(),
+                                    organizationId: self.selectedOrganization(),
                                     groups: handleJSON(ko.toJS(self.GroupsForMe())),
                                     roles: handleJSON(ko.toJS(self.RolesForMe())),
                                     workPhone: handleJSONForNumber(ko.toJS(self.workPhoneNumbers())),
@@ -300,15 +300,11 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'knoc
                                             self.visible(!self.visible());
                                         });
                                     },
-                                        function (error) {
-                                            app.showMessage('Cannot create user because of Interrupted Server', 'Error!', ['Yes']);
-                                        });
+                                    function (error) {
+                                        app.showMessage(error.responseText, 'Error!', ['Yes']);
+                                    });
                             }
-                        },
-                            function (error) {
-                                app.showMessage(error, 'Error!', ['Yes']);
-                            }
-                        );
+                        });
                 }
             };
 
@@ -338,11 +334,12 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'knoc
                                                 router.navigate('');
                                             }
                                         });
+                                    }, 
+                                    function (error) {
+                                        app.showMessage(error.responseText, 'Error!', ['Yes']);
                                     });
                             }
                         }
-                    }, function (error) {
-                        app.showMessage(error, 'Error!', ['Yes']);
                     });
             }
 
@@ -491,6 +488,9 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'knoc
                 http.get('https://localhost:5001/api/user/' + id)
                     .then(function (u) {
                         self.mapDataByObject(u);
+                    },
+                    function (error) {
+                        app.showMessage(error.responseText, 'Error!', ['Yes']);
                     });
             }
 

@@ -34,10 +34,7 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
                     response.forEach(organization => {
                         self.availableOrganizations.push(new Organization(organization.id, organization.name));
                     });
-                },
-                    function (error) {
-                        alert("Error: Can't connect to server.");
-                    });
+                });
 
             // Get all role
             http.get(self.domain + '/api/role')
@@ -46,10 +43,7 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
                     response.forEach(role => {
                         self.availableRoles.push(new Role(role.id, role.name));
                     });
-                },
-                    function (error) {
-                        alert("Error: Can't connect to server.");
-                    });
+                });
 
             // Get all group and handle for groupBelongOrganization
             return http.get(self.domain + '/api/group')
@@ -60,7 +54,7 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
                     });
                 },
                     function (error) {
-                        alert("Error: Can't connect to server.");
+                        alert('Can not connect to server!');
                     });
         };
     }
