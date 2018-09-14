@@ -8,7 +8,7 @@
         // },
         activate: function () {
             router.map([
-                { route: ['', 'name=(:queryName)'], moduleId: 'viewmodels/list', nav: true },
+                { route: ['', 'name=(:queryName)'], moduleId: 'viewmodels/list', nav: false },
                 { route: 'profile/:id', title:'', moduleId: 'viewmodels/profile', nav: false },
                 { route: 'create', title:'', moduleId: 'viewmodels/create', nav: false },
             ]).buildNavigationModel();

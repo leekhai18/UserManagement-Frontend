@@ -26,7 +26,9 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                 http.get('https://localhost:5001/api/user')
                     .then(function (u) {
 
+                        console.log('Getting all user by id');
                         console.log(u);
+                        console.log('----------------------');
 
                         u.forEach(element => {
                             self.lUsers.push(element);
@@ -43,6 +45,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                 http.get('https://localhost:5001/api/search?name=' + keySearch)
                     .then(function (u) {
 
+                        console.log('Search user by name');
                         console.log(u);
 
                         u.forEach(element => {
@@ -71,7 +74,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
             self.search = function () {
                 console.log(self.keySearch());
-                searchUser(self.keySearch());
+                self.searchUser(self.keySearch());
             };
 
             // get data from server

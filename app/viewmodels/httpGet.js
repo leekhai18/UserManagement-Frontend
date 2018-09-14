@@ -25,7 +25,6 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
         self.availableOrganizations = [];
         self.availableGroups = [];
         self.availableRoles = [];
-        // self.availableGroupsBelongOrg = [];
 
         self.getRSForCreateUser = function () {
             // Get all organization
@@ -35,10 +34,7 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
                     response.forEach(organization => {
                         self.availableOrganizations.push(new Organization(organization.id, organization.name));
                     });
-                },
-                    function (error) {
-                        app.showMessage(error, 'Error!', ['Yes']);
-                    });
+                });
 
             // Get all role
             http.get(self.domain + '/api/role')
@@ -47,10 +43,7 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
                     response.forEach(role => {
                         self.availableRoles.push(new Role(role.id, role.name));
                     });
-                },
-                    function (error) {
-                        app.showMessage(error, 'Error!', ['Yes']);
-                    });
+                });
 
             // Get all group and handle for groupBelongOrganization
             return http.get(self.domain + '/api/group')
@@ -59,17 +52,9 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
                     response.forEach(group => {
                         self.availableGroups.push(new Group(group.id, group.name, group.organization));
                     });
-
-                    // self.availableGroupsBelongOrg.length = 0;
-
-                    // for (i = 0; i < self.availableGroups.length; i++) {
-                    //     if (self.availableGroups[i].organization.id == self.availableOrganizations[0].id) {
-                    //         self.availableGroupsBelongOrg.push(self.availableGroups[i]);
-                    //     }
-                    // }
                 },
                     function (error) {
-                        app.showMessage(error, 'Error!', ['Yes']);
+                        alert('Can not connect to server!');
                     });
         };
     }
