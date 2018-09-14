@@ -1,8 +1,5 @@
-define([
-    'knockout', 'jquery', 'durandal/app', 'plugins/http',
-    './httpGet', 'plugins/router', 'knockout.validation'],
+define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plugins/router', 'knockout.validation'],
     function (ko, $, app, http, httpGet, router) {
-
         var knockoutValidationSettings = {
             grouping: {
                 deep: true,
@@ -306,13 +303,13 @@ define([
                                             }
                                         });
                                     },
-                                        function (error) {
-                                            console.log('ERROR when Update user by id');
-                                            console.log(error);
-                                            console.log('----------------------------');
+                                    function (error) {
+                                        console.log('ERROR when Update user by id');
+                                        console.log(error);
+                                        console.log('----------------------------');
 
-                                            app.showMessage(error.responseText, 'Error!', ['Yes']);
-                                        });
+                                        app.showMessage(error.responseText, 'Error!', ['Yes']);
+                                    });
                             }
                         });
                 }
@@ -320,18 +317,12 @@ define([
 
             // Edit profile func
             self.edit = function () {
-                // app.showMessage('Make sure you want to EDIT', 'Verify', ['Yes', 'No'])
-                //     .then(function (result) {
-                //         if (result == "Yes") {
-                //             self.visible(!self.visible());
-                //         }
-                //     });
-
-                // navigate to home page
-                router.navigate('editProfile/' + "XS4IH");
-                //  router.navigate('profile/1234');
-
-
+                app.showMessage('Make sure you want to EDIT', 'Verify', ['Yes', 'No'])
+                    .then(function (result) {
+                        if (result == "Yes") {
+                            self.visible(!self.visible());
+                        }
+                    });
             };
 
             // Delete profile func
@@ -341,7 +332,7 @@ define([
                         if (result == "Yes") {
                             self.visible(!self.visible());
                             if (self.personnelID()) {
-
+                                
                                 http.remove('https://localhost:5001/api/user/' + self.personnelID())
                                     .then(function (response) {
                                         console.log('Deleting user by id');
@@ -354,14 +345,14 @@ define([
                                                 router.navigate('');
                                             }
                                         });
-                                    },
-                                        function (error) {
-                                            console.log('Error when Delete user by id');
-                                            console.log(error);
-                                            console.log('----------------------------');
+                                    }, 
+                                    function (error) {
+                                        console.log('Error when Delete user by id');
+                                        console.log(error);
+                                        console.log('----------------------------');
 
-                                            app.showMessage(error.responseText, 'Error!', ['Yes']);
-                                        });
+                                        app.showMessage(error.responseText, 'Error!', ['Yes']);
+                                    });
                             }
                         }
                     });
@@ -517,13 +508,13 @@ define([
 
                         self.mapDataByObject(u);
                     },
-                        function (error) {
-                            console.log('Error when Get user by id');
-                            console.log(error);
-                            console.log('-------------------------');
+                    function (error) {
+                        console.log('Error when Get user by id');
+                        console.log(error);
+                        console.log('-------------------------');
 
-                            app.showMessage(error.statusText + " " + error.responseText, 'Error!', ['Yes']);
-                        });
+                        app.showMessage(error.statusText + " " + error.responseText, 'Error!', ['Yes']);
+                    });
             }
 
             self.activate = function (id) {

@@ -9,10 +9,11 @@
         activate: function () {
             router.map([
                 { route: ['', 'name=(:queryName)'], moduleId: 'viewmodels/list', nav: false },
-                { route: 'profile/:id', title:'', moduleId: 'viewmodels/profile', nav: false },
-                { route: 'create', title:'', moduleId: 'viewmodels/create', nav: false },
+                { route: 'profile/:id', title: '', moduleId: 'viewmodels/profile', nav: false },
+                { route: 'create', title: '', moduleId: 'viewmodels/create', nav: false },
+                { route: 'editProfile/:id', title: '', moduleId: 'viewmodels/editProfile', nav: false },
             ]).buildNavigationModel();
-            
+
             return router.activate();
         }
     };
