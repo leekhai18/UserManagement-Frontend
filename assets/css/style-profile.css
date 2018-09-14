@@ -1,0 +1,51 @@
+.card-item {
+    font-size: 16px;
+    margin-top: 4px;
+    border-bottom: 1px solid #e2e2e2;
+}
+
+.selected-item .card-item {
+    margin-bottom: 17px;
+}
+
+.card .form-group {
+    margin-bottom: 24px;
+}
+
+.card .form-group label {
+    font-weight: 700;
+}
+
+.btn-edit {
+    margin-top: 18px;
+    margin-bottom: 14px;
+}
+
+.card-user .avatar {
+    width: 200px;
+    height: 200px;
+}
+
+.item-is-main {
+    /* position: absolute;
+    top: 0;
+    right: 6px;
+    font-size: 12px;
+    color: #fff;
+    background-color: #0aaedcdd;
+    padding: 0px 5px 1px 5px;
+    border-radius: 4px; */
+    position: absolute;
+    top: 4px;
+    right: 0px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #000;
+    background-color: #f4f3ef;
+    padding: 0px 5px 1px 5px;
+    border-radius: 1px;
+}
+
+.item-wrapper {
+    position: relative;
+}

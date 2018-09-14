@@ -1,205 +1,130 @@
 <div class="content">
     <div class="container-fluid">
-        <h2 class="col-lg-8 col-md-7">Detail Profile</h2>
+        <h3 style="margin-top: 45px;" class="col-lg-8 col-md-7">Detail Profile: <span data-bind="text: fullName()"></span></h3>
+
+
         <div class="row">
 
             <!-- Profile -->
-            <div class="col-lg-8 col-md-7">
+            <div class="col-lg-8 col-md-7 col-sm-6 col-xs-5">
                 <div class="card">
                     <div class="content">
-                        <form>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>First Name</label>
-                                        <input data-bind="textInput: firstName, valueUpdate: 'afterkeydown', enable: visible" type="text" class="form-control border-input">
-                                    </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <div data-bind="text: firstName" class="card-item"> </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Last Name</label>
-                                        <input data-bind="textInput: lastName, valueUpdate: 'afterkeydown', enable: visible" type="text" class="form-control border-input">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <div data-bind="text: lastName" class="card-item"> </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Personnel ID</label>
+                                    <div data-bind="text: personalID" class="card-item"> </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Organization / Company</label>
+                                    <div data-bind="text: organization" class="card-item"> </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Group / Department</label>
+                                    <div class="selected-item" data-bind="foreach: GroupsForMe">
+                                        <div data-bind="text: $data.name" class="card-item"> </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Personnel ID</label>
-                                        <input data-bind="value: personnelID" type="text" class="form-control border-input" disabled>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Role / Job Title</label>
+                                    <div class="selected-item" data-bind="foreach: RolesForMe">
+                                        <div data-bind="text: $data.name" class="card-item"> </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>Organization / Company</label>
-                                        <select data-bind=" options: availableOrganizations,
-                                                                optionsText: 'name',
-                                                                optionsValue: 'id', 
-                                                                enable: visible,
-                                                                value: selectedOrganization" class="form-control border-input"></select>
-                                        <!-- <input data-bind="textInput: selectedOrganization().name, visible: !visible()" type="text" class="form-control border-input" disabled> -->
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <div class="icon-container">
-                                            <label>Group / Department</label>
-                                            <span data-bind="click: addGroup, visible: (GroupsForMe().length < availableGroupsBelongOrg().length) && ($root.visible)"
-                                                class="ti-plus" style="margin-left: 10px"></span>
-                                        </div>
-
-                                        <div data-bind="foreach: GroupsForMe">
-                                            <div class="input-group" style="float: left">
-                                                <select data-bind=" options: $root.availableGroupsBelongOrg,
-                                                                        optionsText: 'name',
-                                                                        optionsValue: 'id',
-                                                                        enable: $root.visible,
-                                                                        value: id" class="form-control border-input"></select>
-                                                <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeGroup, enable: ($root.GroupsForMe().length > 1) && ($root.visible)" class="btn btn-default"
-                                                        type="button">X</button>
-                                                </span>
-                                            </div>
-                                            <!-- <div data-bind="visible: !$root.visible()" class="form-group">
-                                                <input data-bind="textInput: value().name" type="text" class="form-control border-input" disabled>
-                                            </div> -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <div class="icon-container">
-                                            <label>Role / Job Title</label>
-                                            <span data-bind="click: addRole, visible: (RolesForMe().length < availableRoles().length) && ($root.visible)" class="ti-plus"
-                                                style="margin-left: 10px"></span>
-                                        </div>
-                                        <div data-bind="foreach: RolesForMe">
-                                            <div class="input-group" style="float: left">
-                                                <select data-bind=" options: $root.availableRoles,
-                                                                        optionsText: 'name', 
-                                                                        optionsValue: 'id',
-                                                                        enable: $root.visible,
-                                                                        value: id" class="form-control border-input"></select>
-                                                <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeRole, enable: ($root.RolesForMe().length > 1) && ($root.visible)" class="btn btn-default"
-                                                        type="button">X</button>
-                                                </span>
-                                            </div>
-                                            <!-- <div data-bind="visible: !$root.visible()" class="form-group">
-                                                <input data-bind="textInput: value().name" type="text" class="form-control border-input" disabled>
-                                            </div> -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Work phone number</label>
+                                    <div class="selected-item" data-bind="foreach: workPhoneNumbers">
+                                        <div class="item-wrapper">
+                                            <div data-bind="text: $data.number" class="card-item"> </div>
+                                            <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <div class="icon-container">
-                                            <label>Work phone number</label>
-                                            <span data-bind="click: addWorkPhoneNumber, visible: visible" class="ti-plus" style="margin-left: 10px"></span>
-                                        </div>
-                                        <div data-bind="foreach: workPhoneNumbers">
-                                            <div data-bind="visible: $root.visible" class="input-group" style="float: left">
-                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input">
-                                                <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeWorkPhoneNumber, enable: $root.workPhoneNumbers().length > 1" class="btn btn-default"
-                                                        type="button">X</button>
-                                                </span>
-                                            </div>
-                                            <div data-bind="visible: !$root.visible()" class="form-group">
-                                                <input data-bind="textInput: value()" type="text" class="form-control border-input" disabled>
-                                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Mobile number</label>
+                                    <div class="selected-item" data-bind="foreach: mobileNumbers">
+                                        <div class="item-wrapper">
+                                            <div data-bind="text: $data.number" class="card-item"> </div>
+                                            <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <div class="icon-container">
-                                            <label>Mobile number</label>
-                                            <span data-bind="click: addMobileNumber, visible: visible" class="ti-plus" style="margin-left: 10px"></span>
-                                        </div>
-                                        <div data-bind="foreach: mobileNumbers">
-                                            <div data-bind="visible: $root.visible" class="input-group" style="float: left">
-                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input">
-                                                <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeMobileNumber, enable: $root.mobileNumbers().length > 1" class="btn btn-default" type="button">X</button>
-                                                </span>
-                                            </div>
-                                            <div data-bind="visible: !$root.visible()" class="form-group">
-                                                <input data-bind="textInput: value()" type="text" class="form-control border-input" disabled>
-                                            </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Private phone number</label>
+                                    <div class="item-wrapper">
+                                        <div class="selected-item" data-bind="foreach: privatePhoneNumbers">
+                                            <div data-bind="text: $data.number" class="card-item"> </div>
+                                            <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <div class="icon-container">
-                                            <label>Private phone number</label>
-                                            <span data-bind="click: addPrivatePhoneNumber, visible: visible" class="ti-plus" style="margin-left: 10px"></span>
-                                        </div>
-                                        <div data-bind="foreach: privatePhoneNumbers">
-                                            <div data-bind="visible: $root.visible" class="input-group" style="float: left">
-                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input">
-                                                <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removePrivatePhoneNumber, enable: $root.privatePhoneNumbers().length > 1" class="btn btn-default"
-                                                        type="button">X</button>
-                                                </span>
-                                            </div>
-                                            <div data-bind="visible: !$root.visible()" class="form-group">
-                                                <input data-bind="textInput: value()" type="text" class="form-control border-input" disabled>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <div class="icon-container">
-                                            <label>Work E-Mail</label>
-                                            <span data-bind="click: addWorkEmail, visible: visible" class="ti-plus" style="margin-left: 10px"></span>
-                                        </div>
-                                        <div data-bind="foreach: workEmails">
-                                            <div data-bind="visible: $root.visible" class="input-group" style="float: left">
-                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input">
-                                                <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeWorkEmail, enable: $root.workEmails().length > 1" class="btn btn-default" type="button">X</button>
-                                                </span>
-                                            </div>
-                                            <div data-bind="visible: !$root.visible()" class="form-group">
-                                                <input data-bind="textInput: value()" type="text" class="form-control border-input" disabled>
-                                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Work E-Mail</label>
+                                    <div class="selected-item" data-bind="foreach: workEmails">
+                                        <div class="item-wrapper">
+                                            <div data-bind="text: $data.address" class="card-item"> </div>
+                                            <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
 
-                            <div class="text-center">
-                                <button data-bind="click: edit, visible: !visible()" class="btn btn-warning btn-fill btn-wd">Edit</button>
-                                <button data-bind="click: save, visible: visible" type="submit" class="btn btn-success btn-fill btn-wd">Save</button>
-                                <button data-bind="click: deleteProfile, visible: visible" class="btn btn-danger btn-fill btn-wd">Delete</button>
-                                <button data-bind="click: cancle, visible: visible" class="btn btn-warning btn-fill btn-wd">Cancel</button>
-                            </div>
-                            <div class="clearfix"></div>
-                        </form>
+                        <div class="text-center">
+                            <button data-bind="click: edit" class="btn btn-warning btn-fill btn-wd btn-edit">Edit</button>
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Avatar -->
-            <div class="col-lg-4 col-md-5">
+            <div class="col-lg-4 col-md-5 col-sm-6 col-xs-7">
                 <br>
                 <div class="card card-user">
                     <div class="image">
@@ -208,19 +133,10 @@
                     <div class="content">
                         <div class="author">
                             <img class="avatar border-white" data-bind="attr: {src:photoUrl() || 'assets/img/faces/face-2.jpg'}" />
-                            <input type="file" accept="image/*" style="margin: 0 auto;    padding-bottom: 20px;color:transparent; width:70px;" data-bind="event:{change: imageUpload}, , visible: visible">
-                            <h4 data-bind="text: fullName()" class="title">Full Name</h4>
-                            <!-- <h5><small data-bind="text: workEmails()[0].value">Main email</small></h5> -->
                         </div>
-
-                        <p class="description text-center">
-                            "I like the way you work it <br> No diggity <br> I wanna bag it up"
-                        </p>
                     </div>
-                    <hr><br>
                 </div>
             </div>
-
 
         </div>
     </div>
