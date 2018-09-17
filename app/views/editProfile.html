@@ -1,6 +1,8 @@
 <div class="content">
     <div class="container-fluid">
-        <h3 style="margin-top: 45px;" class="col-lg-8 col-md-7">Detail Profile: <span data-bind="text: fullName()"></span></h3>
+        <h3 style="margin-top: 45px;" class="col-lg-8 col-md-7">Detail Profile:
+            <span data-bind="text: fullName()"></span>
+        </h3>
         <div class="row">
 
             <!-- Profile -->
@@ -58,6 +60,7 @@
                                         </div>
 
                                         <div data-bind="foreach: GroupsForMe">
+
                                             <div class="input-group" style="float: left">
                                                 <input type="radio" data-bind="checkedValue: $index, checked: $root.mainGroupForMe" />
 
@@ -71,7 +74,9 @@
                                                         class="btn btn-default" type="button">X</button>
                                                 </span>
                                             </div>
+
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">

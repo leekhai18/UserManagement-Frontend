@@ -14,6 +14,7 @@ define([
     };
     ko.validation.init(knockoutValidationSettings, true);
 
+
     var Organization = function (id, name) {
         this.id = id;
         this.name = name;
@@ -90,9 +91,14 @@ define([
         self.RolesForMe = ko.observableArray();
         self.GroupsForMe = ko.observableArray();
         self.selectedOrganization = ko.observable();
+
         self.selectedOrganization.subscribe(function () {
 
             self.availableGroupsBelongOrg.removeAll();
+            self.GroupsForMe.removeAll();
+            // Set default one field 
+            self.addGroup();
+
 
             for (i = 0; i < self.availableGroups.length; i++) {
                 if (self.availableGroups[i].organization.id == self.selectedOrganization()) {
@@ -378,16 +384,6 @@ define([
                                 profileImage: self.profileImage
                             };
 
-                            // console.log(ko.toJS(self.GroupsForMe()));
-                            console.log("-----------------");
-                            // console.log(jsonSerializeSelected(self.GroupsForMe(), self.mainGroupForMe()));
-                            // console.log(jsonSerializeSelected(self.RolesForMe(), self.mainRoleForMe()));
-                            // console.log(ko.toJS(self.workPhoneNumbers()));
-                            // console.log(jsonSerializeInputText(self.workPhoneNumbers(), self.mainWorkPhoneForMe()));
-                            // console.log(jsonSerializeInputText(self.privatePhoneNumbers(), self.mainPrivatePhoneForMe()));
-                            // console.log(jsonSerializeInputText(self.mobileNumbers(), self.mainMobilePhoneForMe()));
-                            console.log(jsonSerializeInputText(self.workEmails(), self.mainWorkEmailForMe()));
-                            // console.log(self.GroupsForMe());
                             console.log("editedProfile: ");
                             console.log(editedProfile);
 
@@ -450,6 +446,7 @@ define([
             router.navigate('profile/' + self.personalID);
         }
 
+       
         // Mapping data func
         self.mapDataByObject = function (u) {
             // 
@@ -622,7 +619,6 @@ define([
 
         }
 
-
         self.bindingDataByID = function (id) {
             // recieve data from server 
             http.get('https://localhost:5001/api/user/' + id)
@@ -632,89 +628,8 @@ define([
                     console.log('-----------------');
 
                     self.personalID = u.id;
-                    // self.mapDataByObject(u);
-                    self.mapDataByObject({
-                        "id": "12345",
-                        "firstName": "Tan",
-                        "lastName": "mtSiniChi",
-                        "profileImage": "image",
-                        "email": [
-                            {
-                                "address": "main email",
-                                "isMain": true
-                            },
-                            {
-                                "address": "not mail email",
-                                "isMain": false
-                            }
-                        ],
-                        "workPhone": [
-                            {
-                                "number": "1234",
-                                "isMain": false
-                            },
-                            {
-                                "number": "5678",
-                                "isMain": false
-                            }
-                            ,
-                            {
-                                "number": "112323232",
-                                "isMain": true
-                            }
-                        ],
-                        "privatePhone": [
-                            {
-                                "number": "91011",
-                                "isMain": true
-                            },
-                            {
-                                "number": "121314",
-                                "isMain": false
-                            }
-                        ],
-                        "mobile": [
-                            {
-                                "number": "333444",
-                                "isMain": true
-                            },
-                            {
-                                "number": "555666",
-                                "isMain": false
-                            }
-                        ],
-                        "organization": {
-                            "id": "c00af6d2-5c26-44cc-8414-dbb420d0f942",
-                            "name": "Rosen"
-                        },
-                        "groups": [
-                            {
-                                "id": "ab2ace08-2daf-4422-9242-293025aab9f6",
-                                "name": "HR",
-                                "organization": {
-                                    "id": "c00af6d2-5c26-44cc-8414-dbb420d0f942",
-                                    "name": "Rosen"
-                                },
-                                "isMain": true
-                            },
-                            {
-                                "id": "3777ec35-2393-4053-95ad-cc587d87a3e3",
-                                "name": "Technical",
-                                "organization": {
-                                    "id": "c00af6d2-5c26-44cc-8414-dbb420d0f942",
-                                    "name": "Rosen"
-                                },
-                                "isMain": false
-                            }
-                        ],
-                        "roles": [
-                            {
-                                "id": "d1eb257f-9a58-4751-8a6d-a1f0ed91b3ba",
-                                "name": "Engineer",
-                                "isMain": true
-                            }
-                        ]
-                    });
+                    self.mapDataByObject(u);
+                    
                 },
                     function (error) {
                         console.log('Error when Get user by id');
@@ -729,8 +644,9 @@ define([
             self.bindingDataByID(id);
         };
 
-
     };
+
+
 
     return new ProfileModel();
 });
