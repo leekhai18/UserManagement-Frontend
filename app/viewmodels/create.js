@@ -17,13 +17,16 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
                 return self.firstName() + " " + self.lastName();
             });
 
+            self.personnelID = ko.observable("").extend({ required: { params: true, message: 'This field is required.' } });
+
+
             // Init for available
             self.availableOrganizations = httpGet.availableOrganizations;
             self.availableGroups = httpGet.availableGroups;
             self.availableRoles = httpGet.availableRoles;
             self.availableGroupsBelongOrg = ko.observableArray([]);
 
-            //  Init for selected
+            //  Init for selectedOranization
             self.selectedOrganization = ko.observable();
             self.selectedOrganization.subscribe(function () {
                 self.availableGroupsBelongOrg([]);
@@ -35,9 +38,44 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
                 }
             });
 
-            self.selectedGroups = ko.observableArray([{ value: ko.observable("") }]);
-            self.selectedRoles = ko.observableArray([{ value: ko.observable("") }]);
+            //  Init for selectedGroup
+            self.groupsIsSame = ko.observable(false);
+            self.groupValue = ko.observable(self.availableGroupsBelongOrg()[0]);
+            self.groupValue.subscribe(function () {
+                self.groupSubscribe();
+            });
 
+            self.groupSubscribe = function() {
+                let tempSelectedGroups = self.selectedGroups().map(a => a.value());
+                if ((new Set(tempSelectedGroups)).size !== tempSelectedGroups.length) {
+                    self.groupsIsSame(true);
+                } else {
+                    self.groupsIsSame(false);
+                }
+            };
+
+            self.selectedGroups = ko.observableArray([{ value: self.groupValue }]);
+
+            //  Init for selectedRole
+            self.rolesIsSame = ko.observable(false);
+            self.roleValue = ko.observable(self.availableRoles[0]);
+            self.roleValue.subscribe(function () {
+                self.roleSubscribe();
+            });
+
+            self.roleSubscribe = function() {
+                let tempSelectedRoles = self.selectedRoles().map(a => a.value());
+                if ((new Set(tempSelectedRoles)).size !== tempSelectedRoles.length) {
+                    self.rolesIsSame(true);
+                } else {
+                    self.rolesIsSame(false);
+                }
+            };
+
+            self.selectedRoles = ko.observableArray([{ value: self.roleValue }]);
+
+
+            //
             self.workPhoneNumbers = ko.observableArray([{
                 value: ko.observable("")
                     .extend({
@@ -105,18 +143,54 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
 
         // Functions on Group
         self.addGroup = function () {
-            self.selectedGroups.push({ value: ko.observable() });
+            let groupValue = ko.observable();
+            groupValue.subscribe(function () {
+                let tempSelectedGroups = self.selectedGroups().map(a => a.value());
+                if ((new Set(tempSelectedGroups)).size !== tempSelectedGroups.length) {
+                    self.groupsIsSame(true);
+                } else {
+                    self.groupsIsSame(false);
+                }
+            });
+
+            let tempAvailableGroups = self.availableGroupsBelongOrg().filter( (el) => !self.selectedGroups().map(a => a.value()).includes(el) );
+            if (tempAvailableGroups != null) {
+                groupValue(tempAvailableGroups[0]);
+            }
+
+            self.selectedGroups.push({ value: groupValue });
         };
+
         self.removeGroup = function (group) {
             self.selectedGroups.remove(group);
+
+            self.groupSubscribe();            
         };
 
         // Functions on Role
         self.addRole = function () {
-            self.selectedRoles.push({ value: ko.observable() });
+            let roleValue = ko.observable();
+            roleValue.subscribe(function() {
+                let tempSelectedRoles = self.selectedRoles().map(a => a.value());
+                if ((new Set(tempSelectedRoles)).size !== tempSelectedRoles.length) {
+                    self.rolesIsSame(true);
+                } else {
+                    self.rolesIsSame(false);
+                }
+            });
+
+            let tempAvailableRoles = self.availableRoles.filter( (el) => !self.selectedRoles().map(a => a.value()).includes(el) );
+            if (tempAvailableRoles != null) {
+                roleValue(tempAvailableRoles[0]);
+            }
+
+            self.selectedRoles.push({ value: roleValue });
         };
+
         self.removeRole = function (role) {
             self.selectedRoles.remove(role);
+
+            self.roleSubscribe();
         };
 
         // Functions on WorkPhoneNumber
@@ -255,7 +329,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
 
         // Submit form
         self.create = function () {
-            if (!self.validated.isValid()) {
+            if (!self.validated.isValid() || self.rolesIsSame() || self.groupsIsSame()) {
                 self.validated.errors.showAllMessages();
             } else {
                 if (!isUniqueValuesArray(handleJSON(ko.toJS(self.selectedGroups())))) {
@@ -300,10 +374,10 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
                                             console.log('New user')
                                             console.log(newProfile);
                                             console.log('--------');
-    
+
                                             //refreshView
                                             self.init();
-    
+
                                             //navigateToProfile
                                             navigateToProfile(response.responseText);
                                         }
@@ -314,7 +388,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
                                     console.log('--------------------------');
 
                                     //app.showMessage('!', 'Successfully', ['Yes'])
-                                }    
+                                }
                             });
                     }
                 });
