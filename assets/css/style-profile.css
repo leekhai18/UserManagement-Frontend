@@ -8,6 +8,7 @@
     font-size: 16px;
     margin-top: 4px;
     border-bottom: 1px solid #e2e2e2;
+    color: #252422;
 }
 
 .selected-item .card-item {
@@ -126,3 +127,4 @@ span.field-required {
 .tooltip.top .tooltip-arrow {
     border-top-color:  #f5f5f5;
 }
+
