@@ -14,6 +14,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>First Name</label>
+                                        <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                         <input data-bind="textInput: firstName, valueUpdate: 'afterkeydown'" type="text"
                                             class="form-control border-input">
                                     </div>
@@ -21,6 +22,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Last Name</label>
+                                        <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                         <input data-bind="textInput: lastName, valueUpdate: 'afterkeydown'" type="text"
                                             class="form-control border-input">
                                     </div>
@@ -31,6 +33,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Personnel ID</label>
+                                        <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                         <input data-bind="value: personnelID" type="text" class="form-control border-input">
                                     </div>
                                 </div>
@@ -40,6 +43,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Organization / Company</label>
+                                        <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                         <select data-bind=" options: availableOrganizations,
                                                                 optionsText: 'name',
                                                                 optionsValue: 'id', 
@@ -55,6 +59,7 @@
                                     <div class="form-group">
                                         <div class="icon-container">
                                             <label>Group / Department</label>
+                                            <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                             <span data-bind="click: addGroup, visible: (GroupsForMe().length < availableGroupsBelongOrg().length)"
                                                 class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
@@ -85,6 +90,7 @@
                                     <div class="form-group">
                                         <div class="icon-container">
                                             <label>Role / Job Title</label>
+                                            <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                             <span data-bind="click: addRole, visible: (RolesForMe().length < availableRoles().length)"
                                                 class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
@@ -114,6 +120,7 @@
                                     <div class="form-group">
                                         <div class="icon-container">
                                             <label>Work phone number</label>
+                                            <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                             <span data-bind="click: addWorkPhoneNumber" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <span class="title-main">main</span>
@@ -136,6 +143,7 @@
                                     <div class="form-group">
                                         <div class="icon-container">
                                             <label>Mobile number</label>
+                                            <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                             <span data-bind="click: addMobileNumber" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <span class="title-main">main</span>
@@ -184,6 +192,7 @@
                                     <div class="form-group">
                                         <div class="icon-container">
                                             <label>Work E-Mail</label>
+                                            <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                             <span data-bind="click: addWorkEmail" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <span class="title-main">main</span>

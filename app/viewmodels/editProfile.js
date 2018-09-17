@@ -14,6 +14,21 @@ define([
     };
     ko.validation.init(knockoutValidationSettings, true);
 
+    
+    // Bind Twitter Tooltip
+    ko.bindingHandlers.tooltip = {
+        update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            var $element, options, tooltip;
+            options = ko.utils.unwrapObservable(valueAccessor());
+            $element = $(element);
+            tooltip = $element.data('tooltip');
+            if (tooltip) {
+                $.extend(tooltip.options, options);
+            } else {
+                $element.tooltip(options);
+            }
+        }
+    };
 
     var Organization = function (id, name) {
         this.id = id;
@@ -33,6 +48,8 @@ define([
 
     var ProfileModel = function () {
         var self = this;
+
+        self.textFieldRequired = ko.observable("This field is required");
 
         // 
         // START UPLOAD IMAGE
@@ -446,7 +463,7 @@ define([
             router.navigate('profile/' + self.personalID);
         }
 
-       
+
         // Mapping data func
         self.mapDataByObject = function (u) {
             // 
@@ -629,7 +646,7 @@ define([
 
                     self.personalID = u.id;
                     self.mapDataByObject(u);
-                    
+
                 },
                     function (error) {
                         console.log('Error when Get user by id');

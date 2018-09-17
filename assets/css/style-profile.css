@@ -101,3 +101,28 @@ span.title-main {
     float: none !important;
     padding-bottom: 4px !important;
 }
+
+
+/** 
+ * 
+ * Style tooltip
+ * 
+ **/
+
+.tooltip.top .tooltip-arrow {
+    /* margin-left: -25px; */
+}
+
+span.field-required {
+    color: red;
+    font-weight: 700;
+}
+
+.tooltip-inner {
+    color: red;
+    background-color: #f5f5f5;
+}
+
+.tooltip.top .tooltip-arrow {
+    border-top-color:  #f5f5f5;
+}
