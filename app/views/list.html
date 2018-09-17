@@ -46,9 +46,43 @@
           </a>
         </td>
         <!-- End More Info -->
-        
       </tr>
     </tbody>
   </table>
+
+  <div class="container">
+      <div class="col-md-4 user-grids" data-bind="foreach: lUsers, visible: lUsers().length > 0">
+          <!-- normal -->
+          <div class="ih-item circle effect5">
+            <a>
+                <div class="img"><img data-bind="attr:{src: profileImage}" src="" alt="User Pic" class="img-responsive"></div>
+                <div class="info">
+                    <div class="info-back">
+                      <h3 data-bind="text: firstName + ' ' + lastName, click: $root.viewProfile"></h3>		           	            
+                    </div>
+                </div>
+            </a>
+          </div>
+          <div class="user-bottom">
+            <ul>
+              <li><strong data-bind="text: firstName + ' ' + lastName"></strong></li><br/>
+              <li data-bind="text: organization.name"></li><br/>
+              <li data-bind="text: roles[0].name"></li><br/>
+              <li data-bind="text: mainGroup.name"></li>
+            </ul>
+          </div>
+          <!-- end normal -->		 
+        </div>
+  </div>
+
+  <!-- to Top button -->
+    <!-- <script type="text/javascript">
+      $(document).ready(function() {
+        $().UItoTop({ easingType: 'easeOutQuart' });
+      });
+    </script>
+
+    <a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a> -->
+  <!-- end to Top -->
   <!-- End -->
 </section>
