@@ -1,3 +1,9 @@
+/**
+ * 
+ * Style Detail Profile
+ * 
+**/
+
 .card-item {
     font-size: 16px;
     margin-top: 4px;
@@ -39,7 +45,6 @@
     top: 4px;
     right: 0px;
     font-size: 12px;
-    font-weight: 600;
     color: #000;
     background-color: #f4f3ef;
     padding: 0px 5px 1px 5px;
@@ -48,4 +53,51 @@
 
 .item-wrapper {
     position: relative;
+}
+
+
+
+/**
+ * 
+ * Style Edit Profile
+ * 
+**/
+
+.option-field {
+    width: 89% !important; 
+    float: right !important;
+}
+
+.checked-main input {
+    margin: 0;
+    padding: 0;
+}
+
+.checked-main {
+    width: 11%;
+    float: left;
+    border: 1px solid #CCC5B9;
+    border-right: none;
+    text-align: center;
+    height: 40px;
+    padding-top: 12px;
+    border-radius: 4px 0 0 4px;
+    padding-left: 3px;
+}
+
+
+
+span.title-main {
+    display: inline-block;
+    margin-bottom: 2px;
+    font-size: 12px;
+    color: #000;
+    background-color: #f4f3ef;
+    padding: 0px 7px 2px 7px;
+    border-radius: 1px;
+}
+
+.icon-container {
+    float: none !important;
+    padding-bottom: 4px !important;
 }

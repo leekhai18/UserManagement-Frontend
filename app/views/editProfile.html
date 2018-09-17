@@ -58,17 +58,19 @@
                                             <span data-bind="click: addGroup, visible: (GroupsForMe().length < availableGroupsBelongOrg().length)"
                                                 class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
-
+                                        <span class="title-main">main</span>
                                         <div data-bind="foreach: GroupsForMe">
 
                                             <div class="input-group" style="float: left">
-                                                <input type="radio" data-bind="checkedValue: $index, checked: $root.mainGroupForMe" />
+                                                <div class="checked-main">
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainGroupForMe" />
+                                                </div>
 
                                                 <select data-bind=" options: $root.availableGroupsBelongOrg,
                                                                         optionsText: 'name',
                                                                         optionsValue: 'id',
                                                                         value: id"
-                                                    class="form-control border-input"></select>
+                                                    class="form-control border-input option-field"></select>
                                                 <span class="input-group-btn">
                                                     <button data-bind="click: $root.removeGroup, enable: ($root.GroupsForMe().length > 1)"
                                                         class="btn btn-default" type="button">X</button>
@@ -86,15 +88,17 @@
                                             <span data-bind="click: addRole, visible: (RolesForMe().length < availableRoles().length)"
                                                 class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
+                                        <span class="title-main">main</span>
                                         <div data-bind="foreach: RolesForMe">
                                             <div class="input-group" style="float: left">
-                                                <input type="radio" data-bind="checkedValue: $index, checked: $root.mainRoleForMe" />
-
+                                                <div class="checked-main">
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainRoleForMe" />
+                                                </div>
                                                 <select data-bind=" options: $root.availableRoles,
                                                                         optionsText: 'name', 
                                                                         optionsValue: 'id',
                                                                         value: id"
-                                                    class="form-control border-input"></select>
+                                                    class="form-control border-input option-field"></select>
                                                 <span class="input-group-btn">
                                                     <button data-bind="click: $root.removeRole, enable: ($root.RolesForMe().length > 1) "
                                                         class="btn btn-default" type="button">X</button>
@@ -112,12 +116,14 @@
                                             <label>Work phone number</label>
                                             <span data-bind="click: addWorkPhoneNumber" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
+                                        <span class="title-main">main</span>
                                         <div data-bind="foreach: workPhoneNumbers">
                                             <div class="input-group" style="float: left">
-                                                <input type="radio" data-bind="checkedValue: $index, checked: $root.mainWorkPhoneForMe" />
-
+                                                <div class="checked-main">
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainWorkPhoneForMe" />
+                                                </div>
                                                 <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text"
-                                                    class="form-control border-input">
+                                                    class="form-control border-input option-field">
                                                 <span class="input-group-btn">
                                                     <button data-bind="click: $root.removeWorkPhoneNumber, enable: $root.workPhoneNumbers().length > 1"
                                                         class="btn btn-default" type="button">X</button>
@@ -132,12 +138,14 @@
                                             <label>Mobile number</label>
                                             <span data-bind="click: addMobileNumber" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
+                                        <span class="title-main">main</span>
                                         <div data-bind="foreach: mobileNumbers">
                                             <div class="input-group" style="float: left">
-                                                <input type="radio" data-bind="checkedValue: $index, checked: $root.mainMobilePhoneForMe" />
-
+                                                <div class="checked-main">
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainMobilePhoneForMe" />
+                                                </div>
                                                 <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text"
-                                                    class="form-control border-input">
+                                                    class="form-control border-input option-field">
                                                 <span class="input-group-btn">
                                                     <button data-bind="click: $root.removeMobileNumber, enable: $root.mobileNumbers().length > 1"
                                                         class="btn btn-default" type="button">X</button>
@@ -155,12 +163,14 @@
                                             <label>Private phone number</label>
                                             <span data-bind="click: addPrivatePhoneNumber" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
+                                        <span class="title-main">main</span>
                                         <div data-bind="foreach: privatePhoneNumbers">
                                             <div class="input-group" style="float: left">
-                                                <input type="radio" data-bind="checkedValue: $index, checked: $root.mainPrivatePhoneForMe" />
-
+                                                <div class="checked-main">
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainPrivatePhoneForMe" />
+                                                </div>
                                                 <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text"
-                                                    class="form-control border-input">
+                                                    class="form-control border-input option-field">
                                                 <span class="input-group-btn">
                                                     <button data-bind="click: $root.removePrivatePhoneNumber, enable: $root.privatePhoneNumbers().length > 1"
                                                         class="btn btn-default" type="button">X</button>
@@ -176,12 +186,14 @@
                                             <label>Work E-Mail</label>
                                             <span data-bind="click: addWorkEmail" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
+                                        <span class="title-main">main</span>
                                         <div data-bind="foreach: workEmails">
                                             <div class="input-group" style="float: left">
-                                                <input type="radio" data-bind="checkedValue: $index, checked: $root.mainWorkEmailForMe" />
-
+                                                <div class="checked-main">
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainWorkEmailForMe" />
+                                                </div>
                                                 <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text"
-                                                    class="form-control border-input">
+                                                    class="form-control border-input option-field">
                                                 <span class="input-group-btn">
                                                     <button data-bind="click: $root.removeWorkEmail, enable: $root.workEmails().length > 1"
                                                         class="btn btn-default" type="button">X</button>
