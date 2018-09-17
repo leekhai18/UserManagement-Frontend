@@ -14,7 +14,10 @@
 
         // helpers
         'factoryObject': './helpers/factoryObject',
-        'httpGet' : './viewmodels/httpGet'
+        'httpGet' : './viewmodels/httpGet',
+
+        // data example
+        'data.ex.profile' : './helpers/data_examples/data.ex.Profile'
 
     },
     shim: {

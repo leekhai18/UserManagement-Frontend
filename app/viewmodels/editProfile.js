@@ -4,8 +4,9 @@ define([
     'plugins/http',
     'plugins/router',
     './httpGet',
+    'data.ex.profile',
     'knockout.validation'
-], function (ko, app, http, router, httpGet) {
+], function (ko, app, http, router, httpGet, dataEx) {
     var knockoutValidationSettings = {
         grouping: {
             deep: true,
@@ -14,6 +15,21 @@ define([
     };
     ko.validation.init(knockoutValidationSettings, true);
 
+
+    // Bind Twitter Tooltip
+    ko.bindingHandlers.tooltip = {
+        update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            var $element, options, tooltip;
+            options = ko.utils.unwrapObservable(valueAccessor());
+            $element = $(element);
+            tooltip = $element.data('tooltip');
+            if (tooltip) {
+                $.extend(tooltip.options, options);
+            } else {
+                $element.tooltip(options);
+            }
+        }
+    };
 
     var Organization = function (id, name) {
         this.id = id;
@@ -33,6 +49,8 @@ define([
 
     var ProfileModel = function () {
         var self = this;
+
+        self.textFieldRequired = ko.observable("This field is required");
 
         // 
         // START UPLOAD IMAGE
@@ -115,6 +133,12 @@ define([
 
         self.removeGroup = function (group) {
             self.GroupsForMe.remove(group);
+
+            if (self.mainGroupForMe() == self.GroupsForMe().length &&
+                self.GroupsForMe().length > 0) {
+
+                self.mainGroupForMe(self.GroupsForMe().length - 1)
+            }
         };
 
         self.mainGroupForMe = ko.observable();
@@ -127,6 +151,12 @@ define([
 
         self.removeRole = function (role) {
             self.RolesForMe.remove(role);
+
+            if (self.mainRoleForMe() == self.RolesForMe().length &&
+                self.RolesForMe().length > 0) {
+
+                self.mainRoleForMe(self.RolesForMe().length - 1)
+            }
         };
 
         self.mainRoleForMe = ko.observable();
@@ -149,6 +179,12 @@ define([
 
         self.removeWorkPhoneNumber = function (workPhoneNumber) {
             self.workPhoneNumbers.remove(workPhoneNumber);
+
+            if (self.mainWorkPhoneForMe() == self.workPhoneNumbers().length &&
+                self.workPhoneNumbers().length > 0) {
+
+                self.mainWorkPhoneForMe(self.workPhoneNumbers().length - 1)
+            }
         };
 
         self.mainWorkPhoneForMe = ko.observable();
@@ -171,6 +207,12 @@ define([
 
         self.removePrivatePhoneNumber = function (privatePhoneNumber) {
             self.privatePhoneNumbers.remove(privatePhoneNumber);
+
+            if (self.mainPrivatePhoneForMe() == self.privatePhoneNumbers().length &&
+                self.privatePhoneNumbers().length > 0) {
+
+                self.mainPrivatePhoneForMe(self.privatePhoneNumbers().length - 1)
+            }
         };
 
         self.mainPrivatePhoneForMe = ko.observable();
@@ -193,6 +235,12 @@ define([
 
         self.removeMobileNumber = function (mobileNumber) {
             self.mobileNumbers.remove(mobileNumber);
+
+            if (self.mainMobilePhoneForMe() == self.mobileNumbers().length &&
+                self.mobileNumbers().length > 0) {
+
+                self.mainMobilePhoneForMe(self.mobileNumbers().length - 1)
+            }
         };
 
         self.mainMobilePhoneForMe = ko.observable();
@@ -212,6 +260,12 @@ define([
 
         self.removeWorkEmail = function (workEmail) {
             self.workEmails.remove(workEmail);
+
+            if (self.mainWorkEmailForMe() == self.workEmails().length &&
+                self.workEmails().length > 0) {
+
+                self.mainWorkEmailForMe(self.workEmails().length - 1)
+            }
         };
 
         self.mainWorkEmailForMe = ko.observable();
@@ -446,7 +500,7 @@ define([
             router.navigate('profile/' + self.personalID);
         }
 
-       
+
         // Mapping data func
         self.mapDataByObject = function (u) {
             // 
@@ -628,8 +682,11 @@ define([
                     console.log('-----------------');
 
                     self.personalID = u.id;
-                    self.mapDataByObject(u);
-                    
+                    // self.mapDataByObject(u);
+
+                    // use data example (dataEx) to test
+                    self.mapDataByObject(dataEx);
+
                 },
                     function (error) {
                         console.log('Error when Get user by id');
