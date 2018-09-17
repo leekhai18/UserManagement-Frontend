@@ -29,7 +29,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Personnel ID</label>
-                                        <input type="text" class="form-control border-input" disabled placeholder="Company" value="Automatically Generated">
+                                        <input data-bind="textInput: personnelID, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Personnel ID" 
+                                            value="">
                                     </div>
                                 </div>
                             </div>
@@ -64,13 +65,14 @@
                                                 </span>
                                             </div>
                                         </div>
+                                        <span data-bind="if: groupsIsSame" class="validationMessage">Not the same value</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="icon-container">
                                             <label>Role / Job Title</label>
-                                            <span data-bind="click: addRole, visible: selectedRoles().length < availableRoles.length" class="ti-plus" style="margin-left: 10px"></span>
+                                            <span data-bind="click: addRole, visible: selectedRoles().length < 3" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <div data-bind="foreach: selectedRoles">
                                             <div class="input-group" style="float: left">
@@ -82,6 +84,7 @@
                                                 </span>
                                             </div>
                                         </div>
+                                        <span data-bind="if: rolesIsSame" class="validationMessage">Not the same value</span>
                                     </div>
                                 </div>
                             </div>

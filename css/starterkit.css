@@ -4,6 +4,10 @@
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details
  */
 
+.card {
+    color: #f00;
+}
+
 .input-group-btn {
     vertical-align: top
 }
