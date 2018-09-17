@@ -13,8 +13,9 @@
         'knockout.validation': '../lib/knockout/knockout.validation/dist/knockout.validation.min',
 
         // helpers
-        'factoryObject': './helpers/factoryObject',
+        'factoryObjects': './helpers/factoryObjects',
         'httpGet' : './viewmodels/httpGet',
+        'utilities' : './helpers/utilities',
 
         // data example
         'data.ex.profile' : './helpers/data_examples/data.ex.Profile'
@@ -33,9 +34,9 @@ define([
     'durandal/app',
     'durandal/viewLocator',
     'viewmodels/httpGet',
-    'factoryObject',
+    'factoryObjects',
     'bootstrap'
-], function (system, app, viewLocator, httpGet, factoryObject) {
+], function (system, app, viewLocator, httpGet, factoryObjects) {
     //>>excludeStart("build", true);
     system.debug(true);
     //>>excludeEnd("build");
@@ -50,7 +51,7 @@ define([
 
     console.log(httpGet);
 
-    // factoryObject.then(
+    // factoryObjects.then(
 
     httpGet.getRSForCreateUser().then(
 

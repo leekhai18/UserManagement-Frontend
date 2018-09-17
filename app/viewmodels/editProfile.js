@@ -4,9 +4,18 @@ define([
     'plugins/http',
     'plugins/router',
     './httpGet',
+    'factoryObjects',
+    'utilities',
     'data.ex.profile',
     'knockout.validation'
-], function (ko, app, http, router, httpGet, dataEx) {
+], function (ko, app, http, router, httpGet, factoryObjects, utilities, dataEx) {
+
+    // 
+    // 
+    // Config KO Validation
+    // 
+    // 
+
     var knockoutValidationSettings = {
         grouping: {
             deep: true,
@@ -15,37 +24,11 @@ define([
     };
     ko.validation.init(knockoutValidationSettings, true);
 
-
-    // Bind Twitter Tooltip
-    ko.bindingHandlers.tooltip = {
-        update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-            var $element, options, tooltip;
-            options = ko.utils.unwrapObservable(valueAccessor());
-            $element = $(element);
-            tooltip = $element.data('tooltip');
-            if (tooltip) {
-                $.extend(tooltip.options, options);
-            } else {
-                $element.tooltip(options);
-            }
-        }
-    };
-
-    var Organization = function (id, name) {
-        this.id = id;
-        this.name = name;
-    };
-
-    var Group = function (id, name, organization) {
-        this.id = id;
-        this.name = name;
-        this.organization = organization;
-    };
-
-    var Role = function (id, name) {
-        this.id = id;
-        this.name = name;
-    };
+    // 
+    // 
+    // Define model 
+    // 
+    // 
 
     var ProfileModel = function () {
         var self = this;
@@ -117,7 +100,6 @@ define([
             // Set default one field 
             self.addGroup();
 
-
             for (i = 0; i < self.availableGroups.length; i++) {
                 if (self.availableGroups[i].organization.id == self.selectedOrganization()) {
                     self.availableGroupsBelongOrg.push(self.availableGroups[i]);
@@ -128,7 +110,7 @@ define([
         /////////////////////////  //////  //////  //////  //////  //////  //////  
 
         self.addGroup = function () {
-            self.GroupsForMe.push(new Group("", "", {}));
+            self.GroupsForMe.push(factoryObjects.createGroup("", "", {}));
         };
 
         self.removeGroup = function (group) {
@@ -146,7 +128,7 @@ define([
         /////////////////////////  //////  //////  //////  //////  //////  //////  
 
         self.addRole = function () {
-            self.RolesForMe.push(new Role("", ""));
+            self.RolesForMe.push(factoryObjects.createRole("", ""));
         };
 
         self.removeRole = function (role) {
@@ -287,125 +269,6 @@ define([
             return true;
         }
 
-        // Handle to format contract
-        var handleJSON = function (baseArray) {
-            var result = [];
-
-            result.push({
-                id: baseArray[0].id,
-                isMain: true
-            });
-
-            for (i = 1; i < baseArray.length; i++) {
-                result.push({
-                    id: baseArray[i].id,
-                    isMain: false
-                });
-            }
-
-            return result;
-        };
-
-        var jsonSerializeSelected = function (arr, mainIndex) {
-            var result = [];
-
-            // arr.forEach(element => {
-
-            //     // if (element.id == mainValue) {
-            //     //     result.push({
-            //     //         id: element.id,
-            //     //         isMain: true,
-            //     //     })
-            //     // } else {
-            //     //     result.push({
-            //     //         id: element.id,
-            //     //         isMain: false,
-            //     //     })
-            //     // }
-            // });
-
-
-            console.log("mainIndex---------------");
-            console.log(mainIndex);
-
-            for (i = 0; i < arr.length; i++) {
-                if (mainIndex == i) {
-                    result.push({
-                        id: arr[i].id,
-                        isMain: true,
-                    })
-                } else {
-                    result.push({
-                        id: arr[i].id,
-                        isMain: false,
-                    })
-                }
-            }
-
-
-            return result;
-        }
-
-        var jsonSerializeInputText = function (arr, mainIndex) {
-            arr = ko.toJS(arr);
-
-            var result = [];
-
-            for (i = 0; i < arr.length; i++) {
-                if (mainIndex == i) {
-                    result.push({
-                        number: arr[i].value,
-                        isMain: true,
-                    })
-                } else {
-                    result.push({
-                        number: arr[i].value,
-                        isMain: false,
-                    })
-                }
-            }
-
-            return result;
-
-        }
-
-        var handleJSONForEmail = function (baseArray) {
-            var result = [];
-
-            result.push({
-                address: baseArray[0].value,
-                isMain: true
-            });
-
-            for (i = 1; i < baseArray.length; i++) {
-                result.push({
-                    address: baseArray[i].value,
-                    isMain: false
-                });
-            }
-
-            return result;
-        };
-
-        var handleJSONForNumber = function (baseArray) {
-            var result = [];
-
-            result.push({
-                number: baseArray[0].value,
-                isMain: true
-            });
-
-            for (i = 1; i < baseArray.length; i++) {
-                result.push({
-                    number: baseArray[i].value,
-                    isMain: false
-                });
-            }
-
-            return result;
-        };
-
-
         // Save func
         self.save = function () {
 
@@ -429,12 +292,12 @@ define([
                                 firstName: self.firstName(),
                                 lastName: self.lastName(),
                                 organizationId: self.selectedOrganization(),
-                                groups: jsonSerializeSelected(self.GroupsForMe(), self.mainGroupForMe()),
-                                roles: jsonSerializeSelected(self.RolesForMe(), self.mainRoleForMe()),
-                                workPhone: jsonSerializeInputText(self.workPhoneNumbers(), self.mainWorkPhoneForMe()),
-                                privatePhone: jsonSerializeInputText(self.privatePhoneNumbers(), self.mainPrivatePhoneForMe()),
-                                mobile: jsonSerializeInputText(self.mobileNumbers(), self.mainMobilePhoneForMe()),
-                                email: jsonSerializeInputText(self.workEmails(), self.mainWorkEmailForMe()),
+                                groups: utilities.jsonSerializeSelected(self.GroupsForMe(), self.mainGroupForMe()),
+                                roles: utilities.jsonSerializeSelected(self.RolesForMe(), self.mainRoleForMe()),
+                                workPhone: utilities.jsonSerializeInputText(self.workPhoneNumbers(), self.mainWorkPhoneForMe()),
+                                privatePhone: utilities.jsonSerializeInputText(self.privatePhoneNumbers(), self.mainPrivatePhoneForMe()),
+                                mobile: utilities.jsonSerializeInputText(self.mobileNumbers(), self.mainMobilePhoneForMe()),
+                                email: utilities.jsonSerializeInputText(self.workEmails(), self.mainWorkEmailForMe()),
                                 profileImage: self.profileImage
                             };
 
@@ -539,7 +402,13 @@ define([
             self.GroupsForMe([]);
 
             for (i = 0; i < u.groups.length; i++) {
-                self.GroupsForMe.push(new Group(u.groups[i].id, u.groups[i].name, u.groups[i].organization));
+                self.GroupsForMe.push(
+                    factoryObjects.createGroup(
+                        u.groups[i].id,
+                        u.groups[i].name,
+                        u.groups[i].organization
+                    )
+                );
 
                 // binding main group
                 if (u.groups[i].isMain) {
@@ -558,7 +427,7 @@ define([
             self.RolesForMe([]);
 
             for (i = 0; i < u.roles.length; i++) {
-                self.RolesForMe.push(new Role(u.roles[i].id, u.roles[i].name));
+                self.RolesForMe.push(factoryObjects.createRole(u.roles[i].id, u.roles[i].name));
 
                 // binding main role
                 if (u.roles[i].isMain) {

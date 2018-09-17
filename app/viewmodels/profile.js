@@ -3,10 +3,10 @@ define([
     'durandal/app',
     'plugins/http',
     'plugins/router',
-    'factoryObject',
+    'factoryObjects',
     'httpGet',
     'knockout.validation'
-], function (ko, app, http, router, factoryObject, httpGet) {
+], function (ko, app, http, router, factoryObjects, httpGet) {
     // 
     // 
     // Intit knockout
@@ -85,7 +85,7 @@ define([
 
             self.GroupsForMe([]);
             u.groups.forEach(element => {
-                self.GroupsForMe.push(factoryObject.createGroup(element.id, element.name, element.organization));
+                self.GroupsForMe.push(factoryObjects.createGroup(element.id, element.name, element.organization));
             })
 
             // 
@@ -96,7 +96,7 @@ define([
 
             self.RolesForMe([]);
             u.roles.forEach(element => {
-                self.RolesForMe.push(factoryObject.createRole(element.id, element.name));
+                self.RolesForMe.push(factoryObjects.createRole(element.id, element.name));
             })
 
             // 
@@ -107,7 +107,7 @@ define([
 
             self.workPhoneNumbers([]);
             u.workPhone.forEach(element => {
-                self.workPhoneNumbers.push(factoryObject.createWorkPhoneNumbers(element.number, element.isMain));
+                self.workPhoneNumbers.push(factoryObjects.createWorkPhoneNumbers(element.number, element.isMain));
             });
 
             // 
@@ -118,7 +118,7 @@ define([
 
             self.mobileNumbers([]);
             u.mobile.forEach(element => {
-                self.mobileNumbers.push(factoryObject.createMobileNumbers(element.number, element.isMain));
+                self.mobileNumbers.push(factoryObjects.createMobileNumbers(element.number, element.isMain));
             });
 
             // 
@@ -129,7 +129,7 @@ define([
 
             self.privatePhoneNumbers([]);
             u.privatePhone.forEach(element => {
-                self.privatePhoneNumbers.push(factoryObject.createPrivatePhoneNumbers(element.number, element.isMain));
+                self.privatePhoneNumbers.push(factoryObjects.createPrivatePhoneNumbers(element.number, element.isMain));
             });
 
 
@@ -159,7 +159,7 @@ define([
             // });
 
             u.email.forEach(element => {
-                self.workEmails.push(new factoryObject.createEmail(element.address, element.isMain));
+                self.workEmails.push(new factoryObjects.createEmail(element.address, element.isMain));
             });
 
         }

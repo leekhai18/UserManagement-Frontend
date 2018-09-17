@@ -1,6 +1,11 @@
 define([], function () {
 
+    // 
+    // 
     // Define objets
+    // 
+    //    
+
     var Organization = function (id, name) {
         this.id = id;
         this.name = name;
@@ -37,7 +42,12 @@ define([], function () {
         this.isMain = isMain;
     }
 
+    // 
+    // 
     // Define model
+    // 
+    //    
+
     var FactoryObjectModel = function () {
         var self = this;
 
