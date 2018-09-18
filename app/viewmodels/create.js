@@ -1,4 +1,13 @@
-define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plugins/router', 'knockout.validation'], function (ko, $, app, http, httpGet, router) {
+define(['knockout',
+        'jquery', 
+        'durandal/app', 
+        'plugins/http', 
+        './httpGet', 
+        'plugins/router', 
+        'factoryObjects',
+        'knockout.validation'
+    ], function (ko, $, app, http, httpGet, router, factoryObjects) {
+
     var knockoutValidationSettings = {
         grouping: {
             deep: true,
@@ -9,6 +18,8 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
 
     var ProfileModel = function () {
         var self = this;
+
+        self.textFieldRequired = ko.observable("This field is required");
 
         self.init = function () {
             self.firstName = ko.observable("").extend({ required: { params: true, message: 'This field is required.' } });
@@ -26,6 +37,18 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
             self.availableRoles = httpGet.availableRoles;
             self.availableGroupsBelongOrg = ko.observableArray([]);
 
+            // Init for main Field
+            self.mainGroup = ko.observable(0).extend({ required: { params: true, message: '_' } });
+            self.mainRole = ko.observable(0).extend({ required: { params: true, message: '_' } });
+            self.mainWorkPhoneNumber = ko.observable().extend({ required: { params: true, message: '_' } });
+            self.mainMobileNumber = ko.observable().extend({ required: { params: true, message: '_' } });
+            self.mainPrivatePhoneNumber = ko.observable().extend({ required: { params: true, message: '_' } });
+            self.mainWorkEmail = ko.observable().extend({ required: { params: true, message: '_' } });
+
+            // Init for isSameValue
+            self.groupsIsSame = ko.observable(false);
+            self.rolesIsSame = ko.observable(false);
+
             //  Init for selectedOranization
             self.selectedOrganization = ko.observable();
             self.selectedOrganization.subscribe(function () {
@@ -39,43 +62,22 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
             });
 
             //  Init for selectedGroup
-            self.groupsIsSame = ko.observable(false);
             self.groupValue = ko.observable(self.availableGroupsBelongOrg()[0]);
             self.groupValue.subscribe(function () {
-                self.groupSubscribe();
+                factoryObjects.handleOnSameSelected(self.selectedGroups, self.groupsIsSame);
             });
-
-            self.groupSubscribe = function() {
-                let tempSelectedGroups = self.selectedGroups().map(a => a.value());
-                if ((new Set(tempSelectedGroups)).size !== tempSelectedGroups.length) {
-                    self.groupsIsSame(true);
-                } else {
-                    self.groupsIsSame(false);
-                }
-            };
 
             self.selectedGroups = ko.observableArray([{ value: self.groupValue }]);
 
             //  Init for selectedRole
-            self.rolesIsSame = ko.observable(false);
             self.roleValue = ko.observable(self.availableRoles[0]);
             self.roleValue.subscribe(function () {
-                self.roleSubscribe();
+                factoryObjects.handleOnSameSelected(self.selectedRoles, self.rolesIsSame);
             });
-
-            self.roleSubscribe = function() {
-                let tempSelectedRoles = self.selectedRoles().map(a => a.value());
-                if ((new Set(tempSelectedRoles)).size !== tempSelectedRoles.length) {
-                    self.rolesIsSame(true);
-                } else {
-                    self.rolesIsSame(false);
-                }
-            };
 
             self.selectedRoles = ko.observableArray([{ value: self.roleValue }]);
 
-
-            //
+            ////////////////////////////////////////
             self.workPhoneNumbers = ko.observableArray([{
                 value: ko.observable("")
                     .extend({
@@ -90,7 +92,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
             self.privatePhoneNumbers = ko.observableArray([{
                 value: ko.observable("")
                     .extend({
-                        required: true,
+                        required: false,
                         pattern: {
                             message: 'This number is wrong.',
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
@@ -143,54 +145,30 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
 
         // Functions on Group
         self.addGroup = function () {
-            let groupValue = ko.observable();
-            groupValue.subscribe(function () {
-                let tempSelectedGroups = self.selectedGroups().map(a => a.value());
-                if ((new Set(tempSelectedGroups)).size !== tempSelectedGroups.length) {
-                    self.groupsIsSame(true);
-                } else {
-                    self.groupsIsSame(false);
-                }
-            });
-
-            let tempAvailableGroups = self.availableGroupsBelongOrg().filter( (el) => !self.selectedGroups().map(a => a.value()).includes(el) );
-            if (tempAvailableGroups != null) {
-                groupValue(tempAvailableGroups[0]);
-            }
-
-            self.selectedGroups.push({ value: groupValue });
+            factoryObjects.addIntelValue(self.availableGroupsBelongOrg(), self.selectedGroups, self.groupsIsSame);
         };
 
         self.removeGroup = function (group) {
             self.selectedGroups.remove(group);
-
-            self.groupSubscribe();            
+            factoryObjects.handleOnSameSelected(self.selectedGroups, self.groupsIsSame);     
+            
+            if (self.mainGroup() == self.selectedGroups().length && self.selectedGroups().length > 0) {
+                self.mainGroup(self.selectedGroups().length - 1)
+            }
         };
 
         // Functions on Role
         self.addRole = function () {
-            let roleValue = ko.observable();
-            roleValue.subscribe(function() {
-                let tempSelectedRoles = self.selectedRoles().map(a => a.value());
-                if ((new Set(tempSelectedRoles)).size !== tempSelectedRoles.length) {
-                    self.rolesIsSame(true);
-                } else {
-                    self.rolesIsSame(false);
-                }
-            });
-
-            let tempAvailableRoles = self.availableRoles.filter( (el) => !self.selectedRoles().map(a => a.value()).includes(el) );
-            if (tempAvailableRoles != null) {
-                roleValue(tempAvailableRoles[0]);
-            }
-
-            self.selectedRoles.push({ value: roleValue });
+            factoryObjects.addIntelValue(self.availableRoles, self.selectedRoles, self.rolesIsSame);
         };
 
         self.removeRole = function (role) {
             self.selectedRoles.remove(role);
+            factoryObjects.handleOnSameSelected(self.selectedRoles, self.rolesIsSame);
 
-            self.roleSubscribe();
+            if (self.mainRole() == self.selectedRoles().length && self.selectedRoles().length > 0) {
+                self.mainRole(self.selectedRoles().length - 1)
+            }
         };
 
         // Functions on WorkPhoneNumber
@@ -215,7 +193,7 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
             self.privatePhoneNumbers.push({
                 value: ko.observable("")
                     .extend({
-                        required: true,
+                        required: false,
                         pattern: {
                             message: 'This number is wrong.',
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
@@ -255,18 +233,6 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
         self.removeWorkEmail = function (workEmail) {
             self.workEmails.remove(workEmail);
         };
-
-        // Check unique array
-        var isUniqueValuesArray = function (arr) {
-            for (i = 0; i < arr.length - 1; i++) {
-                for (j = i + 1; j < arr.length; j++) {
-                    if (arr[i].id == arr[j].id)
-                        return false;
-                }
-            }
-
-            return true;
-        }
 
         // Handle for format contract
         var handleJSON = function (baseArray) {
@@ -332,15 +298,6 @@ define(['knockout', 'jquery', 'durandal/app', 'plugins/http', './httpGet', 'plug
             if (!self.validated.isValid() || self.rolesIsSame() || self.groupsIsSame()) {
                 self.validated.errors.showAllMessages();
             } else {
-                if (!isUniqueValuesArray(handleJSON(ko.toJS(self.selectedGroups())))) {
-                    app.showMessage('Group / Department must be Unique values!', 'Warning', ['Yes']);
-                    return;
-                }
-
-                if (!isUniqueValuesArray(handleJSON(ko.toJS(self.selectedRoles())))) {
-                    app.showMessage('Role / Job Title must be Unique values!', 'Warning', ['Yes']);
-                    return;
-                }
 
                 app.showMessage('Are you sure you want to create new User?', 'Verify', ['Yes', 'No']).then(function (result) {
                     if (result == 'Yes') {

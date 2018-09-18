@@ -49,7 +49,6 @@
                                                                 optionsValue: 'id', 
                                                                 value: selectedOrganization"
                                             class="form-control border-input"></select>
-                                        <!-- <input data-bind="textInput: selectedOrganization().name, visible: !visible()" type="text" class="form-control border-input" disabled> -->
                                     </div>
                                 </div>
                             </div>
@@ -65,25 +64,21 @@
                                         </div>
                                         <span class="title-main">main</span>
                                         <div data-bind="foreach: GroupsForMe">
-
                                             <div class="input-group" style="float: left">
                                                 <div class="checked-main">
-                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainGroupForMe" />
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainGroup" />
                                                 </div>
-
                                                 <select data-bind=" options: $root.availableGroupsBelongOrg,
                                                                         optionsText: 'name',
-                                                                        optionsValue: 'id',
-                                                                        value: id"
+                                                                        value: value"
                                                     class="form-control border-input option-field"></select>
                                                 <span class="input-group-btn">
                                                     <button data-bind="click: $root.removeGroup, enable: ($root.GroupsForMe().length > 1)"
                                                         class="btn btn-default" type="button">X</button>
                                                 </span>
                                             </div>
-
                                         </div>
-
+                                        <span data-bind="if: groupsIsSame" class="validationMessage">Not the same value</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -91,19 +86,18 @@
                                         <div class="icon-container">
                                             <label>Role / Job Title</label>
                                             <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
-                                            <span data-bind="click: addRole, visible: (RolesForMe().length < availableRoles().length)"
+                                            <span data-bind="click: addRole, visible: (RolesForMe().length < availableRoles.length)"
                                                 class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <span class="title-main">main</span>
                                         <div data-bind="foreach: RolesForMe">
                                             <div class="input-group" style="float: left">
                                                 <div class="checked-main">
-                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainRoleForMe" />
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainRole" />
                                                 </div>
                                                 <select data-bind=" options: $root.availableRoles,
                                                                         optionsText: 'name', 
-                                                                        optionsValue: 'id',
-                                                                        value: id"
+                                                                        value: value"
                                                     class="form-control border-input option-field"></select>
                                                 <span class="input-group-btn">
                                                     <button data-bind="click: $root.removeRole, enable: ($root.RolesForMe().length > 1) "
@@ -111,6 +105,7 @@
                                                 </span>
                                             </div>
                                         </div>
+                                        <span data-bind="if: rolesIsSame" class="validationMessage">Not the same value</span>
                                     </div>
                                 </div>
                             </div>
@@ -127,7 +122,7 @@
                                         <div data-bind="foreach: workPhoneNumbers">
                                             <div class="input-group" style="float: left">
                                                 <div class="checked-main">
-                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainWorkPhoneForMe" />
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainWorkPhoneNumber" />
                                                 </div>
                                                 <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text"
                                                     class="form-control border-input option-field">
@@ -150,7 +145,7 @@
                                         <div data-bind="foreach: mobileNumbers">
                                             <div class="input-group" style="float: left">
                                                 <div class="checked-main">
-                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainMobilePhoneForMe" />
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainMobileNumber" />
                                                 </div>
                                                 <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text"
                                                     class="form-control border-input option-field">
@@ -175,7 +170,7 @@
                                         <div data-bind="foreach: privatePhoneNumbers">
                                             <div class="input-group" style="float: left">
                                                 <div class="checked-main">
-                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainPrivatePhoneForMe" />
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainPrivatePhoneNumber" />
                                                 </div>
                                                 <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text"
                                                     class="form-control border-input option-field">
@@ -199,7 +194,7 @@
                                         <div data-bind="foreach: workEmails">
                                             <div class="input-group" style="float: left">
                                                 <div class="checked-main">
-                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainWorkEmailForMe" />
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainWorkEmail" />
                                                 </div>
                                                 <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text"
                                                     class="form-control border-input option-field">

@@ -1,4 +1,4 @@
-define([], function () {
+define(['knockout',], function (ko) {
 
     // 
     // 
@@ -78,6 +78,34 @@ define([], function () {
         self.createMobileNumbers = function (number, isMain) {
             return new MobileNumbers(number, isMain);
         }
+
+        self.addIntelValue = function (availables, selecteds, isSame) {
+            let value = ko.observable();
+            value.subscribe(function () {
+                let tempSelecteds = selecteds().map(a => a.value());
+                if ((new Set(tempSelecteds)).size !== tempSelecteds.length) {
+                    isSame(true);
+                } else {
+                    isSame(false);
+                }
+            });
+
+            let tempAvailableGroups = availables.filter( (el) => !selecteds().map(a => a.value()).includes(el) );
+            if (tempAvailableGroups != null) {
+                value(tempAvailableGroups[0]);
+            }
+
+            selecteds.push({ value: value });
+        };
+
+        self.handleOnSameSelected = function(selecteds, isSame) {
+            let tempSelectedGroups = selecteds().map(a => a.value());
+            if ((new Set(tempSelectedGroups)).size !== tempSelectedGroups.length) {
+                isSame(true);
+            } else {
+                isSame(false);
+            }
+        };
     }
 
     return new FactoryObjectModel();

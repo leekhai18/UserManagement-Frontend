@@ -83,20 +83,30 @@ define([
         self.personnelID = ko.observable("");
 
         // Init for available
-        self.availableGroups = [];
+        self.availableGroups = httpGet.availableGroups;
+        self.availableOrganizations = httpGet.availableOrganizations;
+        self.availableRoles = httpGet.availableRoles;
         self.availableGroupsBelongOrg = ko.observableArray([]);
-        self.availableOrganizations = ko.observableArray();
-        self.availableRoles = ko.observableArray();
 
-        // Init for selected
-        self.RolesForMe = ko.observableArray();
-        self.GroupsForMe = ko.observableArray();
+        // Init for mainSelected
+        self.mainGroup = ko.observable(0).extend({ required: { params: true, message: '_' } });
+        self.mainRole = ko.observable(0).extend({ required: { params: true, message: '_' } });
+        self.mainWorkPhoneNumber = ko.observable().extend({ required: { params: true, message: '_' } });
+        self.mainMobileNumber = ko.observable().extend({ required: { params: true, message: '_' } });
+        self.mainPrivatePhoneNumber = ko.observable().extend({ required: { params: true, message: '_' } });
+        self.mainWorkEmail = ko.observable().extend({ required: { params: true, message: '_' } });
+
+        // Init for isSameValue
+        self.groupsIsSame = ko.observable(false);
+        self.rolesIsSame = ko.observable(false);
+
+        //  Init for selectedOranization
         self.selectedOrganization = ko.observable();
-
         self.selectedOrganization.subscribe(function () {
-
+            // Clear
             self.availableGroupsBelongOrg.removeAll();
             self.GroupsForMe.removeAll();
+
             // Set default one field 
             self.addGroup();
 
@@ -107,41 +117,41 @@ define([
             }
         });
 
+        // Init for selectedGroup 
+        self.GroupsForMe = ko.observableArray();
+
+        // Init for selectedRole
+        self.RolesForMe = ko.observableArray();
+
         /////////////////////////  //////  //////  //////  //////  //////  //////  
 
         self.addGroup = function () {
-            self.GroupsForMe.push(factoryObjects.createGroup("", "", {}));
+            factoryObjects.addIntelValue(self.availableGroupsBelongOrg(), self.GroupsForMe, self.groupsIsSame);
         };
 
         self.removeGroup = function (group) {
             self.GroupsForMe.remove(group);
+            factoryObjects.handleOnSameSelected(self.GroupsForMe, self.groupsIsSame);            
 
-            if (self.mainGroupForMe() == self.GroupsForMe().length &&
-                self.GroupsForMe().length > 0) {
-
-                self.mainGroupForMe(self.GroupsForMe().length - 1)
+            if (self.mainGroup() == self.GroupsForMe().length && self.GroupsForMe().length > 0) {
+                self.mainGroup(self.GroupsForMe().length - 1)
             }
         };
-
-        self.mainGroupForMe = ko.observable();
 
         /////////////////////////  //////  //////  //////  //////  //////  //////  
 
         self.addRole = function () {
-            self.RolesForMe.push(factoryObjects.createRole("", ""));
+            factoryObjects.addIntelValue(self.availableRoles, self.RolesForMe, self.rolesIsSame);
         };
 
         self.removeRole = function (role) {
             self.RolesForMe.remove(role);
+            factoryObjects.handleOnSameSelected(self.RolesForMe, self.rolesIsSame);
 
-            if (self.mainRoleForMe() == self.RolesForMe().length &&
-                self.RolesForMe().length > 0) {
-
-                self.mainRoleForMe(self.RolesForMe().length - 1)
+            if (self.mainRole() == self.RolesForMe().length && self.RolesForMe().length > 0) {
+                self.mainRole(self.RolesForMe().length - 1)
             }
         };
-
-        self.mainRoleForMe = ko.observable();
 
         //////  //////  //////  //////  //////  //////  //////  //////  //////  //////  
 
@@ -162,14 +172,10 @@ define([
         self.removeWorkPhoneNumber = function (workPhoneNumber) {
             self.workPhoneNumbers.remove(workPhoneNumber);
 
-            if (self.mainWorkPhoneForMe() == self.workPhoneNumbers().length &&
-                self.workPhoneNumbers().length > 0) {
-
-                self.mainWorkPhoneForMe(self.workPhoneNumbers().length - 1)
+            if (self.mainWorkPhoneNumber() == self.workPhoneNumbers().length && self.workPhoneNumbers().length > 0) {
+                self.mainWorkPhoneNumber(self.workPhoneNumbers().length - 1)
             }
         };
-
-        self.mainWorkPhoneForMe = ko.observable();
 
         /////////////////////////  //////  //////  //////  //////  //////  //////  
 
@@ -190,14 +196,10 @@ define([
         self.removePrivatePhoneNumber = function (privatePhoneNumber) {
             self.privatePhoneNumbers.remove(privatePhoneNumber);
 
-            if (self.mainPrivatePhoneForMe() == self.privatePhoneNumbers().length &&
-                self.privatePhoneNumbers().length > 0) {
-
-                self.mainPrivatePhoneForMe(self.privatePhoneNumbers().length - 1)
+            if (self.mainPrivatePhoneNumber() == self.privatePhoneNumbers().length && self.privatePhoneNumbers().length > 0) {
+                self.mainPrivatePhoneNumber(self.privatePhoneNumbers().length - 1)
             }
         };
-
-        self.mainPrivatePhoneForMe = ko.observable();
 
         /////////////////////////  //////  //////  //////  //////  //////  //////  
 
@@ -218,14 +220,10 @@ define([
         self.removeMobileNumber = function (mobileNumber) {
             self.mobileNumbers.remove(mobileNumber);
 
-            if (self.mainMobilePhoneForMe() == self.mobileNumbers().length &&
-                self.mobileNumbers().length > 0) {
-
-                self.mainMobilePhoneForMe(self.mobileNumbers().length - 1)
+            if (self.mainMobileNumber() == self.mobileNumbers().length && self.mobileNumbers().length > 0) {
+                self.mainMobileNumber(self.mobileNumbers().length - 1)
             }
         };
-
-        self.mainMobilePhoneForMe = ko.observable();
 
 
         /////////////////////////  //////  //////  //////  //////  //////  //////  
@@ -243,31 +241,14 @@ define([
         self.removeWorkEmail = function (workEmail) {
             self.workEmails.remove(workEmail);
 
-            if (self.mainWorkEmailForMe() == self.workEmails().length &&
-                self.workEmails().length > 0) {
-
-                self.mainWorkEmailForMe(self.workEmails().length - 1)
+            if (self.mainWorkEmail() == self.workEmails().length && self.workEmails().length > 0) {
+                self.mainWorkEmail(self.workEmails().length - 1)
             }
         };
-
-        self.mainWorkEmailForMe = ko.observable();
 
         self.personalID = null;
 
         self.validated = ko.validatedObservable(self);
-
-        // Check unique array   
-        var isUniqueValuesArray = function (arr) {
-
-            for (i = 0; i < arr.length - 1; i++) {
-                for (j = i + 1; j < arr.length; j++) {
-                    if (arr[i].id == arr[j].id)
-                        return false;
-                }
-            }
-
-            return true;
-        }
 
         // Save func
         self.save = function () {
@@ -275,15 +256,6 @@ define([
             if (!self.validated.isValid()) {
                 self.validated.errors.showAllMessages();
             } else {
-                if (!isUniqueValuesArray(self.GroupsForMe())) {
-                    app.showMessage('Group / Department must be Unique values!', 'Warning', ['Yes']);
-                    return;
-                }
-
-                if (!isUniqueValuesArray(self.RolesForMe())) {
-                    app.showMessage('Role / Job Title must be Unique values!', 'Warning', ['Yes']);
-                    return;
-                }
 
                 app.showMessage('Are you sure you want to edit profile?', 'Verify', ['Yes', 'No'])
                     .then(function (result) {
@@ -292,12 +264,12 @@ define([
                                 firstName: self.firstName(),
                                 lastName: self.lastName(),
                                 organizationId: self.selectedOrganization(),
-                                groups: utilities.jsonSerializeSelected(self.GroupsForMe(), self.mainGroupForMe()),
-                                roles: utilities.jsonSerializeSelected(self.RolesForMe(), self.mainRoleForMe()),
-                                workPhone: utilities.jsonSerializeInputText(self.workPhoneNumbers(), self.mainWorkPhoneForMe()),
-                                privatePhone: utilities.jsonSerializeInputText(self.privatePhoneNumbers(), self.mainPrivatePhoneForMe()),
-                                mobile: utilities.jsonSerializeInputText(self.mobileNumbers(), self.mainMobilePhoneForMe()),
-                                email: utilities.jsonSerializeInputText(self.workEmails(), self.mainWorkEmailForMe()),
+                                groups: utilities.jsonSerializeSelected(self.GroupsForMe(), self.mainGroup()),
+                                roles: utilities.jsonSerializeSelected(self.RolesForMe(), self.mainRole()),
+                                workPhone: utilities.jsonSerializeInputText(self.workPhoneNumbers(), self.mainWorkPhoneNumber()),
+                                privatePhone: utilities.jsonSerializeInputText(self.privatePhoneNumbers(), self.mainPrivatePhoneNumber()),
+                                mobile: utilities.jsonSerializeInputText(self.mobileNumbers(), self.mainMobileNumber()),
+                                email: utilities.jsonSerializeInputText(self.workEmails(), self.mainWorkEmail()),
                                 profileImage: self.profileImage
                             };
 
@@ -382,7 +354,6 @@ define([
             // 
             // 
 
-            self.availableOrganizations(httpGet.availableOrganizations);
             self.selectedOrganization(u.organization.id);
 
             // 
@@ -391,7 +362,6 @@ define([
             // 
             // 
 
-            self.availableGroups = httpGet.availableGroups;
             self.availableGroupsBelongOrg([]);
             for (i = 0; i < self.availableGroups.length; i++) {
                 if (self.availableGroups[i].organization.id == self.selectedOrganization()) {
@@ -399,22 +369,31 @@ define([
                 }
             }
 
+            // Clear
             self.GroupsForMe([]);
-
+            // Binding Groups
             for (i = 0; i < u.groups.length; i++) {
-                self.GroupsForMe.push(
-                    factoryObjects.createGroup(
-                        u.groups[i].id,
-                        u.groups[i].name,
-                        u.groups[i].organization
-                    )
-                );
-
-                // binding main group
-                if (u.groups[i].isMain) {
-                    self.mainGroupForMe(i);
+                // Must get Object belong available list (== adress), to set default value of select element on DOM
+                let index = 0;
+                for (j = 0; j < self.availableGroupsBelongOrg().length; j++) {
+                    if (self.availableGroupsBelongOrg()[j].id == u.groups[i].id) {
+                        index = j;
+                        break;
+                    }
                 }
 
+                // Must use observable to subscribe
+                let groupValue = ko.observable(self.availableGroupsBelongOrg()[index]);
+                groupValue.subscribe(function () {
+                    factoryObjects.handleOnSameSelected(self.GroupsForMe, self.groupsIsSame);            
+                });
+
+                self.GroupsForMe.push( {value: groupValue} );
+
+                // Set main group
+                if (u.groups[i].isMain) {
+                    self.mainGroup(i);
+                }
             }
 
             // 
@@ -423,15 +402,31 @@ define([
             // 
             // 
 
-            self.availableRoles(httpGet.availableRoles);
+            // Clear
             self.RolesForMe([]);
 
+            // Binding Roles
             for (i = 0; i < u.roles.length; i++) {
-                self.RolesForMe.push(factoryObjects.createRole(u.roles[i].id, u.roles[i].name));
+                  // Must get Object belong available list (== adress), to set default value of select element on DOM
+                  let index = 0;
+                  for (j = 0; j < self.availableRoles.length; j++) {
+                      if (self.availableRoles[j].id == u.roles[i].id) {
+                          index = j;
+                          break;
+                      }
+                  }
+  
+                  // Must use observable to subscribe
+                  let roleValue = ko.observable(self.availableRoles[index]);
+                  roleValue.subscribe(function () {
+                      factoryObjects.handleOnSameSelected(self.RolesForMe, self.rolesIsSame);            
+                  });
+  
+                  self.RolesForMe.push( {value: roleValue} );
 
                 // binding main role
                 if (u.roles[i].isMain) {
-                    self.mainRoleForMe(i);
+                    self.mainRole(i);
                 }
 
             }
@@ -459,7 +454,7 @@ define([
 
                 // binding main work phone
                 if (u.workPhone[i].isMain) {
-                    self.mainWorkPhoneForMe(i);
+                    self.mainWorkPhoneNumber(i);
                 }
 
             }
@@ -486,7 +481,7 @@ define([
 
                 // binding main mobile phone
                 if (u.mobile[i].isMain) {
-                    self.mainMobilePhoneForMe(i);
+                    self.mainMobileNumber(i);
                 }
             }
 
@@ -513,7 +508,7 @@ define([
 
                 // binding main private phone
                 if (u.privatePhone[i].isMain) {
-                    self.mainPrivatePhoneForMe(i);
+                    self.mainPrivatePhoneNumber(i);
                 }
 
             }
@@ -536,7 +531,7 @@ define([
 
                 // binding main email
                 if (u.email[i].isMain) {
-                    self.mainWorkEmailForMe(i);
+                    self.mainWorkEmail(i);
                 }
             }
 
@@ -551,10 +546,10 @@ define([
                     console.log('-----------------');
 
                     self.personalID = u.id;
-                    // self.mapDataByObject(u);
+                    self.mapDataByObject(u);
 
                     // use data example (dataEx) to test
-                    self.mapDataByObject(dataEx);
+                    // self.mapDataByObject(dataEx);
 
                 },
                     function (error) {
