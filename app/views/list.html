@@ -1,88 +1,92 @@
-<section class="container">
+<section>
   <br /><br />
 
-  <!--Button which to add user-->
-  <!--Click here to transfer to Create-->
-  <div class="row">
-
-    <div class="col-md-3 col-md-offset-1">
-      <a data-bind="click: addUser" class="btn btn-info">
+  <div class="container">
+    <!--Button which to add user-->
+    <!--Click here to transfer to Create-->
+    <div style="float:left; width: 20%;">
+      <a data-bind="click: addUser" class="btn btn-info btn-lg pull-right" id="btnAdd">
         <span class="glyphicon glyphicon-plus-sign"></span> Add
       </a>
-    </div>
 
-    <div class="col-md-4">
-      <input id="searchId" style="color:black; border: 1px #bdc7d8 solid" type="text" class="form-control" placeholder="Search"
-        title="Search User" data-bind="textInput: keySearch, event: { keyup: search }, valuaUpdate: keyup">
-    </div>
+      <br /><br /><br />
 
-    <div class="col-md-3">
-      <button data-bind="click: toggleVisibility" class="btn btn-info">Advanced search</button>
-    </div>
+      <form class="navbar-form navbar-right" role="search" id="frSearch">
+        <div class="form-group">
+          <input style="color:black;" type="text" class="form-control" placeholder="Search" title="Search User"
+            data-bind="textInput: keySearch, event: { keyup: search }, valuaUpdate: keyup">
+        </div>
+      </form>
 
-  </div>
-  <hr>
-  <div class="row ">
-    <div data-bind="visible: isShowAdvancedSearch" class="col-md-offset-3 col-md-7 ">
+      <br /><br /><br /><br />
 
-      <div class="col-md-5">
+      <button style="position: fixed;" data-bind="click: toggleVisibility" class="btn btn-info">Advanced search</button>
+      <br /><br /><br />
+      <div style="position:fixed" data-bind="visible: isShowAdvancedSearch">
         <div class="form-group">
           <label>Organization / Company</label>
+          <br />
           <select data-bind="       options: availableOrganizations,
-                                    optionsText: 'name',
-                                    optionsCaption: 'Choose...',
-                                    value: selectedOrganization" class="form-control border-input"></select>
+                                          optionsText: 'name',
+                                          optionsCaption: 'Choose...',
+                                          value: selectedOrganization"
+            class="form-control border-input"></select>
         </div>
-      </div>
 
-      <div class="col-md-3">
         <div class="form-group">
           <label>Group / Department</label>
+          <br />
           <select multiple="multiple" data-bind=" options: availableGroups,
-                                                  optionsText: 'name',
-                                                  value: 'value',
-                                                  multiselect: {
-                                                    includeSelectAllOption: true
-                                                  }" class="form-control border-input"></select>
+                                                          optionsText: 'name',
+                                                          value: 'value',
+                                                          multiselect: {
+                                                            includeSelectAllOption: true
+                                                          }"
+            class="form-control border-input"></select>
         </div>
-
       </div>
-
-
     </div>
     <!-- end button -->
 
-    <br /><br /><br />
+    <style>
+      .vl {
+        border-left: 2px solid lightslategray;
+        height: 70%;
+        position: fixed;
+        left: 25%;
+      }
+    </style>
+    <div class="vl"></div>
 
     <!--User Info-->
-    <table>
-      <tbody class="row user-row" data-bind="foreach: lUsers, visible: lUsers().length > 0">
-        <tr data-bind="click: $root.viewProfile">
-          <!--User's Image-->
-          <td id="col1">
-            <img class="image-profile" data-bind="attr:{src: profileImage}" alt="User Pic" />
-          </td>
-          <!-- End image -->
-
-          <!--Info-->
-          <td id="col2">
-            <strong data-bind="text: firstName + ' ' + lastName"></strong><br />
-            <span data-bind="text: roles[0].name"></span><br />
-            <!-- <span class="text-muted" data-bind="text: mainGroup.name"></span><br /> -->
-            <span class="text-muted" data-bind="text: organization.name"></span>
-          </td>
-          <!-- End Info -->
-
-          <!--Click here to transfer to detail Info-->
-          <td id="col3">
-            <a href="#">
-              <span class="glyphicon glyphicon-chevron-right" id="btnMore"></span>
-            </a>
-          </td>
-          <!-- End More Info -->
-
-        </tr>
-      </tbody>
-    </table>
+    <p style="float:right; width: 80%; text-align: center;" data-bind="visible: displayMess">Don't have any user to
+      show.<br />Please press Add on the left to add user.</p>
+    <div style="float:right; width: 80%" class="row" data-bind="foreach: lUsers, visible: lUsers().length > 0">
+      <div class="col-md-4 user-grids">
+        <!-- normal -->
+        <div class="ih-item circle effect5">
+          <a data-bind="click: $root.viewProfile">
+            <div class="img"><img data-bind="attr:{src: profileImage}" src="" alt="User Pic" class="img-responsive"></div>
+            <div class="info">
+              <div class="info-back">
+                <h3 data-bind="text: firstName + ' ' + lastName"></h3>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="user-bottom">
+          <ul>
+            <li><strong data-bind="text: firstName + ' ' + lastName"></strong></li><br />
+            <li data-bind="text: organization.name"></li><br />
+            <li data-bind="text: roles[0].name"></li><br />
+            <li data-bind="text: mainGroup.name"></li>
+          </ul>
+        </div>
+        <!-- end normal -->
+      </div>
+    </div>
     <!-- End -->
+  </div>
+
+
 </section>

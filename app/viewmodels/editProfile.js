@@ -550,7 +550,6 @@ define([
 
                     // use data example (dataEx) to test
                     // self.mapDataByObject(dataEx);
-
                 },
                     function (error) {
                         console.log('Error when Get user by id');
