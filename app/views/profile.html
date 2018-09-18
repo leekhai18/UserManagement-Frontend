@@ -1,143 +1,145 @@
-<div class="content">
-    <div class="container-fluid">
-        <h3 style="margin-top: 45px;" class="col-lg-8 col-md-7">Detail Profile: <span data-bind="text: fullName()"></span></h3>
-
-
-        <div class="row">
-
-            <!-- Profile -->
-            <div class="col-lg-8 col-md-7 col-sm-6 col-xs-5">
-                <div class="card">
-                    <div class="content">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>First Name</label>
-                                    <div data-bind="text: firstName" class="card-item"> </div>
+<section>
+    <div class="content">
+        <div class="container-fluid">
+            <h3 style="margin-top: 45px;" class="col-lg-8 col-md-7">Detail Profile: <span data-bind="text: fullName()"></span></h3>
+    
+    
+            <div class="row">
+    
+                <!-- Profile -->
+                <div>
+                    <div class="card">
+                        <div class="content">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>First Name</label>
+                                        <div data-bind="text: firstName" class="card-item"> </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Last Name</label>
-                                    <div data-bind="text: lastName" class="card-item"> </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Personnel ID</label>
-                                    <div data-bind="text: personalID" class="card-item"> </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Organization / Company</label>
-                                    <div data-bind="text: organization" class="card-item"> </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Group / Department</label>
-                                    <div class="selected-item" data-bind="foreach: GroupsForMe">
-                                        <div data-bind="text: $data.name" class="card-item"> </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Last Name</label>
+                                        <div data-bind="text: lastName" class="card-item"> </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Role / Job Title</label>
-                                    <div class="selected-item" data-bind="foreach: RolesForMe">
-                                        <div data-bind="text: $data.name" class="card-item"> </div>
+    
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Personnel ID</label>
+                                        <div data-bind="text: personalID" class="card-item"> </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Work phone number</label>
-                                    <div class="selected-item" data-bind="foreach: workPhoneNumbers">
+    
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Organization / Company</label>
+                                        <div data-bind="text: organization" class="card-item"> </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Group / Department</label>
+                                        <div class="selected-item" data-bind="foreach: GroupsForMe">
+                                            <div data-bind="text: $data.name" class="card-item"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Role / Job Title</label>
+                                        <div class="selected-item" data-bind="foreach: RolesForMe">
+                                            <div data-bind="text: $data.name" class="card-item"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Work phone number</label>
+                                        <div class="selected-item" data-bind="foreach: workPhoneNumbers">
+                                            <div class="item-wrapper">
+                                                <div data-bind="text: $data.number" class="card-item"> </div>
+                                                <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Mobile number</label>
+                                        <div class="selected-item" data-bind="foreach: mobileNumbers">
+                                            <div class="item-wrapper">
+                                                <div data-bind="text: $data.number" class="card-item"> </div>
+                                                <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Private phone number</label>
                                         <div class="item-wrapper">
-                                            <div data-bind="text: $data.number" class="card-item"> </div>
-                                            <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
+                                            <div class="selected-item" data-bind="foreach: privatePhoneNumbers">
+                                                <div data-bind="text: $data.number" class="card-item"> </div>
+                                                <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Work E-Mail</label>
+                                        <div class="selected-item" data-bind="foreach: workEmails">
+                                            <div class="item-wrapper">
+                                                <div data-bind="text: $data.address" class="card-item"> </div>
+                                                <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Mobile number</label>
-                                    <div class="selected-item" data-bind="foreach: mobileNumbers">
-                                        <div class="item-wrapper">
-                                            <div data-bind="text: $data.number" class="card-item"> </div>
-                                            <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
-                                        </div>
-                                    </div>
-                                </div>
+    
+    
+                            <div class="text-center">
+                                <button data-bind="click: edit" class="btn btn-warning btn-fill btn-wd btn-edit">Edit</button>
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Private phone number</label>
-                                    <div class="item-wrapper">
-                                        <div class="selected-item" data-bind="foreach: privatePhoneNumbers">
-                                            <div data-bind="text: $data.number" class="card-item"> </div>
-                                            <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Work E-Mail</label>
-                                    <div class="selected-item" data-bind="foreach: workEmails">
-                                        <div class="item-wrapper">
-                                            <div data-bind="text: $data.address" class="card-item"> </div>
-                                            <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="text-center">
-                            <button data-bind="click: edit" class="btn btn-warning btn-fill btn-wd btn-edit">Edit</button>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Avatar -->
-            <div class="col-lg-4 col-md-5 col-sm-6 col-xs-7">
-                <br>
-                <div class="card card-user">
-                    <div class="image">
-                        <img src="assets/img/background.jpg" alt="..." />
-                    </div>
-                    <div class="content">
-                        <div class="author">
-                            <img class="avatar border-white" data-bind="attr: {src:photoUrl() || 'assets/img/faces/face-2.jpg'}" />
+                            <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
+    
+                <!-- Avatar -->
+                <div class="col-lg-4 col-md-5 col-sm-6 col-xs-7">
+                    <br>
+                    <div class="card card-user">
+                        <div class="image">
+                            <img src="assets/img/background.jpg" alt="..." />
+                        </div>
+                        <div class="content">
+                            <div class="author">
+                                <img class="avatar border-white" data-bind="attr: {src:photoUrl() || 'assets/img/faces/face-2.jpg'}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
             </div>
-
         </div>
     </div>
-</div>
+</section>
