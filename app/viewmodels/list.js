@@ -1,110 +1,88 @@
-define(['knockout', 'plugins/http', 'plugins/router', 'knockout.validation'],
-    function (ko, http, router) {
-        //list of users
-        var lUsers = ko.observableArray([]);
-        var keySearch = ko.observable();
+define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'knockout.validation', 'bootstrap.multiselect'],
+    function (ko, http, httpGet, router, $) {
 
-        //Info of user
-        function userInfo(data) {
+        var ProfileModel = function () {
             var self = this;
-            self.firstName = ko.observable(data.firstName);
-            self.lastName = ko.observable(data.lastName);
-            self.role = ko.observable(data.role);
-            self.group = ko.observable(data.group);
-            self.organization = ko.observable(data.organization);
-            self.image = ko.observable(data.image);
-        }
 
-        var addUser = function () {
-            // console.log("Add User");
-            router.navigate("create");
-        }
+            // intit
 
-        var getAllUsers = function () {
+            //list of users
+            self.lUsers = ko.observableArray([]);
+            self.keySearch = ko.observable();
+            self.selectedOrganization = ko.observable();
+            self.availableOrganizations = ko.observableArray([]);
+            self.availableGroups = ko.observableArray([]);
+            self.isShowAdvancedSearch = ko.observable(false);
 
-            //clear
-            lUsers.removeAll();
-
-            // use plugin HTTP of Durandaljs
-            // http.get('http://localhost:16567/api/user')
-
-            http.get('https://localhost:5001/api/user')
-                .then(function (u) {
-
-                    console.log(u);
-
-                    u.forEach(element => {
-                        lUsers.push(element);
-                    });
-
-                }, function (error) {
-                    alert("Error: Can't connect to server.");
-                });
-
-
-            // $.ajax({
-            //     url: 'https://localhost:5001/api/user',
-            //     // data: this.toJSON(data),
-            //     type: 'GET',
-            //     contentType: 'application/json',
-            //     dataType: 'json',
-            //     // headers: ko.toJS(headers),
-            //     success: function (u) {
-            //         console.log(u);
-
-            //         u.forEach(element => {
-            //             lUsers.push(element);
-            //         });
-            //     },
-            //     error: function (jqXHR, textStatus, errorThrown) {
-            //         // if (jqXHR.status === '401') {
-            //         // }
-
-            //         alert("Error: Can't connect to server.");
-            //     }
-
-            // });
-        }
-
-        var searchUser = function(keySearch){
-            lUsers.removeAll();
-
-            http.get('https://localhost:5001/api/search?name=' + keySearch)
-                .then(function (u) {
-
-                    console.log(u);
-
-                    u.forEach(element => {
-                        lUsers.push(element);
-                    });
-
-                }, function (error) {
-                    alert("Error: Can't connect to server.");
-                });
-        }
-
-        var viewProfile = function (profile) {
-            console.log(profile);
-            router.navigate("profile/" + profile.id);
-        }
-
-        return {
-
-            activate: function () {
-                // console.log('Activate Page');
-                getAllUsers();
-            },
-
-            lUsers: lUsers,
-            addUser: addUser,
-
-            viewProfile: viewProfile,
-
-            keySearch: keySearch,
-
-            search: function(keySearch){
-                console.log(this.keySearch());
-                searchUser(this.keySearch());
+            self.addUser = function () {
+                router.navigate("create");
             }
-        };
+
+            self.getAllUsers = function () {
+
+                //clear
+                self.lUsers.removeAll();
+
+                http.get('https://localhost:5001/api/user')
+                    .then(function (u) {
+
+                        console.log('Getting all user by id');
+                        console.log(u);
+                        console.log('----------------------');
+
+                        u.forEach(element => {
+                            self.lUsers.push(element);
+                        });
+
+                    }, function (error) {
+                        alert("Error: Can't connect to server.");
+                    });
+            }
+
+            self.searchUser = function (keySearch) {
+                self.lUsers.removeAll();
+
+                http.get('https://localhost:5001/api/search?name=' + keySearch)
+                    .then(function (u) {
+
+                        console.log('Search user by name');
+                        console.log(u);
+
+                        u.forEach(element => {
+                            self.lUsers.push(element);
+                        });
+
+                    }, function (error) {
+                        alert("Error: Can't connect to server.");
+                    });
+            }
+
+            self.viewProfile = function (profile) {
+                console.log(profile);
+                router.navigate("profile/" + profile.id);
+            }
+
+
+            self.toggleVisibility = function () {
+                console.log("adfsdf")
+                self.isShowAdvancedSearch(!self.isShowAdvancedSearch());
+            };
+
+            self.activate = function () {
+                self.getAllUsers();
+            };
+
+            self.search = function () {
+                console.log(self.keySearch());
+                self.searchUser(self.keySearch());
+            };
+
+            // get data from server
+            self.availableOrganizations(httpGet.availableOrganizations);
+            self.availableGroups(httpGet.availableGroups);
+
+
+        }
+
+        return new ProfileModel();
     });

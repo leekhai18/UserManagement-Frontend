@@ -9,7 +9,8 @@
         // 'bootstrap': '../lib/bootstrap/js/bootstrap',
         // 'jquery': '../lib/jquery/jquery-1.9.1',
         'jquery': '../assets/js/jquery-1.10.2',
-        'knockout.validation': '../lib/knockout/knockout.validation/dist/knockout.validation.min'
+        'knockout.validation': '../lib/knockout/knockout.validation/dist/knockout.validation.min',
+        'httpGet' : './viewmodels/httpGet',
     },
     shim: {
         'bootstrap': {
