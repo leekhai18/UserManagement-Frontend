@@ -19,46 +19,15 @@
    <br/><br/><br/>
 
   <!--User Info-->
-  <table>
-    <tbody class="row user-row" data-bind="foreach: lUsers, visible: lUsers().length > 0">
-      <tr data-bind="click: $root.viewProfile">
-        <!--User's Image-->
-        <td id="col1">
-          <img class="image-profile"
-            data-bind="attr:{src: profileImage}"
-            alt="User Pic"/>
-        </td>
-        <!-- End image -->
-
-        <!--Info-->
-        <td id="col2">
-          <strong data-bind="text: firstName + ' ' + lastName"></strong><br/>
-          <span data-bind="text: roles[0].name"></span><br/>
-          <span class="text-muted" data-bind="text: mainGroup.name"></span><br/>
-          <span class="text-muted" data-bind="text: organization.name"></span>
-        </td>
-        <!-- End Info -->
-
-        <!--Click here to transfer to detail Info-->
-        <td id="col3">
-          <a href="#">
-            <span class="glyphicon glyphicon-chevron-right" id="btnMore"></span>
-          </a>
-        </td>
-        <!-- End More Info -->
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="container">
-      <div class="col-md-4 user-grids" data-bind="foreach: lUsers, visible: lUsers().length > 0">
+  <div class="row" data-bind="foreach: lUsers, visible: lUsers().length > 0">
+      <div class="col-md-4 user-grids">
           <!-- normal -->
           <div class="ih-item circle effect5">
-            <a>
+            <a data-bind="click: $root.viewProfile">
                 <div class="img"><img data-bind="attr:{src: profileImage}" src="" alt="User Pic" class="img-responsive"></div>
-                <div class="info">
+                <div class="info" >
                     <div class="info-back">
-                      <h3 data-bind="text: firstName + ' ' + lastName, click: $root.viewProfile"></h3>		           	            
+                      <h3 data-bind="text: firstName + ' ' + lastName"></h3>		           	            
                     </div>
                 </div>
             </a>

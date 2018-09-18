@@ -122,6 +122,22 @@ table {
 .user-grids {
     width: 100%;
 }
+.user-grids {
+    margin: 1em auto 0em;
+}
+.user-grids {
+    float: left;
+    width: 50%;
+    margin-bottom: 2em;
+}
+.user-grids {
+    width: 50%;
+    float: left;
+    margin-bottom: 2em;
+}
+.team-grids {
+    width: 100%;
+}
 
 .ih-item {
     position: relative;
