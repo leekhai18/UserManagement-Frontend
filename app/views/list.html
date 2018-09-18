@@ -1,12 +1,14 @@
 <section>
   <br/><br/>
 
+  <div class="container">
   <!--Button which to add user-->
   <!--Click here to transfer to Create-->
-  <div>
+  <div style="float:left; width: 20%;">
     <a data-bind="click: addUser"  class="btn btn-info btn-lg pull-right" id="btnAdd">
       <span class="glyphicon glyphicon-plus-sign"></span> Add
     </a>
+    <br/><br/><br/>
 
     <form class="navbar-form navbar-right" role="search" id="frSearch">
       <div class="form-group">
@@ -16,10 +18,18 @@
   </div>
   <!-- end button -->
 
-   <br/><br/><br/>
+  <style>
+      .vl {
+          border-left: 2px solid lightslategray;
+          height: 100%;
+          position: fixed;
+          left: 25%;
+      }
+  </style>
+  <div class="vl"></div>
 
   <!--User Info-->
-  <div class="row" data-bind="foreach: lUsers, visible: lUsers().length > 0">
+  <div style="float:right; width: 80%" class="row" data-bind="foreach: lUsers, visible: lUsers().length > 0">
       <div class="col-md-4 user-grids">
           <!-- normal -->
           <div class="ih-item circle effect5">
@@ -62,4 +72,5 @@
     <a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
   <!-- end to Top -->
   <!-- End -->
+  </div>
 </section>
