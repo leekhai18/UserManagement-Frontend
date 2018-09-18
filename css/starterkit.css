@@ -75,15 +75,17 @@ section {
 }
 
 #btnAdd {
-    margin-left: 10%;
+    background-color: #fff;
+    position: fixed;
 }
 
 #frSearch {
-    margin-right: 10%;
     border: 1px;
     border-style: solid;
     border-color: #bdc7d8;
     font-size: 18px;
+    position: fixed;
+    right: 0px;
 }
 
 table {
@@ -316,4 +318,18 @@ table {
 	background-color: #fff;
 	clear: left;
 	
+}
+
+#toTop {
+	display: none;
+	text-decoration: none;
+	position: fixed;
+	bottom: 10px;
+	right: 0px;
+	overflow: hidden;
+	width: 48px;
+	height: 48px;
+	border: none;
+	text-indent: 100%;
+	background: url(../top_mover.png) no-repeat 0px 0px;
 }
