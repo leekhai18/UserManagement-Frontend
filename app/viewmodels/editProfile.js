@@ -551,10 +551,10 @@ define([
                     console.log('-----------------');
 
                     self.personalID = u.id;
-                    // self.mapDataByObject(u);
+                    self.mapDataByObject(u);
 
                     // use data example (dataEx) to test
-                    self.mapDataByObject(dataEx);
+                    //self.mapDataByObject(dataEx);
 
                 },
                     function (error) {

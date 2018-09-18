@@ -48,7 +48,7 @@
       <style>
           .vl {
               border-left: 2px solid lightslategray;
-              height: 30%;
+              height: 70%;
               position: fixed;
               left: 25%;
           }
@@ -56,6 +56,7 @@
       <div class="vl"></div>
     
       <!--User Info-->
+      <p style="float:right; width: 80%; text-align: center;" data-bind="visible: displayMess">Don't have any user to show.<br/>Please press Add on the left to add user.</p>
       <div style="float:right; width: 80%" class="row" data-bind="foreach: lUsers, visible: lUsers().length > 0">
           <div class="col-md-4 user-grids">
               <!-- normal -->
@@ -81,13 +82,5 @@
             </div>
       </div>
       <!-- End -->
-    </div>
-
-    <div class="copy-right">
-      <div class="container">
-         <div class="copy-rights-main wow zoomIn" data-wow-delay="0.3s">
-              <p>© 2018 Rosen | Design by Intern Team</p>
-           </div>
-        </div>
     </div>
   </section>

@@ -13,6 +13,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             self.availableOrganizations = ko.observableArray([]);
             self.availableGroups = ko.observableArray([]);
             self.isShowAdvancedSearch = ko.observable(false);
+            self.displayMess = ko.observable(false);
 
             self.addUser = function () {
                 router.navigate("create");
@@ -34,6 +35,13 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                             self.lUsers.push(element);
                         });
 
+                        if(self.lUsers.length == 0){
+                            self.displayMess(true);
+                        }
+                        else{
+                            self.displayMess(false);
+                        }
+
                     }, function (error) {
                         alert("Error: Can't connect to server.");
                     });
@@ -51,7 +59,6 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                         u.forEach(element => {
                             self.lUsers.push(element);
                         });
-
                     }, function (error) {
                         alert("Error: Can't connect to server.");
                     });
