@@ -338,6 +338,7 @@ table {
     left: 0px;
     right: 0px;
     margin-bottom: 0px;
+    display: block;
 }
 .copy-rights-main p{
 	font-size:1em;
@@ -349,3 +350,196 @@ table {
 .copy-rights-main p a:hover{
 	color:#000;
 }
+
+.container{
+    width: auto;
+}
+#section1 {
+    float: left;
+    width: 20%;
+}
+#section2 {
+    float: right;
+    width: 80%
+}
+#message {
+    float: right;
+    width: 80%;
+    text-align: center;
+}
+
+@media (max-width:1440px){
+	.container {
+        width: auto;
+    }
+}
+@media (max-width:1366px){
+    .container {
+        width: auto;
+    }
+}
+@media (max-width:1280px){
+	.container {
+        width: auto;
+    }
+}
+@media (max-width:1024px){
+	.container {
+        width: auto;
+    }
+}
+@media (max-width:991px){
+	.container {
+        width: auto;
+    }
+}
+@media (max-width:768px){
+	.container {
+        width: auto;
+        height: auto;
+    }
+    #section1 {
+        float: none;
+        top: 0;
+        width: auto;
+    }
+    #section2 {
+        float: none;
+        bottom: 0;
+        width: auto;
+    }
+    #message {
+        float: none;
+        width: auto;
+    }
+    .user-grids{
+        float: none;
+    }
+    .copy-right {
+        width: auto;
+        font-size: 2em;
+    }
+}
+@media (max-width:767px){
+	.container {
+        width: auto;
+    }
+    #section1 {
+        float: none;
+        width: auto;
+    }
+    #section2 {
+        float: none;
+        width: auto;
+    }
+    #message {
+        float: none;
+        width: auto;
+    }
+}
+@media (max-width:667px){
+	.container {
+        width: auto;
+    }
+    #section1 {
+        float: none;
+        width: auto;
+    }
+    #section2 {
+        float: none;
+        width: auto;
+    }
+    #message {
+        float: none;
+        width: auto;
+    }
+}
+@media (max-width:640px){
+	.container {
+        width: auto;
+    }
+    #section1 {
+        float: none;
+        width: auto;
+    }
+    #section2 {
+        float: none;
+        width: auto;
+    }
+    #message {
+        float: none;
+        width: auto;
+    }
+}
+@media (max-width:480px){
+	.container {
+        width: auto;
+    }
+    #section1 {
+        float: none;
+        width: auto;
+    }
+    #section2 {
+        float: none;
+        width: auto;
+    }
+    #message {
+        float: none;
+        width: auto;
+    }
+}
+@media (max-width:375px){
+	.container {
+        width: auto;
+        width: auto;
+    }
+    #section1 {
+        float: none;
+        width: auto;
+    }
+    #section2 {
+        float: none;
+        width: auto;
+    }
+    #message {
+        float: none;
+        width: auto;
+    }
+}
+@media (max-width:360px){
+	.container {
+        width: auto;
+        width: auto;
+    }
+    #section1 {
+        float: none;
+        width: auto;
+    }
+    #section2 {
+        float: none;
+        width: auto;
+    }
+    #message {
+        float: none;
+        width: auto;
+    }
+}
+@media (max-width:320px){
+    .container {
+        width: auto;
+    }
+	#section1 {
+        float: none;
+        width: auto;
+    }
+    #section2 {
+        float: none;
+        width: auto;
+    }
+    #message {
+        float: none;
+        width: auto;
+    }
+}
+
+

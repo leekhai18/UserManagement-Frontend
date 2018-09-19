@@ -25,7 +25,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                 self.lUsers.removeAll();
                 var dem = 0;
 
-                http.get('https://localhost:5001/api/user')
+                http.get('https://localhost:5001/api/user/light')
                     .then(function (u) {
 
                         console.log('Getting all user by id');
