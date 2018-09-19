@@ -4,7 +4,7 @@
   <div class="container">
     <!--Button which to add user-->
     <!--Click here to transfer to Create-->
-    <div style="float:left; width: 20%;">
+    <div id="section1">
       <a data-bind="click: addUser" class="btn btn-info btn-lg pull-right" id="btnAdd">
         <span class="glyphicon glyphicon-plus-sign"></span> Add
       </a>
@@ -48,7 +48,7 @@
     </div>
     <!-- end button -->
 
-    <style>
+    <!-- <style>
       .vl {
         border-left: 2px solid lightslategray;
         height: 70%;
@@ -56,34 +56,38 @@
         left: 25%;
       }
     </style>
-    <div class="vl"></div>
+    <div class="vl"></div> -->
+    <br/>
 
     <!--User Info-->
-    <p style="float:right; width: 80%; text-align: center;" data-bind="visible: displayMess">Don't have any user to
+    <p id="message" data-bind="visible: displayMess">Don't have any user to
       show.<br />Please press Add on the left to add user.</p>
-    <div style="float:right; width: 80%" class="row" data-bind="foreach: lUsers, visible: lUsers().length > 0">
-      <div class="col-md-4 user-grids">
-        <!-- normal -->
-        <div class="ih-item circle effect5">
-          <a data-bind="click: $root.viewProfile">
-            <div class="img"><img data-bind="attr:{src: profileImage}" src="" alt="User Pic" class="img-responsive"></div>
-            <div class="info">
-              <div class="info-back">
-                <h3 data-bind="text: firstName + ' ' + lastName"></h3>
+    <div id="section2">
+        <div class="row" data-bind="foreach: lUsers, visible: lUsers().length > 0">
+            <div class="col-md-4 col-sm-4 col-xs-4 user-grids">
+              <!-- normal -->
+              <div class="ih-item circle effect5" title="Click here to view detail">
+                <a data-bind="click: $root.viewProfile">
+                  <div class="img"><img data-bind="attr:{src: profileImage}" src="" alt="User Pic" class="img-responsive"></div>
+                  <div class="info">
+                    <div class="info-back">
+                      <h3 data-bind="text: firstName + ' ' + lastName"></h3>
+                    </div>
+                  </div>
+                </a>
               </div>
+              <div class="user-bottom">
+                <ul>
+                  <li><strong data-bind="text: firstName + ' ' + lastName"></strong></li><br />
+                  <li data-bind="text: organization.name"></li><br />
+                  <li data-bind="text: mainRole.name"></li><br />
+                  <li data-bind="text: mainGroup.name"></li>
+                </ul>
+              </div>
+              <!-- end normal -->
             </div>
-          </a>
-        </div>
-        <div class="user-bottom">
-          <ul>
-            <li><strong data-bind="text: firstName + ' ' + lastName"></strong></li><br />
-            <li data-bind="text: organization.name"></li><br />
-            <li data-bind="text: roles[0].name"></li><br />
-            <!-- <li data-bind="text: mainGroup.name"></li> -->
-          </ul>
-        </div>
-        <!-- end normal -->
-      </div>
+          </div>
+          
     </div>
     <!-- End -->
   </div>
