@@ -23,6 +23,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
                 //clear
                 self.lUsers.removeAll();
+                var dem = 0;
 
                 http.get('https://localhost:5001/api/user')
                     .then(function (u) {
@@ -33,10 +34,14 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
                         u.forEach(element => {
                             self.lUsers.push(element);
+                            dem++;
                         });
 
-                        if(self.lUsers.length == 0){
+                        console.log(dem);
+
+                        if(dem == 0){
                             self.displayMess(true);
+                            console.log('dont have any user');
                         }
                         else{
                             self.displayMess(false);
@@ -56,9 +61,21 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                         console.log('Search user by name');
                         console.log(u);
 
+                        var dem = 0;
+
                         u.forEach(element => {
                             self.lUsers.push(element);
+                            dem++;
                         });
+
+                        if(dem == 0){
+                            self.displayMess(true);
+                            console.log('dont have any user');
+                        }
+                        else{
+                            self.displayMess(false);
+                        }
+
                     }, function (error) {
                         alert("Error: Can't connect to server.");
                     });
