@@ -85,7 +85,7 @@ define([
 
             self.GroupsForMe([]);
             u.groups.forEach(element => {
-                self.GroupsForMe.push(factoryObjects.createGroup(element.id, element.name, element.organization));
+                self.GroupsForMe.push(factoryObjects.createGroup(element.id, element.name, element.organization, element.isMain));
             })
 
             // 
@@ -96,7 +96,7 @@ define([
 
             self.RolesForMe([]);
             u.roles.forEach(element => {
-                self.RolesForMe.push(factoryObjects.createRole(element.id, element.name));
+                self.RolesForMe.push(factoryObjects.createRole(element.id, element.name, element.isMain));
             })
 
             // 

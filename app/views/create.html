@@ -30,8 +30,7 @@
                                     <div class="form-group">
                                         <label>Personnel ID</label>
                                         <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
-                                        <input data-bind="textInput: personnelID, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Personnel ID" 
-                                            value="">
+                                        <input data-bind="textInput: personnelID, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Personnel ID" >
                                     </div>
                                 </div>
                             </div>
@@ -213,18 +212,31 @@
                         <div class="author">
                             <img class="avatar border-white" data-bind="attr: {src:photoUrl() || 'assets/img/faces/face-2.jpg'}" />
                             <input type="file" accept="image/*" style="margin: 0 auto;    padding-bottom: 20px;color:transparent; width:70px;" data-bind="event:{change: imageUpload}">
-                            <h4 data-bind="text: fullName()" class="title">Full Name</h4>
-                            <!-- <h5><small data-bind="text: workEmails()[0].value">Main email</small></h5> -->
+                            <h3 data-bind="text: fullName()" class="title">Full Name</h3>
+                            <p data-bind="text: personnelID" class="title">ID</p>
+                            <p data-bind="text: titleOrganization" class="title">Organization</p>
+                            <p data-bind="text: titleMainGroup" class="title">Main Group</p>
+                            <p data-bind="text: titleMainRole" class="title">Main Role</p>
+                            <p data-bind="text: titleMainEmail" class="title">Main Work-Email</p>
                         </div>
-
-                        <p class="description text-center">
-                            "I like the way you work it <br> No diggity <br> I wanna bag it up"
-                        </p>
                     </div>
                     <hr><br>
                 </div>
             </div>
 
+            <!-- ErrorList -->
+            <div class="col-lg-4 col-md-5" data-bind="if: errorList().length > 0">
+                <br>
+                <div class="card card-user">
+                    <div class="content">
+                        <h4>Error from server</h4>
+                        <ul data-bind="foreach: errorList">
+                            <li data-bind="text: $data"></li>
+                        </ul> 
+                    </div>
+                    <hr>
+                </div>
+            </div>
 
         </div>
     </div>
