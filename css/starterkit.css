@@ -356,6 +356,7 @@ table {
 #section1 {
     float: left;
     width: 20%;
+    position: fixed;
 }
 #section2 {
     float: right;
@@ -365,6 +366,10 @@ table {
     float: right;
     width: 80%;
     text-align: center;
+}
+.scroll-box {
+    overflow: auto;
+    height: 100%;
 }
 
 @media (max-width:1440px){
@@ -392,24 +397,21 @@ table {
         width: 100%;
     }
     #section1 {
-        float: none;
-        width: 100% ;
+        float: top;
         height: 30%;
     }
     #section2 {
-        float: none;
-        top: 30%;
-        width: 100%;
+        float: bottom;
+        top: 40%;
         position: fixed;
         
     }
     #message {
         float: none;
+        top: 30%;
         width: auto;
     }
-    .user-grids{
-        
-    }
+
     .copy-right {
         width: auto;
         /* font-size: 2em; */
