@@ -47,7 +47,10 @@
                                 <div class="form-group">
                                     <label>Group / Department</label>
                                     <div class="selected-item" data-bind="foreach: GroupsForMe">
-                                        <div data-bind="text: $data.name" class="card-item"> </div>
+                                        <div class="item-wrapper">
+                                            <div data-bind="text: $data.name" class="card-item"> </div>
+                                            <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -56,7 +59,10 @@
                                 <div class="form-group">
                                     <label>Role / Job Title</label>
                                     <div class="selected-item" data-bind="foreach: RolesForMe">
-                                        <div data-bind="text: $data.name" class="card-item"> </div>
+                                        <div class="item-wrapper">
+                                            <div data-bind="text: $data.name" class="card-item"> </div>
+                                            <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

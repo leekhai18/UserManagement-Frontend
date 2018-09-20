@@ -80,7 +80,7 @@ define([
         });
 
         // Init Id
-        self.personnelID = ko.observable("");
+        self.personnelID = null;
 
         // Init for available
         self.availableGroups = httpGet.availableGroups;
@@ -93,7 +93,7 @@ define([
         self.mainRole = ko.observable(0).extend({ required: { params: true, message: '_' } });
         self.mainWorkPhoneNumber = ko.observable().extend({ required: { params: true, message: '_' } });
         self.mainMobileNumber = ko.observable().extend({ required: { params: true, message: '_' } });
-        self.mainPrivatePhoneNumber = ko.observable().extend({ required: { params: true, message: '_' } });
+        self.mainPrivatePhoneNumber = ko.observable().extend({ required: { params: false, message: '_' } });
         self.mainWorkEmail = ko.observable().extend({ required: { params: true, message: '_' } });
 
         // Init for isSameValue
@@ -126,7 +126,7 @@ define([
         /////////////////////////  //////  //////  //////  //////  //////  //////  
 
         self.addGroup = function () {
-            factoryObjects.addIntelValue(self.availableGroupsBelongOrg(), self.GroupsForMe, self.groupsIsSame);
+            factoryObjects.addIntelValue(self.availableGroupsBelongOrg(), self.GroupsForMe, self.groupsIsSame, null, null);
         };
 
         self.removeGroup = function (group) {
@@ -141,7 +141,7 @@ define([
         /////////////////////////  //////  //////  //////  //////  //////  //////  
 
         self.addRole = function () {
-            factoryObjects.addIntelValue(self.availableRoles, self.RolesForMe, self.rolesIsSame);
+            factoryObjects.addIntelValue(self.availableRoles, self.RolesForMe, self.rolesIsSame, null, null);
         };
 
         self.removeRole = function (role) {
@@ -246,8 +246,6 @@ define([
             }
         };
 
-        self.personalID = null;
-
         self.validated = ko.validatedObservable(self);
 
         // Save func
@@ -259,41 +257,44 @@ define([
 
                 app.showMessage('Are you sure you want to edit profile?', 'Verify', ['Yes', 'No'])
                     .then(function (result) {
+                        // Contract update
                         if (result == 'Yes') {
                             var editedProfile = {
+                                id: self.personnelID,
                                 firstName: self.firstName(),
                                 lastName: self.lastName(),
                                 organizationId: self.selectedOrganization(),
                                 groups: utilities.jsonSerializeSelected(self.GroupsForMe(), self.mainGroup()),
                                 roles: utilities.jsonSerializeSelected(self.RolesForMe(), self.mainRole()),
-                                workPhone: utilities.jsonSerializeInputText(self.workPhoneNumbers(), self.mainWorkPhoneNumber()),
-                                privatePhone: utilities.jsonSerializeInputText(self.privatePhoneNumbers(), self.mainPrivatePhoneNumber()),
-                                mobile: utilities.jsonSerializeInputText(self.mobileNumbers(), self.mainMobileNumber()),
-                                email: utilities.jsonSerializeInputText(self.workEmails(), self.mainWorkEmail()),
+                                workPhone: utilities.jsonSerializeInputTextForNumber(self.workPhoneNumbers(), self.mainWorkPhoneNumber()),
+                                privatePhone: utilities.jsonSerializeInputTextForNumber(self.privatePhoneNumbers(), self.mainPrivatePhoneNumber()),
+                                mobile: utilities.jsonSerializeInputTextForNumber(self.mobileNumbers(), self.mainMobileNumber()),
+                                email: utilities.jsonSerializeInputTextForEmail(self.workEmails(), self.mainWorkEmail()),
                                 profileImage: self.profileImage
                             };
 
-                            console.log("editedProfile: ");
+                            console.log('edit profile');
                             console.log(editedProfile);
 
-                            // http.put('https://localhost:5001/api/user/' + self.personnelID(), editedProfile)
-                            //     .then(function (response) {
-                            //         console.log('Updating user by id');
-                            //         console.log(response);
-                            //         console.log('-------------------');
+                            http.put('https://localhost:5001/api/user/', editedProfile)
+                                .then(function (response) {
+                                    console.log('Updated user');
+                                    console.log(editedProfile);
+                                    console.log('-------------');
 
-                            //         app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
-                            //             if (result == 'Yes') {
-                            //                 console.log(editedProfile);
-                            //             }
-                            //         });
-                            //     }, function (error) {
-                            //         console.log('ERROR when Update user by id');
-                            //         console.log(error);
-                            //         console.log('----------------------------');
+                                    app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
+                                        if (result == 'Yes') {
+                                            // navigate to home page
+                                            router.navigate('profile/' + response);
+                                        }
+                                    });
+                                }, function (error) {
+                                    console.log('ERROR when Update user');
+                                    console.log(error);
+                                    console.log('-----------------------');
 
-                            //         app.showMessage(error.responseText, 'Error!', ['Yes']);
-                            //     });
+                                    app.showMessage(error.responseText, 'Error!', ['Yes']);
+                                });
                         }
                     });
             }
@@ -304,9 +305,9 @@ define([
             app.showMessage('Do you really want to delete this user profile permanently?', 'Verify', ['Yes', 'Can'])
                 .then(function (result) {
                     if (result == "Yes") {
-                        if (self.personnelID()) {
+                        if (self.personnelID) {
 
-                            http.remove('https://localhost:5001/api/user/' + self.personnelID())
+                            http.remove('https://localhost:5001/api/user/' + self.personnelID)
                                 .then(function (response) {
                                     console.log('Deleting user by id');
                                     console.log(response);
@@ -332,12 +333,19 @@ define([
 
         // Cancle func
         self.cancle = function () {
-            router.navigate('profile/' + self.personalID);
+            router.navigate('profile/' + self.personnelID);
         }
 
 
         // Mapping data func
         self.mapDataByObject = function (u) {
+            // Check via id user
+            if (self.personnelID != u.id) {
+                app.showMessage('Get Wrong User', 'Wrong!', ['Yes']);
+                router.navigate('');
+            }
+        
+
             // 
             // 
             // simple
@@ -345,8 +353,8 @@ define([
             // 
             self.firstName(u.firstName);
             self.lastName(u.lastName);
-            self.personnelID(u.id);
             self.photoUrl(u.profileImage);
+            self.profileImage = u.profileImage;
 
             // 
             // 
@@ -363,32 +371,39 @@ define([
             // 
 
             self.availableGroupsBelongOrg([]);
-            for (i = 0; i < self.availableGroups.length; i++) {
+            for (let i = 0; i < self.availableGroups.length; i++) {
                 if (self.availableGroups[i].organization.id == self.selectedOrganization()) {
                     self.availableGroupsBelongOrg.push(self.availableGroups[i]);
                 }
             }
 
             // Clear
-            self.GroupsForMe([]);
+            self.GroupsForMe.removeAll();
+            console.log(self.GroupsForMe().length);
+
             // Binding Groups
-            for (i = 0; i < u.groups.length; i++) {
+            for (let i = 0; i < u.groups.length; i++) {
                 // Must get Object belong available list (== adress), to set default value of select element on DOM
                 let index = 0;
-                for (j = 0; j < self.availableGroupsBelongOrg().length; j++) {
+                for (let j = 0; j < self.availableGroupsBelongOrg().length; j++) {
                     if (self.availableGroupsBelongOrg()[j].id == u.groups[i].id) {
                         index = j;
                         break;
                     }
                 }
 
+                console.log('out');
+                console.log('index ' +  index);
                 // Must use observable to subscribe
                 let groupValue = ko.observable(self.availableGroupsBelongOrg()[index]);
                 groupValue.subscribe(function () {
+                    console.log('test');
                     factoryObjects.handleOnSameSelected(self.GroupsForMe, self.groupsIsSame);            
                 });
 
                 self.GroupsForMe.push( {value: groupValue} );
+
+                console.log(self.GroupsForMe());
 
                 // Set main group
                 if (u.groups[i].isMain) {
@@ -406,10 +421,10 @@ define([
             self.RolesForMe([]);
 
             // Binding Roles
-            for (i = 0; i < u.roles.length; i++) {
+            for (let i = 0; i < u.roles.length; i++) {
                   // Must get Object belong available list (== adress), to set default value of select element on DOM
                   let index = 0;
-                  for (j = 0; j < self.availableRoles.length; j++) {
+                  for (let j = 0; j < self.availableRoles.length; j++) {
                       if (self.availableRoles[j].id == u.roles[i].id) {
                           index = j;
                           break;
@@ -439,7 +454,7 @@ define([
 
             self.workPhoneNumbers([]);
 
-            for (i = 0; i < u.workPhone.length; i++) {
+            for (let i = 0; i < u.workPhone.length; i++) {
 
                 self.workPhoneNumbers.push({
                     value: ko.observable(u.workPhone[i].number)
@@ -467,7 +482,7 @@ define([
 
             self.mobileNumbers([]);
 
-            for (i = 0; i < u.mobile.length; i++) {
+            for (let i = 0; i < u.mobile.length; i++) {
                 self.mobileNumbers.push({
                     value: ko.observable(u.mobile[i].number)
                         .extend({
@@ -493,7 +508,7 @@ define([
 
             self.privatePhoneNumbers([]);
 
-            for (i = 0; i < u.privatePhone.length; i++) {
+            for (let i = 0; i < u.privatePhone.length; i++) {
 
                 self.privatePhoneNumbers.push({
                     value: ko.observable(u.privatePhone[i].number)
@@ -522,7 +537,7 @@ define([
 
             self.workEmails([]);
 
-            for (i = 0; i < u.email.length; i++) {
+            for (let i = 0; i < u.email.length; i++) {
                 self.workEmails.push({
                     value: ko.observable(u.email[i].address)
                         .extend({ required: { params: true, message: 'This field is required.' } })
@@ -545,7 +560,7 @@ define([
                     console.log(u);
                     console.log('-----------------');
 
-                    self.personalID = u.id;
+                    self.personnelID = u.id;
                     self.mapDataByObject(u);
 
                     // use data example (dataEx) to test
@@ -561,6 +576,9 @@ define([
         }
 
         self.activate = function (id) {
+            self.groupsIsSame(false);
+            self.rolesIsSame(false);
+
             self.bindingDataByID(id);
         };
 

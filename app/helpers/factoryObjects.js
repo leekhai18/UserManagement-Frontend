@@ -11,15 +11,17 @@ define(['knockout',], function (ko) {
         this.name = name;
     };
 
-    var Group = function (id, name, organization) {
+    var Group = function (id, name, organization, isMain) {
         this.id = id;
         this.name = name;
         this.organization = organization;
+        this.isMain = isMain;
     };
 
-    var Role = function (id, name) {
+    var Role = function (id, name, isMain) {
         this.id = id;
         this.name = name;
+        this.isMain = isMain;
     };
 
     var EMail = function (address, isMain) {
@@ -51,12 +53,12 @@ define(['knockout',], function (ko) {
     var FactoryObjectModel = function () {
         var self = this;
 
-        self.createGroup = function (id, name, organization) {
-            return new Group(id, name, organization);
+        self.createGroup = function (id, name, organization, isMain) {
+            return new Group(id, name, organization, isMain);
         }
 
-        self.createRole = function (id, name) {
-            return new Role(id, name);
+        self.createRole = function (id, name, isMain) {
+            return new Role(id, name, isMain);
         }
 
         self.createOrganization = function (id, name) {
@@ -79,10 +81,17 @@ define(['knockout',], function (ko) {
             return new MobileNumbers(number, isMain);
         }
 
-        self.addIntelValue = function (availables, selecteds, isSame) {
+        self.addIntelValue = function (availables, selecteds, isSame, main, titleMain) {
             let value = ko.observable();
-            value.subscribe(function () {
+            value.subscribe(function (val) {
                 let tempSelecteds = selecteds().map(a => a.value());
+
+                if (main != null) {
+                    if (tempSelecteds.indexOf(val) == main()) {
+                        titleMain(val.name);
+                    }
+                }
+
                 if ((new Set(tempSelecteds)).size !== tempSelecteds.length) {
                     isSame(true);
                 } else {
@@ -90,17 +99,18 @@ define(['knockout',], function (ko) {
                 }
             });
 
-            let tempAvailableGroups = availables.filter( (el) => !selecteds().map(a => a.value()).includes(el) );
-            if (tempAvailableGroups != null) {
-                value(tempAvailableGroups[0]);
+            let tempAvailable = availables.filter( (el) => !selecteds().map(a => a.value()).includes(el) );
+            if (tempAvailable != null) {
+                value(tempAvailable[0]);
             }
 
             selecteds.push({ value: value });
         };
 
         self.handleOnSameSelected = function(selecteds, isSame) {
-            let tempSelectedGroups = selecteds().map(a => a.value());
-            if ((new Set(tempSelectedGroups)).size !== tempSelectedGroups.length) {
+            let tempSelected = selecteds().map(a => a.value());
+            
+            if ((new Set(tempSelected)).size !== tempSelected.length) {
                 isSame(true);
             } else {
                 isSame(false);

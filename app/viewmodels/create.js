@@ -5,8 +5,9 @@ define(['knockout',
         './httpGet', 
         'plugins/router', 
         'factoryObjects',
+        'utilities',
         'knockout.validation'
-    ], function (ko, $, app, http, httpGet, router, factoryObjects) {
+    ], function (ko, $, app, http, httpGet, router, factoryObjects, utilities) {
 
     var knockoutValidationSettings = {
         grouping: {
@@ -19,9 +20,27 @@ define(['knockout',
     var ProfileModel = function () {
         var self = this;
 
+        // Init for available
+        self.availableOrganizations = httpGet.availableOrganizations;
+        self.availableGroups = httpGet.availableGroups;
+        self.availableRoles = httpGet.availableRoles;
+        self.availableGroupsBelongOrg = ko.observableArray([]);
+
+        // Main title
+        self.titleOrganization = ko.observable();
+        self.titleMainGroup = ko.observable();
+        self.titleMainRole = ko.observable();
+        self.titleMainEmail = ko.observable();
+
+        // Init observable error show on popup
         self.textFieldRequired = ko.observable("This field is required");
 
+        // Init error when server sendback
+        self.errorList = ko.observableArray([]);
+    
         self.init = function () {
+            self.errorList([]);
+
             self.firstName = ko.observable("").extend({ required: { params: true, message: 'This field is required.' } });
             self.lastName = ko.observable("").extend({ required: { params: true, message: 'This field is required.' } });
             self.fullName = ko.computed(function () {
@@ -30,20 +49,26 @@ define(['knockout',
 
             self.personnelID = ko.observable("").extend({ required: { params: true, message: 'This field is required.' } });
 
-
-            // Init for available
-            self.availableOrganizations = httpGet.availableOrganizations;
-            self.availableGroups = httpGet.availableGroups;
-            self.availableRoles = httpGet.availableRoles;
-            self.availableGroupsBelongOrg = ko.observableArray([]);
-
             // Init for main Field
             self.mainGroup = ko.observable(0).extend({ required: { params: true, message: '_' } });
             self.mainRole = ko.observable(0).extend({ required: { params: true, message: '_' } });
-            self.mainWorkPhoneNumber = ko.observable().extend({ required: { params: true, message: '_' } });
-            self.mainMobileNumber = ko.observable().extend({ required: { params: true, message: '_' } });
-            self.mainPrivatePhoneNumber = ko.observable().extend({ required: { params: true, message: '_' } });
-            self.mainWorkEmail = ko.observable().extend({ required: { params: true, message: '_' } });
+            self.mainWorkPhoneNumber = ko.observable(0).extend({ required: { params: true, message: '_' } });
+            self.mainMobileNumber = ko.observable(0).extend({ required: { params: true, message: '_' } });
+            self.mainPrivatePhoneNumber = ko.observable(0).extend({ required: { params: true, message: '_' } });
+            self.mainWorkEmail = ko.observable(0).extend({ required: { params: true, message: '_' } });
+
+            // subscribe for set main title
+            self.mainGroup.subscribe(function (value) {
+                self.titleMainGroup(self.selectedGroups()[value].value().name);
+            });
+
+            self.mainRole.subscribe(function (value) {
+                self.titleMainRole(self.selectedRoles()[value].value().name);
+            });
+
+            self.mainWorkEmail.subscribe(function (value) {
+                self.titleMainEmail(self.workEmails()[value].value());
+            });
 
             // Init for isSameValue
             self.groupsIsSame = ko.observable(false);
@@ -51,28 +76,42 @@ define(['knockout',
 
             //  Init for selectedOranization
             self.selectedOrganization = ko.observable();
-            self.selectedOrganization.subscribe(function () {
+            self.selectedOrganization.subscribe(function (value) {
                 self.availableGroupsBelongOrg([]);
 
                 for (i = 0; i < self.availableGroups.length; i++) {
-                    if (self.availableGroups[i].organization.id == self.selectedOrganization()) {
+                    if (self.availableGroups[i].organization.id == value) {
                         self.availableGroupsBelongOrg.push(self.availableGroups[i]);
                     }
                 }
+
+                self.availableOrganizations.forEach(element => {
+                    if (element.id == value) {
+                        self.titleOrganization(element.name);
+                    }
+                });
             });
 
             //  Init for selectedGroup
             self.groupValue = ko.observable(self.availableGroupsBelongOrg()[0]);
-            self.groupValue.subscribe(function () {
+            self.groupValue.subscribe(function (value) {
                 factoryObjects.handleOnSameSelected(self.selectedGroups, self.groupsIsSame);
+
+                if (self.selectedGroups().map( e => e.value() ).indexOf(value) == self.mainGroup()) {
+                    self.titleMainGroup(value.name);
+                }
             });
 
             self.selectedGroups = ko.observableArray([{ value: self.groupValue }]);
 
             //  Init for selectedRole
-            self.roleValue = ko.observable(self.availableRoles[0]);
-            self.roleValue.subscribe(function () {
+            self.roleValue = ko.observable();
+            self.roleValue.subscribe(function (value) {
                 factoryObjects.handleOnSameSelected(self.selectedRoles, self.rolesIsSame);
+
+                if (self.selectedRoles().map( e => e.value() ).indexOf(value) == self.mainRole()) {
+                    self.titleMainRole(value.name);
+                }
             });
 
             self.selectedRoles = ko.observableArray([{ value: self.roleValue }]);
@@ -91,8 +130,9 @@ define(['knockout',
 
             self.privatePhoneNumbers = ko.observableArray([{
                 value: ko.observable("")
+                    .extend({ required: { params: false, message: 'This field is required.' } })
                     .extend({
-                        required: false,
+                        required: true,
                         pattern: {
                             message: 'This number is wrong.',
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
@@ -111,11 +151,17 @@ define(['knockout',
                     })
             }]);
 
-            self.workEmails = ko.observableArray([{
-                value: ko.observable("")
+            self.emailValue = ko.observable("")
                     .extend({ required: { params: true, message: 'This field is required.' } })
-                    .extend({ email: { params: true, message: 'This email is wrong.' } })
-            }]);
+                    .extend({ email: { params: true, message: 'This email is wrong.' } });
+            self.emailValue.subscribe(function (value) {
+                self.titleMainEmail(value);
+            });
+
+            // self.emailValue =  ko.observable("")
+            //     .extend({ required: { params: true, message: 'This field is required.' } })
+
+            self.workEmails = ko.observableArray([{ value: self.emailValue }]);
 
             self.profileImage = "";
             self.photoUrl = ko.observable('assets/img/faces/face-2.jpg');
@@ -145,7 +191,7 @@ define(['knockout',
 
         // Functions on Group
         self.addGroup = function () {
-            factoryObjects.addIntelValue(self.availableGroupsBelongOrg(), self.selectedGroups, self.groupsIsSame);
+            factoryObjects.addIntelValue(self.availableGroupsBelongOrg(), self.selectedGroups, self.groupsIsSame, self.mainGroup, self.titleMainGroup);
         };
 
         self.removeGroup = function (group) {
@@ -159,7 +205,7 @@ define(['knockout',
 
         // Functions on Role
         self.addRole = function () {
-            factoryObjects.addIntelValue(self.availableRoles, self.selectedRoles, self.rolesIsSame);
+            factoryObjects.addIntelValue(self.availableRoles, self.selectedRoles, self.rolesIsSame, self.mainRole, self.titleMainRole);
         };
 
         self.removeRole = function (role) {
@@ -192,6 +238,7 @@ define(['knockout',
         self.addPrivatePhoneNumber = function () {
             self.privatePhoneNumbers.push({
                 value: ko.observable("")
+                    .extend({ required: { params: false, message: 'This field is required.' } })
                     .extend({
                         required: false,
                         pattern: {
@@ -224,74 +271,18 @@ define(['knockout',
 
         // Functions on Email
         self.addWorkEmail = function () {
-            self.workEmails.push({
-                value: ko.observable("")
+            let emailValue = ko.observable("")
                     .extend({ required: { params: true, message: 'This field is required.' } })
-                    .extend({ email: { params: true, message: 'This email is wrong.' } })
+                    .extend({ email: { params: true, message: 'This email is wrong.' } });
+            emailValue.subscribe(function (value) {
+                self.titleMainEmail(value);
             });
+
+            self.workEmails.push({ value: emailValue });
         };
         self.removeWorkEmail = function (workEmail) {
             self.workEmails.remove(workEmail);
         };
-
-        // Handle for format contract
-        var handleJSON = function (baseArray) {
-            var result = [];
-
-            result.push({
-                id: baseArray[0].value.id,
-                isMain: true
-            });
-
-            for (i = 1; i < baseArray.length; i++) {
-                result.push({
-                    id: baseArray[i].value.id,
-                    isMain: false
-                });
-            }
-
-            return result;
-        };
-
-        var handleJSONForEmail = function (baseArray) {
-            var result = [];
-
-            result.push({
-                address: baseArray[0].value,
-                isMain: true
-            });
-
-            for (i = 1; i < baseArray.length; i++) {
-                result.push({
-                    address: baseArray[i].value,
-                    isMain: false
-                });
-            }
-
-            return result;
-        };
-
-        var handleJSONForNumber = function (baseArray) {
-            var result = [];
-
-            result.push({
-                number: baseArray[0].value,
-                isMain: true
-            });
-
-            for (i = 1; i < baseArray.length; i++) {
-                result.push({
-                    number: baseArray[i].value,
-                    isMain: false
-                });
-            }
-
-            return result;
-        };
-
-        var navigateToProfile = function (id) {
-            router.navigate('profile/' + id);
-        }
 
         // Submit form
         self.create = function () {
@@ -301,50 +292,53 @@ define(['knockout',
 
                 app.showMessage('Are you sure you want to create new User?', 'Verify', ['Yes', 'No']).then(function (result) {
                     if (result == 'Yes') {
+                        // Contract create
                         var newProfile = {
+                            id: self.personnelID(),
                             firstName: self.firstName(),
                             lastName: self.lastName(),
                             organizationId: self.selectedOrganization(),
-                            groups: handleJSON(ko.toJS(self.selectedGroups())),
-                            roles: handleJSON(ko.toJS(self.selectedRoles())),
-                            workPhone: handleJSONForNumber(ko.toJS(self.workPhoneNumbers())),
-                            privatePhone: handleJSONForNumber(ko.toJS(self.privatePhoneNumbers())),
-                            mobile: handleJSONForNumber(ko.toJS(self.mobileNumbers())),
-                            email: handleJSONForEmail(ko.toJS(self.workEmails())),
+                            groups: utilities.jsonSerializeSelected(self.selectedGroups(), self.mainGroup()),
+                            roles: utilities.jsonSerializeSelected(self.selectedRoles(), self.mainRole()),
+                            workPhone: utilities.jsonSerializeInputTextForNumber(self.workPhoneNumbers(), self.mainWorkPhoneNumber()),
+                            privatePhone: utilities.jsonSerializeInputTextForNumber(self.privatePhoneNumbers(), self.mainPrivatePhoneNumber()),
+                            mobile: utilities.jsonSerializeInputTextForNumber(self.mobileNumbers(), self.mainMobileNumber()),
+                            email: utilities.jsonSerializeInputTextForEmail(self.workEmails(), self.mainWorkEmail()),
                             profileImage: self.profileImage
                         };
 
                         http.post('https://localhost:5001/api/user', newProfile)
                             .then(function (response) {
-                                // Why not going here
+                                // Created new user
                                 console.log('Creatting new user');
-                                console.log(response);
+                                console.log(newProfile);
                                 console.log('------------------');
 
+                                app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
+                                    if (result == 'Yes') {
+                                        //refreshView
+                                        self.init();
+
+                                        //navigateToProfile via id
+                                        router.navigate('profile/' + response);
+                                    }
+                                });
+
                             }, function (response) {
-                                if (response.status == 200) {
-                                    // statusText: 'OK'
-                                    // Created new user
-
-                                    app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
-                                        if (result == 'Yes') {
-                                            console.log('New user')
-                                            console.log(newProfile);
-                                            console.log('--------');
-
-                                            //refreshView
-                                            self.init();
-
-                                            //navigateToProfile
-                                            navigateToProfile(response.responseText);
-                                        }
-                                    });
-                                } else {
+                                if (response.status != 200) {
                                     console.log('ERROR when Create new user');
                                     console.log(response);
                                     console.log('--------------------------');
 
-                                    //app.showMessage('!', 'Successfully', ['Yes'])
+                                    self.errorList.removeAll();
+
+                                    if (response.responseJSON != null) {
+                                        response.responseJSON.forEach(element => {
+                                            self.errorList.push(element);
+                                        });
+                                    } else {
+                                        self.errorList.push(response.responseText);
+                                    }
                                 }
                             });
                     }

@@ -41,20 +41,19 @@ define([
         //
 
         self.jsonSerializeSelected = function (arr, mainIndex) {
-            var result = [];
+            arr = ko.toJS(arr);
 
-            console.log("mainIndex---------------");
-            console.log(mainIndex);
+            let result = [];
 
             for (i = 0; i < arr.length; i++) {
                 if (mainIndex == i) {
                     result.push({
-                        id: arr[i].id,
+                        id: arr[i].value.id,
                         isMain: true,
                     })
                 } else {
                     result.push({
-                        id: arr[i].id,
+                        id: arr[i].value.id,
                         isMain: false,
                     })
                 }
@@ -70,12 +69,15 @@ define([
         // 
         //
 
-        self.jsonSerializeInputText = function (arr, mainIndex) {
+        self.jsonSerializeInputTextForNumber = function (arr, mainIndex) {
             arr = ko.toJS(arr);
 
-            var result = [];
+            let result = [];
 
             for (i = 0; i < arr.length; i++) {
+                if (arr[i].value == "")
+                    break;
+
                 if (mainIndex == i) {
                     result.push({
                         number: arr[i].value,
@@ -84,6 +86,31 @@ define([
                 } else {
                     result.push({
                         number: arr[i].value,
+                        isMain: false,
+                    })
+                }
+            }
+
+            return result;
+        }
+
+        self.jsonSerializeInputTextForEmail = function (arr, mainIndex) {
+            arr = ko.toJS(arr);
+
+            let result = [];
+
+            for (i = 0; i < arr.length; i++) {
+                if (arr[i].value == "")
+                    break;
+
+                if (mainIndex == i) {
+                    result.push({
+                        address: arr[i].value,
+                        isMain: true,
+                    })
+                } else {
+                    result.push({
+                        address: arr[i].value,
                         isMain: false,
                     })
                 }
