@@ -5,13 +5,13 @@
     <!--Button which to add user-->
     <!--Click here to transfer to Create-->
     <div id="section1">
-      <a data-bind="click: addUser" class="btn btn-info btn-lg pull-right" id="btnAdd">
+      <a data-bind="click: addUser" class="btn btn-info btn-lg" id="btnAdd">
         <span class="glyphicon glyphicon-plus-sign"></span> Add
       </a>
 
       <br /><br /><br />
 
-      <form class="navbar-form navbar-right" role="search" id="frSearch">
+      <form class="navbar-form" role="search" id="frSearch">
         <div class="form-group">
           <input style="color:black;" type="text" class="form-control" placeholder="Search" title="Search User"
             data-bind="textInput: keySearch, event: { keyup: search }, valuaUpdate: keyup">

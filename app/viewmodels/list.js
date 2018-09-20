@@ -23,7 +23,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
                 //clear
                 self.lUsers.removeAll();
-                var dem = 0;
+                var temp = 0;
 
                 http.get('https://localhost:5001/api/user/light')
                     .then(function (u) {
@@ -34,12 +34,13 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
                         u.forEach(element => {
                             self.lUsers.push(element);
-                            dem++;
+                            temp++;
                         });
 
-                        console.log(dem);
+                        console.log(temp);
+                        console.log(self.lUsers.length);
 
-                        if(dem == 0){
+                        if(temp == 0){
                             self.displayMess(true);
                             console.log('dont have any user');
                         }
@@ -61,14 +62,14 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                         console.log('Search user by name');
                         console.log(u);
 
-                        var dem = 0;
+                        var temp = 0;
 
                         u.forEach(element => {
                             self.lUsers.push(element);
-                            dem++;
+                            temp++;
                         });
 
-                        if(dem == 0){
+                        if(temp == 0){
                             self.displayMess(true);
                             console.log('dont have any user');
                         }

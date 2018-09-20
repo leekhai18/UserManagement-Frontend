@@ -360,7 +360,7 @@ table {
 }
 #section2 {
     float: right;
-    width: 80%
+    width: 80%;
 }
 #message {
     float: right;
@@ -389,8 +389,25 @@ table {
     }
 }
 @media (max-width:991px){
-	.container {
+    #section1 {
+        float: none;
         width: auto;
+    }
+    #section2 {
+        float: none;
+        width: auto;
+        
+    }
+    #message {
+        float: none;
+        width: auto;
+    }
+    .user-grids{
+        float: none;
+    }
+    .copy-right {
+        width: auto;
+        /* font-size: 2em; */
     }
 }
 @media (max-width:768px){
@@ -402,11 +419,13 @@ table {
         float: none;
         top: 0;
         width: auto;
+        height: 30%;
     }
     #section2 {
         float: none;
-        bottom: 0;
+        top: 30%;
         width: auto;
+        position: fixed;
     }
     #message {
         float: none;
@@ -417,7 +436,7 @@ table {
     }
     .copy-right {
         width: auto;
-        font-size: 2em;
+        /* font-size: 2em; */
     }
 }
 @media (max-width:767px){
