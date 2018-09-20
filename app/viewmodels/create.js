@@ -77,6 +77,7 @@ define(['knockout',
             //  Init for selectedOranization
             self.selectedOrganization = ko.observable();
             self.selectedOrganization.subscribe(function (value) {
+                console.log(value);
                 self.availableGroupsBelongOrg([]);
 
                 for (i = 0; i < self.availableGroups.length; i++) {
@@ -97,9 +98,9 @@ define(['knockout',
             self.groupValue.subscribe(function (value) {
                 factoryObjects.handleOnSameSelected(self.selectedGroups, self.groupsIsSame);
 
-                if (self.selectedGroups().map( e => e.value() ).indexOf(value) == self.mainGroup()) {
-                    self.titleMainGroup(value.name);
-                }
+                // if (self.selectedGroups().map( e => e.value() ).indexOf(value) == self.mainGroup()) {
+                //     self.titleMainGroup(value.name);
+                // }
             });
 
             self.selectedGroups = ko.observableArray([{ value: self.groupValue }]);
