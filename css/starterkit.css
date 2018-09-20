@@ -331,7 +331,6 @@ table {
 }
 .copy-right {
     background: #e7e7e7;
-    padding: 1.5em 0em;
     text-align: center;
     position: fixed;
     bottom: 0px;
@@ -389,20 +388,27 @@ table {
     }
 }
 @media (max-width:991px){
+    .container {
+        width: 100%;
+    }
     #section1 {
         float: none;
-        width: auto;
+        width: 100% ;
+        height: 30%;
     }
     #section2 {
         float: none;
-        width: auto;
+        top: 30%;
+        width: 100%;
+        position: fixed;
+        
     }
     #message {
         float: none;
         width: auto;
     }
     .user-grids{
-        float: none;
+        
     }
     .copy-right {
         width: auto;
@@ -422,7 +428,7 @@ table {
         float: none;
         top: 30%;
         width: 100%;
-        position: fixed;
+        /* position: fixed; */
         
     }
     #message {
