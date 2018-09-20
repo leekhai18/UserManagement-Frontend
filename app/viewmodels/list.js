@@ -38,7 +38,6 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                         });
 
                         console.log(temp);
-                        console.log(self.lUsers.length);
 
                         if(temp == 0){
                             self.displayMess(true);
