@@ -87,7 +87,7 @@ define(['knockout',], function (ko) {
                 let tempSelecteds = selecteds().map(a => a.value());
 
                 if (main != null) {
-                    if (tempSelecteds.indexOf(val) == main()) {
+                    if (val != null && tempSelecteds.indexOf(val) == main()) {
                         titleMain(val.name);
                     }
                 }

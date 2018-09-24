@@ -76,9 +76,13 @@ define(['knockout',
 
             //  Init for selectedOranization
             self.selectedOrganization = ko.observable();
-            self.selectedOrganization.subscribe(function (value) {
-                console.log(value);
-                self.availableGroupsBelongOrg([]);
+            self.selectedOrganization.subscribe(function (value) {    
+                // Clear
+                self.availableGroupsBelongOrg.removeAll();
+                self.selectedGroups.removeAll();
+
+                // Set default one field 
+                self.addGroup();
 
                 for (i = 0; i < self.availableGroups.length; i++) {
                     if (self.availableGroups[i].organization.id == value) {
@@ -86,6 +90,7 @@ define(['knockout',
                     }
                 }
 
+                // Set title
                 self.availableOrganizations.forEach(element => {
                     if (element.id == value) {
                         self.titleOrganization(element.name);
@@ -98,9 +103,9 @@ define(['knockout',
             self.groupValue.subscribe(function (value) {
                 factoryObjects.handleOnSameSelected(self.selectedGroups, self.groupsIsSame);
 
-                // if (self.selectedGroups().map( e => e.value() ).indexOf(value) == self.mainGroup()) {
-                //     self.titleMainGroup(value.name);
-                // }
+                if (self.selectedGroups().map( e => e.value() ).indexOf(value) == self.mainGroup()) {
+                    self.titleMainGroup(value.name);
+                }
             });
 
             self.selectedGroups = ko.observableArray([{ value: self.groupValue }]);
@@ -158,9 +163,6 @@ define(['knockout',
             self.emailValue.subscribe(function (value) {
                 self.titleMainEmail(value);
             });
-
-            // self.emailValue =  ko.observable("")
-            //     .extend({ required: { params: true, message: 'This field is required.' } })
 
             self.workEmails = ko.observableArray([{ value: self.emailValue }]);
 
