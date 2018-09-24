@@ -318,6 +318,10 @@ span.field-required {
     button.multiselect.dropdown-toggle.btn.btn-default {
         text-align: left;
     }
+
+    .wrapper-box-search-simple {
+        margin-top: 15px;
+    }
 }
 
 @media(max-width: 687px) {
@@ -326,3 +330,20 @@ span.field-required {
         height: 165px;
     }
 }
+
+
+
+/**
+ * 
+ * 
+ * 
+ * */
+
+ .logo {
+     color: rgb(10, 10, 192);
+ }
+
+
+ .navbar-header {
+     float: left;
+ }

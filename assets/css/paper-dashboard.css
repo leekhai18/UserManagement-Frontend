@@ -2274,7 +2274,12 @@ textarea.form-control {
     left: 12px; }
 
   .navbar .navbar-header {
-    margin-left: 10px; }
+    margin-left: 10px;
+  }
+
+  .navbar-header  {
+    float: left;
+  }
 
   .footer:not(.footer-big) nav > ul li:first-child {
     margin-left: 0; }
@@ -2336,9 +2341,9 @@ textarea.form-control {
     display: none !important; }
 
   .navbar-nav > li {
-    float: none;
+    /* float: none; */
     position: relative;
-    display: block; }
+    display: inline-block; }
 
   .off-canvas-sidebar {
     position: fixed;
@@ -2723,8 +2728,8 @@ textarea.form-control {
   .navbar-header .collapse, .navbar-toggle {
     display: block !important; }
 
-  .navbar-header {
-    float: none; }
+  /* .navbar-header {
+    float: none; } */
 
   .navbar-nav .open .dropdown-menu {
     position: static;

@@ -381,9 +381,9 @@ table {
     } */
 }
 @media (max-width:1366px){
-    .container {
+    /* .container {
         width: auto;
-    }
+    } */
 }
 @media (max-width:1280px){
 	/* .container {
