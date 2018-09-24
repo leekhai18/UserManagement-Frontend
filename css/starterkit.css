@@ -353,9 +353,9 @@ table {
 	color:#000;
 }
 
-.container{
+/* .container{
     width: auto;
-}
+} */
 #section1 {
     float: left;
     width: 20%;
@@ -376,9 +376,9 @@ table {
 }
 
 @media (max-width:1440px){
-	.container {
+	/* .container {
         width: auto;
-    }
+    } */
 }
 @media (max-width:1366px){
     .container {
@@ -386,19 +386,19 @@ table {
     }
 }
 @media (max-width:1280px){
-	.container {
+	/* .container {
         width: auto;
-    }
+    } */
 }
 @media (max-width:1024px){
-	.container {
+	/* .container {
         width: auto;
-    }
+    } */
 }
 @media (max-width:991px){
-    .container {
+    /* .container {
         width: 100%;
-    }
+    } */
     #section1 {
         float: top;
         height: 30%;
@@ -421,9 +421,9 @@ table {
     }
 }
 @media (max-width:768px){
-	.container {
+	/* .container {
         width: 100%;
-    }
+    } */
     #section1 {
         float: none;
         width: 100% ;
@@ -449,9 +449,9 @@ table {
     }
 }
 @media (max-width:767px){
-	.container {
+	/* .container {
         width: auto;
-    }
+    } */
     #section1 {
         float: none;
         width: auto;
@@ -466,9 +466,9 @@ table {
     }
 }
 @media (max-width:667px){
-	.container {
+	/* .container {
         width: auto;
-    }
+    } */
     #section1 {
         float: none;
         width: auto;
@@ -483,9 +483,9 @@ table {
     }
 }
 @media (max-width:640px){
-	.container {
+	/* .container {
         width: auto;
-    }
+    } */
     #section1 {
         float: none;
         width: auto;
@@ -500,9 +500,9 @@ table {
     }
 }
 @media (max-width:480px){
-	.container {
+	/* .container {
         width: auto;
-    }
+    } */
     #section1 {
         float: none;
         width: auto;
@@ -517,10 +517,10 @@ table {
     }
 }
 @media (max-width:375px){
-	.container {
+	/* .container {
         width: auto;
         width: auto;
-    }
+    } */
     #section1 {
         float: none;
         width: auto;
@@ -535,10 +535,10 @@ table {
     }
 }
 @media (max-width:360px){
-	.container {
+	/* .container {
         width: auto;
         width: auto;
-    }
+    } */
     #section1 {
         float: none;
         width: auto;
@@ -553,9 +553,9 @@ table {
     }
 }
 @media (max-width:320px){
-    .container {
+    /* .container {
         width: auto;
-    }
+    } */
 	#section1 {
         float: none;
         width: auto;
