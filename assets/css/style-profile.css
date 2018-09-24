@@ -280,9 +280,13 @@ span.field-required {
 }
 
 .wrapper-profile {
-    margin-top: 20px;
+    /* margin-top: 20px; */
     min-height: 500px;
-    padding-left: 4px;
+    /* padding-left: 4px; */
+}
+
+.content-items {
+    margin-top: 18px;
 }
 
 
@@ -295,8 +299,14 @@ span.field-required {
 @media (max-width: 991px) {
 
     .wrapper-search {
-        margin-bottom: 18px;
-        position: inherit;
+        /* margin-bottom: 18px; */
+        /* position: inherit; */
+        top: 70px;
+        max-width: 86%;
+    }
+
+    .content-items {
+        margin-top: 75px;
     }
 
     .warpper-form-search-adv {
@@ -330,8 +340,18 @@ span.field-required {
         width: 165px;
         height: 165px;
     }
+
+    .content-items {
+        margin-top: 82px;
+    }
 }
 
+
+@media (min-width: 1240px) {
+    .wrapper-search {
+        max-width: 210px;
+    }
+}
 
 
 /**
@@ -348,3 +368,5 @@ span.field-required {
  .navbar-header {
      float: left;
  }
+
+

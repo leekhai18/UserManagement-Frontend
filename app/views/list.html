@@ -3,60 +3,64 @@
     <div class="row">
       <div class="col-xs-12 col-md-2 wrapper-search">
 
-        <div class="wrapper-box-search-simple">
-          <div class="row">
-            <form class="wrapper-form-search col-md-12 col-xs-6 col-xs-offset-1" role="search">
-              <div class="form-group form-search">
-                <input style="color:black;" type="text" class="form-control" placeholder="Search" title="Search User"
-                  data-bind="textInput: keySearch, event: { keyup: search }, valuaUpdate: keyup">
-              </div>
-            </form>
+        <div class="search-fixed">
 
-            <button data-bind="click: toggleVisibility" class="btn-search col-md-12 col-xs-3 col-xs-offset-1">Advanced search</button>
+          <div class="wrapper-box-search-simple">
+            <div class="row">
+              <form class="wrapper-form-search col-md-12 col-xs-6 col-xs-offset-1" role="search">
+                <div class="form-group form-search">
+                  <input style="color:black;" type="text" class="form-control" placeholder="Search" title="Search User"
+                    data-bind="textInput: keySearch, event: { keyup: search }, valuaUpdate: keyup">
+                </div>
+              </form>
+
+              <button data-bind="click: toggleVisibility" class="btn-search col-md-12 col-xs-3 col-xs-offset-1">Advanced
+                search</button>
+            </div>
+
+          </div>
+
+
+          <div data-bind="visible: isShowAdvancedSearch" class="warpper-form-search-adv">
+            <div class="form-group">
+              <label>Organization / Company</label>
+              <select data-bind="       options: availableOrganizations,
+                                                optionsText: 'name',
+                                                optionsValue: 'id',
+                                                optionsCaption: 'Choose',
+                                                value: selectedOrganization"
+                class="form-control border-input"></select>
+            </div>
+
+            <div class="form-group">
+              <label>Group / Department</label>
+              <select data-bind="       options: availableGroupsBelongOrg,
+                                                optionsText: 'name',
+                                                optionsValue: 'name',
+                                                optionsCaption: 'Choose',
+                                                value: selectedGroup"
+                class="form-control border-input"></select>
+            </div>
+
+            <div class="form-group">
+              <label>Role / Job Title</label>
+              <select data-bind="       options: availableRoles,
+                                                optionsText: 'name',
+                                                optionsValue: 'name',
+                                                optionsCaption: 'Choose',
+                                                value: selectedRole"
+                class="form-control border-input"></select>
+            </div>
+
           </div>
 
         </div>
-
-
-        <div data-bind="visible: isShowAdvancedSearch" class="warpper-form-search-adv">
-          <div class="form-group">
-            <label>Organization / Company</label>
-            <select data-bind="       options: availableOrganizations,
-                                              optionsText: 'name',
-                                              optionsValue: 'id',
-                                              optionsCaption: 'Choose',
-                                              value: selectedOrganization"
-              class="form-control border-input"></select>
-          </div>
-
-          <div class="form-group">
-            <label>Group / Department</label>
-            <select data-bind="       options: availableGroupsBelongOrg,
-                                              optionsText: 'name',
-                                              optionsValue: 'name',
-                                              optionsCaption: 'Choose',
-                                              value: selectedGroup"
-              class="form-control border-input"></select>
-          </div>
-
-          <div class="form-group">
-            <label>Role / Job Title</label>
-            <select data-bind="       options: availableRoles,
-                                              optionsText: 'name',
-                                              optionsValue: 'name',
-                                              optionsCaption: 'Choose',
-                                              value: selectedRole"
-              class="form-control border-input"></select>
-          </div>
-
-        </div>
-
 
       </div>
       <!-- <p id="message" data-bind="visible: displayMess">Don't have any user to
         show.<br />Please press Add on the left to add user.</p> -->
 
-      <div class="col-xs-12 col-md-10 col-md-offset-2">
+      <div class="col-xs-12 col-md-10 col-md-offset-2 content-items">
         <div class="row wrapper-profile" data-bind="foreach: lUsers, visible: lUsers().length > 0">
 
           <div class="col-sm-4 col-xs-6 col-lg-3">
