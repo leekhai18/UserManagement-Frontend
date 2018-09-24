@@ -9,11 +9,44 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             //list of users
             self.lUsers = ko.observableArray([]);
             self.keySearch = ko.observable();
-            self.selectedOrganization = ko.observable();
-            self.availableOrganizations = ko.observableArray([]);
-            self.availableGroups = ko.observableArray([]);
             self.isShowAdvancedSearch = ko.observable(false);
             self.displayMess = ko.observable(false);
+
+            self.availableGroups = httpGet.availableGroups;
+            self.availableGroupsBelongOrg = ko.observableArray([]);
+            for (let i = 0; i < self.availableGroups.length; i++) {
+                self.availableGroupsBelongOrg.push(self.availableGroups[i]);
+            };
+            self.selectedGroup = ko.observable();
+            self.selectedGroup.subscribe(function () {
+                self.searchUser('');
+            });
+
+            self.availableOrganizations = httpGet.availableOrganizations;
+            self.selectedOrganization = ko.observable();
+            self.selectedOrganization.subscribe(function (value) {
+                self.availableGroupsBelongOrg([]);
+
+                for (let i = 0; i < self.availableGroups.length; i++) {
+                    if (self.availableGroups[i].organization.id == value) {
+                        self.availableGroupsBelongOrg.push(self.availableGroups[i]);
+                    }
+                }
+
+                if (value == null) {
+                    for (let i = 0; i < self.availableGroups.length; i++) {
+                        self.availableGroupsBelongOrg.push(self.availableGroups[i]);
+                    };
+                }
+
+                self.searchUser('');
+            });
+
+            self.availableRoles  = httpGet.availableRoles;
+            self.selectedRole = ko.observable();
+            self.selectedRole.subscribe(function () {
+                self.searchUser('');
+            });
 
             self.addUser = function () {
                 router.navigate("create");
@@ -37,8 +70,6 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                             temp++;
                         });
 
-                        console.log(temp);
-
                         if(temp == 0){
                             self.displayMess(true);
                             console.log('dont have any user');
@@ -55,7 +86,33 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             self.searchUser = function (keySearch) {
                 self.lUsers.removeAll();
 
-                http.get('https://localhost:5001/api/search?name=' + keySearch)
+                let groupName = '';
+                if (self.selectedGroup() != null) {
+                    groupName = self.selectedGroup();
+                }
+
+                let roleName = '';
+                if (self.selectedRole() != null) {
+                    roleName = self.selectedRole();
+                }
+
+                let organizationName = '';
+                for (let i = 0; i < self.availableOrganizations.length; i++) {
+                    if (self.availableOrganizations[i].id == self.selectedOrganization()) {
+                        organizationName = self.availableOrganizations[i].name;
+                        break;
+                    }
+                };
+
+                console.log('https://localhost:5001/api/search?&name='  + keySearch +
+                '&organizationName=' + organizationName + 
+                '&groupName=' + groupName + 
+                '&roleName=' + roleName);
+
+                http.get('https://localhost:5001/api/search?&name='  + keySearch +
+                                                        '&organizationName=' + organizationName + 
+                                                        '&groupName=' + groupName + 
+                                                        '&roleName=' + roleName)
                     .then(function (u) {
 
                         console.log('Search user by name');
@@ -88,7 +145,6 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
 
             self.toggleVisibility = function () {
-                console.log("adfsdf")
                 self.isShowAdvancedSearch(!self.isShowAdvancedSearch());
             };
 
@@ -100,12 +156,6 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                 console.log(self.keySearch());
                 self.searchUser(self.keySearch());
             };
-
-            // get data from server
-            self.availableOrganizations(httpGet.availableOrganizations);
-            self.availableGroups(httpGet.availableGroups);
-
-
         }
 
         return new ProfileModel();

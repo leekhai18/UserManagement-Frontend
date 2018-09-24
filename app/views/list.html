@@ -23,6 +23,7 @@
             <label>Organization / Company</label>
             <select data-bind="       options: availableOrganizations,
                                               optionsText: 'name',
+                                              optionsValue: 'id',
                                               optionsCaption: 'Choose',
                                               value: selectedOrganization"
               class="form-control border-input"></select>
@@ -30,12 +31,21 @@
 
           <div class="form-group">
             <label>Group / Department</label>
-            <select multiple="multiple" data-bind=" options: availableGroups,
-                                                              optionsText: 'name',
-                                                              value: 'value',
-                                                              multiselect: {
-                                                                includeSelectAllOption: true
-                                                              }"
+            <select data-bind="       options: availableGroupsBelongOrg,
+                                              optionsText: 'name',
+                                              optionsValue: 'name',
+                                              optionsCaption: 'Choose',
+                                              value: selectedGroup"
+              class="form-control border-input"></select>
+          </div>
+
+          <div class="form-group">
+            <label>Role / Job Title</label>
+            <select data-bind="       options: availableRoles,
+                                              optionsText: 'name',
+                                              optionsValue: 'name',
+                                              optionsCaption: 'Choose',
+                                              value: selectedRole"
               class="form-control border-input"></select>
           </div>
 
