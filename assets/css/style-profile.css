@@ -151,7 +151,8 @@ span.field-required {
 
  .wrapper-search {
     position: fixed;
-    top: 84px;
+    top: 100px;
+    z-index: 10;
  }
 
  .form-search {
@@ -279,7 +280,8 @@ span.field-required {
 }
 
 .wrapper-profile {
-    margin-top: 10px;
+    margin-top: 20px;
+    min-height: 500px;
 }
 
 
@@ -315,5 +317,12 @@ span.field-required {
 
     button.multiselect.dropdown-toggle.btn.btn-default {
         text-align: left;
+    }
+}
+
+@media(max-width: 687px) {
+    .ih-item.circle {
+        width: 165px;
+        height: 165px;
     }
 }
