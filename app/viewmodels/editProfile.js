@@ -251,7 +251,7 @@ define([
         // Save func
         self.save = function () {
 
-            if (!self.validated.isValid()) {
+            if (!self.validated.isValid() || self.rolesIsSame() || self.groupsIsSame()) {
                 self.validated.errors.showAllMessages();
             } else {
 
@@ -371,15 +371,19 @@ define([
             // 
 
             self.availableGroupsBelongOrg([]);
+            var len = 0;
             for (let i = 0; i < self.availableGroups.length; i++) {
                 if (self.availableGroups[i].organization.id == self.selectedOrganization()) {
                     self.availableGroupsBelongOrg.push(self.availableGroups[i]);
+                    len++;
                 }
             }
 
+            if (self.availableGroupsBelongOrg().length == 0)
+                return;
+
             // Clear
-            self.GroupsForMe.removeAll();
-            console.log(self.GroupsForMe().length);
+            self.GroupsForMe([]);
 
             // Binding Groups
             for (let i = 0; i < u.groups.length; i++) {
@@ -392,18 +396,16 @@ define([
                     }
                 }
 
-                console.log('out');
-                console.log('index ' +  index);
                 // Must use observable to subscribe
                 let groupValue = ko.observable(self.availableGroupsBelongOrg()[index]);
                 groupValue.subscribe(function () {
-                    console.log('test');
-                    factoryObjects.handleOnSameSelected(self.GroupsForMe, self.groupsIsSame);            
+                    // Must wait for availableGroupsBelongOrg init done.
+                    if (self.availableGroupsBelongOrg().length == len) {
+                        factoryObjects.handleOnSameSelected(self.GroupsForMe, self.groupsIsSame);
+                    }
                 });
 
                 self.GroupsForMe.push( {value: groupValue} );
-
-                console.log(self.GroupsForMe());
 
                 // Set main group
                 if (u.groups[i].isMain) {
