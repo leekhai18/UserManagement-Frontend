@@ -1,13 +1,13 @@
 define(['knockout',
-        'jquery', 
-        'durandal/app', 
-        'plugins/http', 
-        './httpGet', 
-        'plugins/router', 
-        'factoryObjects',
-        'utilities',
-        'knockout.validation'
-    ], function (ko, $, app, http, httpGet, router, factoryObjects, utilities) {
+    'jquery',
+    'durandal/app',
+    'plugins/http',
+    './httpGet',
+    'plugins/router',
+    'factoryObjects',
+    'utilities',
+    'knockout.validation'
+], function (ko, $, app, http, httpGet, router, factoryObjects, utilities) {
 
     var knockoutValidationSettings = {
         grouping: {
@@ -20,10 +20,72 @@ define(['knockout',
     var ProfileModel = function () {
         var self = this;
 
+
+        self.activate = function () {
+            var promises = [];
+            promises.push(self.getAvailabelOrganizations());
+            promises.push(self.getAvailabelGroups());
+            promises.push(self.getAvailabelRoles());
+
+            var result =  Promise.all(promises).then(function(resultOfAllPromises) {
+                [self.availableOrganizations, self.availableGroups, self.availableRoles] = resultOfAllPromises;
+            });
+
+            return result.then(function() {
+                self.init();
+            });
+        };
+
+        // init validated all form
+        self.compositionComplete = function () {
+            self.validated = ko.validatedObservable(self);
+        };
+
         // Init for available
-        self.availableOrganizations = httpGet.availableOrganizations;
-        self.availableGroups = httpGet.availableGroups;
-        self.availableRoles = httpGet.availableRoles;
+        self.availableOrganizations = [];
+        self.availableGroups = [];
+        self.availableRoles = [];
+
+
+        self.getAvailabelOrganizations = function () {
+            return new Promise(function (resolve, reject) {
+                http.get('https://localhost:5001/api/organization')
+                    .then(function (response) { 
+                        resolve(response);
+                    }, function(error) {
+                        reject("error");
+                        app.showMessage('Load organizations failed!', 'Error', ['Yes'])
+                    }
+                );
+            });
+        };
+
+        self.getAvailabelRoles = function () {
+            return new Promise(function (resolve, reject) {
+                http.get('https://localhost:5001/api/role')
+                    .then(function (response) {
+                        resolve(response);
+                    }, function (error) {
+                        reject("error");
+                        app.showMessage('Load roles failed!', 'Error', ['Yes'])
+                    }
+                );
+            });
+        };
+
+        self.getAvailabelGroups = function () {
+            return new Promise(function(resolve, reject) {
+                http.get('https://localhost:5001/api/group')
+                    .then(function (response) {
+                        resolve(response);
+                    }, function (error) {
+                        reject("error");
+                        app.showMessage('Load groups failed!', 'Error', ['Yes'])
+                    }
+                );
+            });
+        };
+
         self.availableGroupsBelongOrg = ko.observableArray([]);
 
         // Main title
@@ -37,7 +99,7 @@ define(['knockout',
 
         // Init error when server sendback
         self.errorList = ko.observableArray([]);
-    
+
         self.init = function () {
             self.errorList([]);
 
@@ -76,7 +138,7 @@ define(['knockout',
 
             //  Init for selectedOranization
             self.selectedOrganization = ko.observable();
-            self.selectedOrganization.subscribe(function (value) {    
+            self.selectedOrganization.subscribe(function (value) {
                 // Clear
                 self.availableGroupsBelongOrg.removeAll();
                 self.selectedGroups.removeAll();
@@ -103,7 +165,7 @@ define(['knockout',
             self.groupValue.subscribe(function (value) {
                 factoryObjects.handleOnSameSelected(self.selectedGroups, self.groupsIsSame);
 
-                if (self.selectedGroups().map( e => e.value() ).indexOf(value) == self.mainGroup()) {
+                if (self.selectedGroups().map(e => e.value()).indexOf(value) == self.mainGroup()) {
                     self.titleMainGroup(value.name);
                 }
             });
@@ -115,7 +177,7 @@ define(['knockout',
             self.roleValue.subscribe(function (value) {
                 factoryObjects.handleOnSameSelected(self.selectedRoles, self.rolesIsSame);
 
-                if (self.selectedRoles().map( e => e.value() ).indexOf(value) == self.mainRole()) {
+                if (self.selectedRoles().map(e => e.value()).indexOf(value) == self.mainRole()) {
                     self.titleMainRole(value.name);
                 }
             });
@@ -158,8 +220,8 @@ define(['knockout',
             }]);
 
             self.emailValue = ko.observable("")
-                    .extend({ required: { params: true, message: 'This field is required.' } })
-                    .extend({ email: { params: true, message: 'This email is wrong.' } });
+                .extend({ required: { params: true, message: 'This field is required.' } })
+                .extend({ email: { params: true, message: 'This email is wrong.' } });
             self.emailValue.subscribe(function (value) {
                 self.titleMainEmail(value);
             });
@@ -199,8 +261,8 @@ define(['knockout',
 
         self.removeGroup = function (group) {
             self.selectedGroups.remove(group);
-            factoryObjects.handleOnSameSelected(self.selectedGroups, self.groupsIsSame);     
-            
+            factoryObjects.handleOnSameSelected(self.selectedGroups, self.groupsIsSame);
+
             if (self.mainGroup() == self.selectedGroups().length && self.selectedGroups().length > 0) {
                 self.mainGroup(self.selectedGroups().length - 1)
             }
@@ -275,8 +337,8 @@ define(['knockout',
         // Functions on Email
         self.addWorkEmail = function () {
             let emailValue = ko.observable("")
-                    .extend({ required: { params: true, message: 'This field is required.' } })
-                    .extend({ email: { params: true, message: 'This email is wrong.' } });
+                .extend({ required: { params: true, message: 'This field is required.' } })
+                .extend({ email: { params: true, message: 'This email is wrong.' } });
             emailValue.subscribe(function (value) {
                 self.titleMainEmail(value);
             });
@@ -347,15 +409,6 @@ define(['knockout',
                     }
                 });
             }
-        };
-
-        self.activate = function () {
-            self.init();
-        };
-
-        // init validated all form
-        self.compositionComplete = function () {
-            self.validated = ko.validatedObservable(self);
         };
     }
 

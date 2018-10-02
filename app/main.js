@@ -49,23 +49,14 @@ define([
         http: true
     });
 
-    console.log(httpGet);
 
-    // factoryObjects.then(
+    app.start().then(function () {
+        //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
+        //Look for partial views in a 'views' folder in the root.
+        viewLocator.useConvention();
 
-    httpGet.getRSForCreateUser().then(
-
-        app.start().then(function () {
-            //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
-            //Look for partial views in a 'views' folder in the root.
-            viewLocator.useConvention();
-
-            //Show the app by setting the root view model for our application with a transition.
-            app.setRoot('viewmodels/shell', 'entrance');
-        })
-
-    );
-    // )
-
+        //Show the app by setting the root view model for our application with a transition.
+        app.setRoot('viewmodels/router', 'entrance');
+    })
 
 });

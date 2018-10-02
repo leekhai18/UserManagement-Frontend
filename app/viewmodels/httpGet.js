@@ -28,7 +28,7 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
 
         self.getRSForCreateUser = function () {
             // Get all organization
-            http.get(self.domain+ '/api/organization')
+            http.get('${self.domain}/api/organization')
                 .then(function (response) {
                     self.availableOrganizations.length = 0;
                     response.forEach(organization => {
