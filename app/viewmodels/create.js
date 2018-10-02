@@ -17,9 +17,10 @@ define(['knockout',
     };
     ko.validation.init(knockoutValidationSettings, true);
 
+
+
     var ProfileModel = function () {
         var self = this;
-
 
         self.activate = function () {
             var promises = [];

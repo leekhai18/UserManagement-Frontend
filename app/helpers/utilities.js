@@ -2,7 +2,6 @@ define([
     'knockout',
 ], function (ko) {
 
-
     // 
     // 
     // Custom binding
@@ -28,12 +27,10 @@ define([
     // 
     // Define model 
     // 
-    // 
+    //
 
     var UtilitiesModel = function () {
         var self = this;
-
-
         // 
         // 
         // Json serialize selected option 
