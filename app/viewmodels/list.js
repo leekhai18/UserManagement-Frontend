@@ -3,6 +3,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
         var ProfileModel = function () {
             var self = this;
+            var timeout = null;
 
             // intit
 
@@ -61,9 +62,9 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                 http.get('https://localhost:5001/api/user/light')
                     .then(function (u) {
 
-                        console.log('Getting all user by id');
-                        console.log(u);
-                        console.log('----------------------');
+                        // console.log('Getting all user by id');
+                        // console.log(u);
+                        // console.log('----------------------');
 
                         u.forEach(element => {
                             self.lUsers.push(element);
@@ -104,10 +105,10 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                     }
                 };
 
-                console.log('https://localhost:5001/api/search?&name='  + keySearch +
-                '&organizationName=' + organizationName + 
-                '&groupName=' + groupName + 
-                '&roleName=' + roleName);
+                // console.log('https://localhost:5001/api/search?&name='  + keySearch +
+                // '&organizationName=' + organizationName + 
+                // '&groupName=' + groupName + 
+                // '&roleName=' + roleName);
 
                 http.get('https://localhost:5001/api/search?&name='  + keySearch +
                                                         '&organizationName=' + organizationName + 
@@ -115,8 +116,8 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                                                         '&roleName=' + roleName)
                     .then(function (u) {
 
-                        console.log('Search user by name');
-                        console.log(u);
+                        // console.log('Search user by name');
+                        // console.log(u);
 
                         var temp = 0;
 
@@ -127,7 +128,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
                         if(temp == 0){
                             self.displayMess(true);
-                            console.log('dont have any user');
+                            // console.log('dont have any user');
                         }
                         else{
                             self.displayMess(false);
@@ -139,7 +140,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             }
 
             self.viewProfile = function (profile) {
-                console.log(profile);
+                // console.log(profile);
                 router.navigate("profile/" + profile.id);
             }
 
@@ -153,8 +154,13 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             };
 
             self.search = function () {
-                console.log(self.keySearch());
-                self.searchUser(self.keySearch());
+                // console.log(self.keySearch());
+                clearTimeout(timeout);
+
+                timeout = setTimeout(function (e) {
+                    console.log('Input Value:', self.keySearch());
+                    self.searchUser(self.keySearch());
+                }, 1000);
             };
         }
 
