@@ -3,6 +3,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
         var ProfileModel = function () {
             var self = this;
+            var timeout = null;
 
             // intit
 
@@ -72,7 +73,6 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
                         if(temp == 0){
                             self.displayMess(true);
-                            console.log('dont have any user');
                         }
                         else{
                             self.displayMess(false);
@@ -104,19 +104,11 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                     }
                 };
 
-                console.log('https://localhost:5001/api/search?&name='  + keySearch +
-                '&organizationName=' + organizationName + 
-                '&groupName=' + groupName + 
-                '&roleName=' + roleName);
-
                 http.get('https://localhost:5001/api/search?&name='  + keySearch +
                                                         '&organizationName=' + organizationName + 
                                                         '&groupName=' + groupName + 
                                                         '&roleName=' + roleName)
                     .then(function (u) {
-
-                        console.log('Search user by name');
-                        console.log(u);
 
                         var temp = 0;
 
@@ -127,7 +119,6 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
                         if(temp == 0){
                             self.displayMess(true);
-                            console.log('dont have any user');
                         }
                         else{
                             self.displayMess(false);
@@ -139,7 +130,6 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             }
 
             self.viewProfile = function (profile) {
-                console.log(profile);
                 router.navigate("profile/" + profile.id);
             }
 
@@ -153,8 +143,11 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             };
 
             self.search = function () {
-                console.log(self.keySearch());
-                self.searchUser(self.keySearch());
+                clearTimeout(timeout);
+
+                timeout = setTimeout(function (e) {
+                    self.searchUser(self.keySearch());
+                }, 1000);
             };
         }
 
