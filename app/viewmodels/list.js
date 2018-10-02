@@ -8,14 +8,14 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             // intit
 
             //list of users
-            self.lUsers = ko.observableArray([]);
+            self.usersList = ko.observableArray([]);
             self.keySearch = ko.observable();
             self.isShowAdvancedSearch = ko.observable(false);
             self.displayMess = ko.observable(false);
 
             self.availableGroups = httpGet.availableGroups;
             self.availableGroupsBelongOrg = ko.observableArray([]);
-            for (let i = 0; i < self.availableGroups.length; i++) {
+            for (var i = 0; i < self.availableGroups.length; i++) {
                 self.availableGroupsBelongOrg.push(self.availableGroups[i]);
             };
             self.selectedGroup = ko.observable();
@@ -28,14 +28,14 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             self.selectedOrganization.subscribe(function (value) {
                 self.availableGroupsBelongOrg([]);
 
-                for (let i = 0; i < self.availableGroups.length; i++) {
+                for (var i = 0; i < self.availableGroups.length; i++) {
                     if (self.availableGroups[i].organization.id == value) {
                         self.availableGroupsBelongOrg.push(self.availableGroups[i]);
                     }
                 }
 
                 if (value == null) {
-                    for (let i = 0; i < self.availableGroups.length; i++) {
+                    for (var i = 0; i < self.availableGroups.length; i++) {
                         self.availableGroupsBelongOrg.push(self.availableGroups[i]);
                     };
                 }
@@ -56,22 +56,14 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             self.getAllUsers = function () {
 
                 //clear
-                self.lUsers.removeAll();
+                self.usersList.removeAll();
                 var temp = 0;
 
                 http.get('https://localhost:5001/api/user/light')
                     .then(function (u) {
+                        self.usersList(u);
 
-                        console.log('Getting all user by id');
-                        console.log(u);
-                        console.log('----------------------');
-
-                        u.forEach(element => {
-                            self.lUsers.push(element);
-                            temp++;
-                        });
-
-                        if(temp == 0){
+                        if(self.usersList().length == 0){
                             self.displayMess(true);
                         }
                         else{
@@ -84,20 +76,20 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             }
 
             self.searchUser = function (keySearch) {
-                self.lUsers.removeAll();
+                self.usersList.removeAll();
 
-                let groupName = '';
+                var groupName = '';
                 if (self.selectedGroup() != null) {
                     groupName = self.selectedGroup();
                 }
 
-                let roleName = '';
+                var roleName = '';
                 if (self.selectedRole() != null) {
                     roleName = self.selectedRole();
                 }
 
-                let organizationName = '';
-                for (let i = 0; i < self.availableOrganizations.length; i++) {
+                var organizationName = '';
+                for (var i = 0; i < self.availableOrganizations.length; i++) {
                     if (self.availableOrganizations[i].id == self.selectedOrganization()) {
                         organizationName = self.availableOrganizations[i].name;
                         break;
@@ -112,12 +104,9 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
                         var temp = 0;
 
-                        u.forEach(element => {
-                            self.lUsers.push(element);
-                            temp++;
-                        });
+                        self.usersList(u);
 
-                        if(temp == 0){
+                        if(self.usersList().length == 0){
                             self.displayMess(true);
                         }
                         else{
