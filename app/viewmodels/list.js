@@ -1,11 +1,32 @@
-define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'knockout.validation', 'bootstrap.multiselect'],
-    function (ko, http, httpGet, router, $) {
+define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables'],
+    function (ko, http, router, services) {
 
         var ProfileModel = function () {
             var self = this;
             var timeout = null;
 
-            // intit
+            self.activate = function () {
+                var promises = [];
+                promises.push(services.getAvailabelOrganizations());
+                promises.push(services.getAvailabelGroups());
+                promises.push(services.getAvailabelRoles());
+    
+                var result =  Promise.all(promises).then(function(resultOfAllPromises) {
+                    [self.availableOrganizations, self.availableGroups, self.availableRoles] = resultOfAllPromises;
+                });
+    
+                return  result.then(function() {       
+                            self.getAllUsers();
+                        }, 
+                        function(error) {
+                            throw new Error(error);
+                        });
+            };
+
+            // init available
+            self.availableGroups = [];
+            self.availableOrganizations = [];
+            self.availableRoles = [];
 
             //list of users
             self.usersList = ko.observableArray([]);
@@ -13,7 +34,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             self.isShowAdvancedSearch = ko.observable(false);
             self.displayMess = ko.observable(false);
 
-            self.availableGroups = httpGet.availableGroups;
+            
             self.availableGroupsBelongOrg = ko.observableArray([]);
             for (var i = 0; i < self.availableGroups.length; i++) {
                 self.availableGroupsBelongOrg.push(self.availableGroups[i]);
@@ -23,7 +44,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                 self.searchUser('');
             });
 
-            self.availableOrganizations = httpGet.availableOrganizations;
+            
             self.selectedOrganization = ko.observable();
             self.selectedOrganization.subscribe(function (value) {
                 self.availableGroupsBelongOrg([]);
@@ -43,7 +64,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                 self.searchUser('');
             });
 
-            self.availableRoles  = httpGet.availableRoles;
+            
             self.selectedRole = ko.observable();
             self.selectedRole.subscribe(function () {
                 self.searchUser('');
@@ -66,13 +87,12 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
                 //clear
                 self.usersList.removeAll();
-                var temp = 0;
 
                 http.get('https://localhost:5001/api/user/light')
                     .then(function (u) {
                         self.usersList(u);
 
-                        showMessage(usersList);
+                        self.showMessage(self.usersList);
 
                     }, function (error) {
                         alert("Error: Can't connect to server.");
@@ -105,9 +125,6 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                                                         '&groupName=' + groupName + 
                                                         '&roleName=' + roleName)
                     .then(function (u) {
-
-                        var temp = 0;
-
                         self.usersList(u);
 
                         showMessage(usersList);
@@ -124,10 +141,6 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
             self.toggleVisibility = function () {
                 self.isShowAdvancedSearch(!self.isShowAdvancedSearch());
-            };
-
-            self.activate = function () {
-                self.getAllUsers();
             };
 
             self.search = function () {

@@ -1,13 +1,12 @@
 define(['knockout',
-    'jquery',
     'durandal/app',
     'plugins/http',
-    './httpGet',
     'plugins/router',
-    'factoryObjects',
-    'utilities',
+    'helpers/factoryObjects',
+    'helpers/utilities',
+    'services/getAvailables',
     'knockout.validation'
-], function (ko, $, app, http, httpGet, router, factoryObjects, utilities) {
+], function (ko, app, http, router, factoryObjects, utilities, services) {
 
     var knockoutValidationSettings = {
         grouping: {
@@ -18,74 +17,27 @@ define(['knockout',
     ko.validation.init(knockoutValidationSettings, true);
 
 
-
     var ProfileModel = function () {
         var self = this;
 
         self.activate = function () {
-            var promises = [];
-            promises.push(self.getAvailabelOrganizations());
-            promises.push(self.getAvailabelGroups());
-            promises.push(self.getAvailabelRoles());
+            var result = services.getAvailables();
 
-            var result =  Promise.all(promises).then(function(resultOfAllPromises) {
-                [self.availableOrganizations, self.availableGroups, self.availableRoles] = resultOfAllPromises;
-            });
+            return  result.then(function(availables) {
+                        [self.availableOrganizations, self.availableGroups, self.availableRoles] = availables;
 
-            return result.then(function() {
-                self.init();
-            });
-        };
-
-        // init validated all form
-        self.compositionComplete = function () {
-            self.validated = ko.validatedObservable(self);
+                        self.init();
+                        self.validated = ko.validatedObservable(self);
+                    }, 
+                    function(error) {
+                        throw new Error(error);
+                    });
         };
 
         // Init for available
         self.availableOrganizations = [];
         self.availableGroups = [];
         self.availableRoles = [];
-
-
-        self.getAvailabelOrganizations = function () {
-            return new Promise(function (resolve, reject) {
-                http.get('https://localhost:5001/api/organization')
-                    .then(function (response) { 
-                        resolve(response);
-                    }, function(error) {
-                        reject("error");
-                        app.showMessage('Load organizations failed!', 'Error', ['Yes'])
-                    }
-                );
-            });
-        };
-
-        self.getAvailabelRoles = function () {
-            return new Promise(function (resolve, reject) {
-                http.get('https://localhost:5001/api/role')
-                    .then(function (response) {
-                        resolve(response);
-                    }, function (error) {
-                        reject("error");
-                        app.showMessage('Load roles failed!', 'Error', ['Yes'])
-                    }
-                );
-            });
-        };
-
-        self.getAvailabelGroups = function () {
-            return new Promise(function(resolve, reject) {
-                http.get('https://localhost:5001/api/group')
-                    .then(function (response) {
-                        resolve(response);
-                    }, function (error) {
-                        reject("error");
-                        app.showMessage('Load groups failed!', 'Error', ['Yes'])
-                    }
-                );
-            });
-        };
 
         self.availableGroupsBelongOrg = ko.observableArray([]);
 
