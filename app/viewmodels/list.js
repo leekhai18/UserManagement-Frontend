@@ -53,6 +53,15 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                 router.navigate("create");
             }
 
+            self.showMessage = function(list){
+                if(list().length == 0){
+                    self.displayMess(true);
+                }
+                else{
+                    self.displayMess(false);
+                }
+            }
+
             self.getAllUsers = function () {
 
                 //clear
@@ -63,12 +72,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                     .then(function (u) {
                         self.usersList(u);
 
-                        if(self.usersList().length == 0){
-                            self.displayMess(true);
-                        }
-                        else{
-                            self.displayMess(false);
-                        }
+                        showMessage(usersList);
 
                     }, function (error) {
                         alert("Error: Can't connect to server.");
@@ -106,12 +110,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
                         self.usersList(u);
 
-                        if(self.usersList().length == 0){
-                            self.displayMess(true);
-                        }
-                        else{
-                            self.displayMess(false);
-                        }
+                        showMessage(usersList);
 
                     }, function (error) {
                         alert("Error: Can't connect to server.");
