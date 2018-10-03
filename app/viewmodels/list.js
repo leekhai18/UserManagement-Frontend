@@ -13,9 +13,6 @@ define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables'],
             self.labelRole = ROLE;
             self.advancedSearch = ADVANCED_SEARCH;
             self.labelMessage = MESSAGE;
-
-            self.domainDev = DOMAIN_DEV;
-            self.errorConnection = ERROR_CONNECTION;
             // --------
             
             self.activate = function () {
@@ -101,14 +98,14 @@ define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables'],
                 //clear
                 self.usersList.removeAll();
 
-                http.get(self.domainDev + "api/user/light")
+                http.get(DOMAIN_DEV + "api/user/light")
                     .then(function (u) {
                         self.usersList(u);
 
                         self.showMessage(self.usersList);
 
                     }, function (error) {
-                        alert(self.errorConnection);
+                        alert(ERROR_CONNECTION);
                     });
             }
 
@@ -133,7 +130,7 @@ define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables'],
                     }
                 };
 
-                http.get(self.domainDev + 'api/search?&name='  + keySearch +
+                http.get(DOMAIN_DEV + 'api/search?&name='  + keySearch +
                                                         '&organizationName=' + organizationName + 
                                                         '&groupName=' + groupName + 
                                                         '&roleName=' + roleName)
@@ -143,7 +140,7 @@ define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables'],
                         self.showMessage(self.usersList);
 
                     }, function (error) {
-                        alert(self.errorConnection);
+                        alert(ERROR_CONNECTION);
                     });
             }
 

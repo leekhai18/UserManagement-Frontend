@@ -12,7 +12,7 @@ const GROUP = "Group / Department";
 const ROLE = "Role / Job title";
 
 const CREATE_TITLE = "Create A New User Profile";
-const DETAIL_TITLE = "Detail profile";
+const DETAIL_TITLE = "Detail profile: ";
 
 const ADVANCED_SEARCH = "Advanced search";
 const SEARCH = "Search";
@@ -31,4 +31,9 @@ const NO = "No";
 const SUCCESS = "Successfully";
 const DONE = "Done!";
 const CREATE_CONFIRM = "Are you sure you want to create new User?";
+const EDIT_CONFIRM = "Are you sure you want to edit User?";
+const DELETE_CONFIRM = "Do you really want to delete this user profile permanently?";
+
+const COPYRIGHT = "© 2018 Rosen | Design by Intern Team";
+const LOGO = "Rosen";
 

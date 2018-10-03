@@ -1,5 +1,7 @@
 ﻿define(['plugins/router', 'durandal/app'], function (router, app) {
     return {
+        copyright: COPYRIGHT,
+        logo: LOGO,
         router: router,
         activate: function () {
             router.map([

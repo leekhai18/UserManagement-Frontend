@@ -31,16 +31,9 @@ define(['knockout',
         self.labelWorkPhone = WORK_PHONE;
         self.labelEmail = EMAIL;
 
-        self.domainDev = DOMAIN_DEV;
-        self.requiredNotice = REQUIRED_NOTICE;
-        self.wrongNotice = WRONG_NOTICE;
         self.sameNotice = SAME_NOTICE;
 
-        self.yes = YES;
-        self.no = NO;
-        self.success = SUCCESS;
-        self.done = DONE;
-        self.createConfirm = CREATE_CONFIRM;
+        self.pageTitle = CREATE_TITLE;
 
         self.activate = function () {
             var result = services.getAvailables();
@@ -70,7 +63,7 @@ define(['knockout',
         self.titleMainEmail = ko.observable();
 
         // Init observable error show on popup
-        self.textFieldRequired = ko.observable(self.requiredNotice);
+        self.textFieldRequired = ko.observable(REQUIRED_NOTICE);
 
         // Init error when server sendback
         self.errorList = ko.observableArray([]);
@@ -78,13 +71,13 @@ define(['knockout',
         self.init = function () {
             self.errorList([]);
 
-            self.firstName = ko.observable("").extend({ required: { params: true, message: self.requiredNotice} });
-            self.lastName = ko.observable("").extend({ required: { params: true, message: self.requiredNotice } });
+            self.firstName = ko.observable("").extend({ required: { params: true, message: REQUIRED_NOTICE} });
+            self.lastName = ko.observable("").extend({ required: { params: true, message: REQUIRED_NOTICE } });
             self.fullName = ko.computed(function () {
                 return self.firstName() + " " + self.lastName();
             });
 
-            self.personnelID = ko.observable("").extend({ required: { params: true, message: self.requiredNotice } });
+            self.personnelID = ko.observable("").extend({ required: { params: true, message: REQUIRED_NOTICE } });
 
             // Init for main Field
             self.mainGroup = ko.observable(0).extend({ required: { params: true, message: '_' } });
@@ -165,7 +158,7 @@ define(['knockout',
                     .extend({
                         required: true,
                         pattern: {
-                            message: self.wrongNotice,
+                            message: WRONG_NOTICE,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
@@ -173,11 +166,11 @@ define(['knockout',
 
             self.privatePhoneNumbers = ko.observableArray([{
                 value: ko.observable("")
-                    .extend({ required: { params: false, message: self.requiredNotice } })
+                    .extend({ required: { params: false, message: REQUIRED_NOTICE } })
                     .extend({
                         required: true,
                         pattern: {
-                            message: self.wrongNotice,
+                            message: WRONG_NOTICE,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
@@ -188,15 +181,15 @@ define(['knockout',
                     .extend({
                         required: true,
                         pattern: {
-                            message: self.wrongNotice,
+                            message: WRONG_NOTICE,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
             }]);
 
             self.emailValue = ko.observable("")
-                .extend({ required: { params: true, message: self.requiredNotice } })
-                .extend({ email: { params: true, message: self.wrongNotice } });
+                .extend({ required: { params: true, message: REQUIRED_NOTICE } })
+                .extend({ email: { params: true, message: WRONG_NOTICE } });
             self.emailValue.subscribe(function (value) {
                 self.titleMainEmail(value);
             });
@@ -261,7 +254,7 @@ define(['knockout',
                     .extend({
                         required: true,
                         pattern: {
-                            message: self.wrongNotice,
+                            message: WRONG_NOTICE,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
@@ -275,11 +268,11 @@ define(['knockout',
         self.addPrivatePhoneNumber = function () {
             self.privatePhoneNumbers.push({
                 value: ko.observable("")
-                    .extend({ required: { params: false, message: self.requiredNotice } })
+                    .extend({ required: { params: false, message: REQUIRED_NOTICE } })
                     .extend({
                         required: false,
                         pattern: {
-                            message: self.wrongNotice,
+                            message: WRONG_NOTICE,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
@@ -296,7 +289,7 @@ define(['knockout',
                     .extend({
                         required: true,
                         pattern: {
-                            message: self.wrongNotice,
+                            message: WRONG_NOTICE,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
@@ -309,8 +302,8 @@ define(['knockout',
         // Functions on Email
         self.addWorkEmail = function () {
             let emailValue = ko.observable("")
-                .extend({ required: { params: true, message: self.requiredNotice } })
-                .extend({ email: { params: true, message: self.wrongNotice } });
+                .extend({ required: { params: true, message: REQUIRED_NOTICE } })
+                .extend({ email: { params: true, message: WRONG_NOTICE } });
             emailValue.subscribe(function (value) {
                 self.titleMainEmail(value);
             });
@@ -327,8 +320,8 @@ define(['knockout',
                 self.validated.errors.showAllMessages();
             } else {
 
-                app.showMessage(self.createConfirm, 'Verify', [self.yes, self.no]).then(function (result) {
-                    if (result == 'Yes') {
+                app.showMessage(CREATE_CONFIRM, 'Verify', [YES, NO]).then(function (result) {
+                    if (result == YES) {
                         // Contract create
                         var newProfile = {
                             id: self.personnelID(),
@@ -344,12 +337,12 @@ define(['knockout',
                             profileImage: self.profileImage
                         };
 
-                        http.post(self.domainDev + 'api/user', newProfile)
+                        http.post(DOMAIN_DEV + 'api/user', newProfile)
                             .then(function (response) {
                                 // Created new user
 
-                                app.showMessage(self.done, self.success, [self.yes]).then(function (result) {
-                                    if (result == 'Yes') {
+                                app.showMessage(DONE, SUCCESS, [YES]).then(function (result) {
+                                    if (result == YES) {
                                         //refreshView
                                         self.init();
 

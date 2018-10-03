@@ -33,7 +33,22 @@ define([
     var ProfileModel = function () {
         var self = this;
 
-        self.textFieldRequired = ko.observable("This field is required");
+        self.pageTitle = DETAIL_TITLE;
+
+        self.labelOrganization = ORGANIZATION;
+        self.labelGroup = GROUP;
+        self.labelRole = ROLE;
+        self.labelFirstName = FIRS_TNAME;
+        self.labelLastName = LAST_NAME;
+        self.labelPersonnelID = PERSONNEL_ID;
+        self.labelMobilePhone = MOBILE;
+        self.labelPrivatePhone = PRIVATE_PHONE;
+        self.labelWorkPhone = WORK_PHONE;
+        self.labelEmail = EMAIL;
+
+        self.sameNotice = SAME_NOTICE;
+
+        self.textFieldRequired = ko.observable(REQUIRED_NOTICE);
 
         // 
         // START UPLOAD IMAGE
@@ -42,9 +57,6 @@ define([
 
         self.imageUpload = function (data, e) {
             var file = e.target.files[0];
-
-            console.log("file----------------------------");
-            console.log(file);
 
             var reader = new FileReader();
 
@@ -64,14 +76,14 @@ define([
         self.firstName = ko.observable("").extend({
             required: {
                 params: true,
-                message: 'This field is required.'
+                message: REQUIRED_NOTICE
             }
         });
 
         self.lastName = ko.observable("").extend({
             required: {
                 params: true,
-                message: 'This field is required.'
+                message: REQUIRED_NOTICE
             }
         });
 
@@ -162,7 +174,7 @@ define([
                     .extend({
                         required: true,
                         pattern: {
-                            message: 'This number is wrong.',
+                            message: WRONG_NOTICE,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
@@ -186,7 +198,7 @@ define([
                     .extend({
                         required: false,
                         pattern: {
-                            message: 'This number is wrong.',
+                            message: WRONG_NOTICE,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
@@ -210,7 +222,7 @@ define([
                     .extend({
                         required: true,
                         pattern: {
-                            message: 'This number is wrong.',
+                            message: WRONG_NOTICE,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
@@ -233,8 +245,8 @@ define([
         self.addWorkEmail = function () {
             self.workEmails.push({
                 value: ko.observable("")
-                    .extend({ required: { params: true, message: 'This field is required.' } })
-                    .extend({ email: { params: true, message: 'This email is wrong.' } })
+                    .extend({ required: { params: true, message: REQUIRED_NOTICE } })
+                    .extend({ email: { params: true, message: WRONG_NOTICE } })
             });
         };
 
@@ -255,10 +267,10 @@ define([
                 self.validated.errors.showAllMessages();
             } else {
 
-                app.showMessage('Are you sure you want to edit profile?', 'Verify', ['Yes', 'No'])
+                app.showMessage(EDIT_CONFORM, 'Verify', [YES, NO])
                     .then(function (result) {
                         // Contract update
-                        if (result == 'Yes') {
+                        if (result == YES) {
                             var editedProfile = {
                                 id: self.personnelID,
                                 firstName: self.firstName(),
@@ -273,27 +285,18 @@ define([
                                 profileImage: self.profileImage
                             };
 
-                            console.log('edit profile');
-                            console.log(editedProfile);
-
-                            http.put('https://localhost:5001/api/user/', editedProfile)
+                            http.put(DOMAIN_DEV + 'api/user/', editedProfile)
                                 .then(function (response) {
-                                    console.log('Updated user');
-                                    console.log(editedProfile);
-                                    console.log('-------------');
 
-                                    app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
-                                        if (result == 'Yes') {
+                                    app.showMessage(DONE, SUCCESS, [YES]).then(function (result) {
+                                        if (result == YES) {
                                             // navigate to home page
                                             router.navigate('profile/' + response);
                                         }
                                     });
                                 }, function (error) {
-                                    console.log('ERROR when Update user');
-                                    console.log(error);
-                                    console.log('-----------------------');
 
-                                    app.showMessage(error.responseText, 'Error!', ['Yes']);
+                                    app.showMessage(error.responseText, 'Error!', [YES]);
                                 });
                         }
                     });
@@ -302,29 +305,23 @@ define([
 
         // Delete profile func
         self.deleteProfile = function () {
-            app.showMessage('Do you really want to delete this user profile permanently?', 'Verify', ['Yes', 'Can'])
+            app.showMessage(DELETE_CONFIRM, 'Verify', [YES, NO])
                 .then(function (result) {
                     if (result == "Yes") {
                         if (self.personnelID) {
 
-                            http.remove('https://localhost:5001/api/user/' + self.personnelID)
+                            http.remove(DOMAIN_DEV + 'api/user/' + self.personnelID)
                                 .then(function (response) {
-                                    console.log('Deleting user by id');
-                                    console.log(response);
-                                    console.log('-------------------');
 
-                                    app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
-                                        if (result == 'Yes') {
+                                    app.showMessage(DONE, SUCCESS, [YES]).then(function (result) {
+                                        if (result ==YES) {
                                             // navigate to home page
                                             router.navigate('');
                                         }
                                     });
                                 }, function (error) {
-                                    console.log('Error when Delete user by id');
-                                    console.log(error);
-                                    console.log('----------------------------');
 
-                                    app.showMessage(error.responseText, 'Error!', ['Yes']);
+                                    app.showMessage(error.responseText, 'Error!', [YES]);
                                 });
                         }
                     }
@@ -341,7 +338,7 @@ define([
         self.mapDataByObject = function (u) {
             // Check via id user
             if (self.personnelID != u.id) {
-                app.showMessage('Get Wrong User', 'Wrong!', ['Yes']);
+                app.showMessage('Get Wrong User', 'Wrong!', [YES]);
                 router.navigate('');
             }
         
@@ -463,7 +460,7 @@ define([
                         .extend({
                             required: true,
                             pattern: {
-                                message: 'This number is wrong.',
+                                message: WRONG_NOTICE,
                                 params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                             }
                         })
@@ -490,7 +487,7 @@ define([
                         .extend({
                             required: true,
                             pattern: {
-                                message: 'This number is wrong.',
+                                message: WRONG_NOTICE,
                                 params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                             }
                         })
@@ -517,7 +514,7 @@ define([
                         .extend({
                             required: false,
                             pattern: {
-                                message: 'This number is wrong.',
+                                message: WRONG_NOTICE,
                                 params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                             }
                         })
@@ -542,8 +539,8 @@ define([
             for (let i = 0; i < u.email.length; i++) {
                 self.workEmails.push({
                     value: ko.observable(u.email[i].address)
-                        .extend({ required: { params: true, message: 'This field is required.' } })
-                        .extend({ email: { params: true, message: 'This email is wrong.' } })
+                        .extend({ required: { params: true, message: REQUIRED_NOTICE } })
+                        .extend({ email: { params: true, message: WRONG_NOTICE } })
                 });
 
                 // binding main email
@@ -556,11 +553,8 @@ define([
 
         self.bindingDataByID = function (id) {
             // recieve data from server 
-            http.get('https://localhost:5001/api/user/' + id)
+            http.get(DOMAIN_DEV + 'api/user/' + id)
                 .then(function (u) {
-                    console.log('Geting user by id');
-                    console.log(u);
-                    console.log('-----------------');
 
                     self.personnelID = u.id;
                     self.mapDataByObject(u);
@@ -569,11 +563,8 @@ define([
                     // self.mapDataByObject(dataEx);
                 },
                     function (error) {
-                        console.log('Error when Get user by id');
-                        console.log(error);
-                        console.log('-------------------------');
 
-                        app.showMessage(error.statusText + " " + error.responseText, 'Error!', ['Yes']);
+                        app.showMessage(error.statusText + " " + error.responseText, 'Error!', [YES]);
                     });
         }
 
