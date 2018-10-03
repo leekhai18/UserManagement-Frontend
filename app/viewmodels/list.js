@@ -1,4 +1,4 @@
-define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables'],
+define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables', 'models/listModel'],
     function (ko, http, router, services) {
 
         var ProfileModel = function () {
