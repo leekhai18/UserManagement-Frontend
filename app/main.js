@@ -7,19 +7,8 @@
         'knockout': '../lib/knockout/knockout-3.4.0',
         'bootstrap': '../assets/js/bootstrap.min',
         'bootstrap.multiselect': '../assets/js/bootstrap-multiselect',
-        // 'bootstrap': '../lib/bootstrap/js/bootstrap',
-        // 'jquery': '../lib/jquery/jquery-1.9.1',
         'jquery': '../assets/js/jquery-1.10.2',
         'knockout.validation': '../lib/knockout/knockout.validation/dist/knockout.validation.min',
-
-        // helpers
-        'factoryObjects': './helpers/factoryObjects',
-        'httpGet' : './viewmodels/httpGet',
-        'utilities' : './helpers/utilities',
-
-        // data example
-        'data.ex.profile' : './helpers/data_examples/data.ex.Profile'
-
     },
     shim: {
         'bootstrap': {
@@ -33,10 +22,8 @@ define([
     'durandal/system',
     'durandal/app',
     'durandal/viewLocator',
-    'viewmodels/httpGet',
-    'factoryObjects',
     'bootstrap'
-], function (system, app, viewLocator, httpGet, factoryObjects) {
+], function (system, app, viewLocator) {
     //>>excludeStart("build", true);
     system.debug(true);
     //>>excludeEnd("build");

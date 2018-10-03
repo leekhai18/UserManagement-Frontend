@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'knockout.validation', 'bootstrap.multiselect', 'constants/constants'],
     function (ko, http, httpGet, router, $) {
+=======
+define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables'],
+    function (ko, http, router, services) {
+>>>>>>> 310988b95ebbfe4fd8c595aca79d36167afa0fe7
 
         var ProfileModel = function () {
             //create variable
@@ -8,6 +13,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             var timeout = null; //variable to set time out for search feature
             //End here
 
+<<<<<<< HEAD
             //set String value from constant.js file to label
             //Start here
             self.labelOrganization = ORGANIZATION;
@@ -19,6 +25,30 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             self.domainDev = DOMAIN_DEV;
             self.errorConnection = ERROR_CONNECTION;
             // End here
+=======
+            self.activate = function () {
+                var promises = [];
+                promises.push(services.getAvailabelOrganizations());
+                promises.push(services.getAvailabelGroups());
+                promises.push(services.getAvailabelRoles());
+    
+                var result =  Promise.all(promises).then(function(resultOfAllPromises) {
+                    [self.availableOrganizations, self.availableGroups, self.availableRoles] = resultOfAllPromises;
+                });
+    
+                return  result.then(function() {       
+                            self.getAllUsers();
+                        }, 
+                        function(error) {
+                            throw new Error(error);
+                        });
+            };
+
+            // init available
+            self.availableGroups = [];
+            self.availableOrganizations = [];
+            self.availableRoles = [];
+>>>>>>> 310988b95ebbfe4fd8c595aca79d36167afa0fe7
 
             //list of users
             self.usersList = ko.observableArray([]);
@@ -26,7 +56,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
             self.isShowAdvancedSearch = ko.observable(false);
             self.displayMess = ko.observable(false);
 
-            self.availableGroups = httpGet.availableGroups;
+            
             self.availableGroupsBelongOrg = ko.observableArray([]);
             for (var i = 0; i < self.availableGroups.length; i++) {
                 self.availableGroupsBelongOrg.push(self.availableGroups[i]);
@@ -36,7 +66,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                 self.searchUser('');
             });
 
-            self.availableOrganizations = httpGet.availableOrganizations;
+            
             self.selectedOrganization = ko.observable();
             self.selectedOrganization.subscribe(function (value) {
                 self.availableGroupsBelongOrg([]);
@@ -56,7 +86,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                 self.searchUser('');
             });
 
-            self.availableRoles  = httpGet.availableRoles;
+            
             self.selectedRole = ko.observable();
             self.selectedRole.subscribe(function () {
                 self.searchUser('');
@@ -79,7 +109,6 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
                 //clear
                 self.usersList.removeAll();
-                var temp = 0;
 
                 http.get(self.domainDev + "api/user/light")
                     .then(function (u) {
@@ -118,9 +147,6 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                                                         '&groupName=' + groupName + 
                                                         '&roleName=' + roleName)
                     .then(function (u) {
-
-                        var temp = 0;
-
                         self.usersList(u);
 
                         self.showMessage(self.usersList);
@@ -137,10 +163,6 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
             self.toggleVisibility = function () {
                 self.isShowAdvancedSearch(!self.isShowAdvancedSearch());
-            };
-
-            self.activate = function () {
-                self.getAllUsers();
             };
 
             self.search = function () {
