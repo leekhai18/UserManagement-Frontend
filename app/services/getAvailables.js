@@ -5,7 +5,7 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
 
         self.getAvailabelOrganizations = function () {
             return new Promise(function (resolve, reject) {
-                http.get('https://localhost:5001/api/organization')
+                http.get(`${DOMAIN_DEV}api/organization`)
                     .then(function (response) { 
                         resolve(response);
                     }, function(error) {
@@ -19,7 +19,7 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
 
         self.getAvailabelRoles = function () {
             return new Promise(function (resolve, reject) {
-                http.get('https://localhost:5001/api/role')
+                http.get(`${DOMAIN_DEV}api/role`)
                     .then(function (response) {
                         resolve(response);
                     }, function (error) {
@@ -33,7 +33,7 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
 
         self.getAvailabelGroups = function () {
             return new Promise(function(resolve, reject) {
-                http.get('https://localhost:5001/api/group')
+                http.get(`${DOMAIN_DEV}api/group`)
                     .then(function (response) {
                         resolve(response);
                     }, function (error) {

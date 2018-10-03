@@ -1,6 +1,6 @@
 <div class="content">
     <div class="container">
-        <h3 style="margin-top: 45px;" class="col-lg-8 col-md-7">Detail Profile: <span data-bind="text: fullName()"></span></h3>
+        <h3 style="margin-top: 45px;" class="col-lg-8 col-md-7">Detail Profile: <span data-bind="text: model.fullName"></span></h3>
 
 
         <div class="row">
@@ -13,13 +13,13 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>First Name</label>
-                                    <div data-bind="text: firstName" class="card-item"> </div>
+                                    <div data-bind="text: model.firstName" class="card-item"> </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Last Name</label>
-                                    <div data-bind="text: lastName" class="card-item"> </div>
+                                    <div data-bind="text: model.lastName" class="card-item"> </div>
                                 </div>
                             </div>
                         </div>
@@ -28,7 +28,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Personnel ID</label>
-                                    <div data-bind="text: personalID" class="card-item"> </div>
+                                    <div data-bind="text: model.personalID" class="card-item"> </div>
                                 </div>
                             </div>
                         </div>
@@ -37,7 +37,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Organization / Company</label>
-                                    <div data-bind="text: organization" class="card-item"> </div>
+                                    <div data-bind="text: model.organization" class="card-item"> </div>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +46,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Group / Department</label>
-                                    <div class="selected-item" data-bind="foreach: groups">
+                                    <div class="selected-item" data-bind="foreach: model.groups">
                                         <div class="item-wrapper">
                                             <div data-bind="text: $data.name" class="card-item"> </div>
                                             <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
@@ -58,7 +58,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Role / Job Title</label>
-                                    <div class="selected-item" data-bind="foreach: roles">
+                                    <div class="selected-item" data-bind="foreach: model.roles">
                                         <div class="item-wrapper">
                                             <div data-bind="text: $data.name" class="card-item"> </div>
                                             <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
@@ -72,7 +72,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Work phone number</label>
-                                    <div class="selected-item" data-bind="foreach: workPhoneNumbers">
+                                    <div class="selected-item" data-bind="foreach: model.workPhoneNumbers">
                                         <div class="item-wrapper">
                                             <div data-bind="text: $data.number" class="card-item"> </div>
                                             <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
@@ -84,7 +84,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Mobile number</label>
-                                    <div class="selected-item" data-bind="foreach: mobileNumbers">
+                                    <div class="selected-item" data-bind="foreach: model.mobileNumbers">
                                         <div class="item-wrapper">
                                             <div data-bind="text: $data.number" class="card-item"> </div>
                                             <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
@@ -99,7 +99,7 @@
                                 <div class="form-group">
                                     <label>Private phone number</label>
                                     <div class="item-wrapper">
-                                        <div class="selected-item" data-bind="foreach: privatePhoneNumbers">
+                                        <div class="selected-item" data-bind="foreach: model.privatePhoneNumbers">
                                             <div data-bind="text: $data.number" class="card-item"> </div>
                                             <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
                                         </div>
@@ -110,7 +110,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Work E-Mail</label>
-                                    <div class="selected-item" data-bind="foreach: workEmails">
+                                    <div class="selected-item" data-bind="foreach: model.workEmails">
                                         <div class="item-wrapper">
                                             <div data-bind="text: $data.address" class="card-item"> </div>
                                             <div class="item-is-main" data-bind="visible: $data.isMain">main</div>
@@ -138,7 +138,7 @@
                     </div>
                     <div class="content">
                         <div class="author">
-                            <img class="avatar border-white" data-bind="attr: {src:photoUrl || 'assets/img/faces/face-2.jpg'}" />
+                            <img class="avatar border-white" data-bind="attr: {src: model.profileImage || 'assets/img/faces/face-2.jpg'}" />
                         </div>
                     </div>
                 </div>

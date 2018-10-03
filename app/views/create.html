@@ -70,7 +70,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <span data-bind="text: sameNotice, if: groupsIsSame" class="validationMessage"></span>
+                                        <span data-bind="text: sameNotice, visible: groupsIsSame" class="validationMessage"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -94,7 +94,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <span data-bind="text: sameNotice, if: rolesIsSame" class="validationMessage"></span>
+                                        <span data-bind="text: sameNotice, visible: rolesIsSame" class="validationMessage"></span>
                                     </div>
                                 </div>
                             </div>
@@ -217,7 +217,7 @@
                             <p data-bind="text: titleOrganization" class="title">Organization</p>
                             <p data-bind="text: titleMainGroup" class="title">Main Group</p>
                             <p data-bind="text: titleMainRole" class="title">Main Role</p>
-                            <p data-bind="text: CONSTANT" class="title">Main Work-Email</p>
+                            <p data-bind="text: titleMainEmail" class="title">Main Work-Email</p>
                         </div>
                     </div>
                     <hr><br>
