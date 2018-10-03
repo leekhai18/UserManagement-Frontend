@@ -6,7 +6,8 @@ define(['knockout',
     'plugins/router',
     'factoryObjects',
     'utilities',
-    'knockout.validation'
+    'knockout.validation',
+    'constants/constants'
 ], function (ko, $, app, http, httpGet, router, factoryObjects, utilities) {
 
     var knockoutValidationSettings = {
@@ -21,6 +22,17 @@ define(['knockout',
 
     var ProfileModel = function () {
         var self = this;
+
+        self.labelOrganization = ORGANIZATION;
+        self.labelGroup = GROUP;
+        self.labelRole = ROLE;
+        self.labelFirstName = FIRS_TNAME;
+        self.labelLastName = LAST_NAME;
+        self.labelPersonnelID = PERSONNEL_ID;
+        self.labelMobilePhone = MOBILE;
+        self.labelPrivatePhone = PRIVATE_PHONE;
+        self.labelWorkPhone = WORK_PHONE;
+        self.labelEmail = EMAIL;
 
         self.activate = function () {
             var promises = [];

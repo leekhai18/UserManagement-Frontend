@@ -1,11 +1,24 @@
-define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'knockout.validation', 'bootstrap.multiselect'],
+define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'knockout.validation', 'bootstrap.multiselect', 'constants/constants'],
     function (ko, http, httpGet, router, $) {
 
         var ProfileModel = function () {
+            //create variable
+            //Start here
             var self = this;
-            var timeout = null;
+            var timeout = null; //variable to set time out for search feature
+            //End here
 
-            // intit
+            //set String value from constant.js file to label
+            //Start here
+            self.labelOrganization = ORGANIZATION;
+            self.labelGroup = GROUP;
+            self.labelRole = ROLE;
+            self.advancedSearch = ADVANCED_SEARCH;
+            self.labelMessage = MESSAGE;
+
+            self.domainDev = DOMAIN_DEV;
+            self.errorConnection = ERROR_CONNECTION;
+            // End here
 
             //list of users
             self.usersList = ko.observableArray([]);
@@ -68,14 +81,14 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                 self.usersList.removeAll();
                 var temp = 0;
 
-                http.get('https://localhost:5001/api/user/light')
+                http.get(self.domainDev + "api/user/light")
                     .then(function (u) {
                         self.usersList(u);
 
-                        showMessage(usersList);
+                        self.showMessage(self.usersList);
 
                     }, function (error) {
-                        alert("Error: Can't connect to server.");
+                        alert(self.errorConnection);
                     });
             }
 
@@ -100,7 +113,7 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
                     }
                 };
 
-                http.get('https://localhost:5001/api/search?&name='  + keySearch +
+                http.get(self.domainDev + 'api/search?&name='  + keySearch +
                                                         '&organizationName=' + organizationName + 
                                                         '&groupName=' + groupName + 
                                                         '&roleName=' + roleName)
@@ -110,10 +123,10 @@ define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'kn
 
                         self.usersList(u);
 
-                        showMessage(usersList);
+                        self.showMessage(self.usersList);
 
                     }, function (error) {
-                        alert("Error: Can't connect to server.");
+                        alert(self.errorConnection);
                     });
             }
 
