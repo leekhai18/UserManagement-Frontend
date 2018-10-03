@@ -1,8 +1,9 @@
 const FIRS_TNAME = "First Name";
 const LAST_NAME = "Last Name";
 const PERSONNEL_ID = "Personnel ID";
-const MOBILE = "Mobile number";
+
 const EMAIL = "Work Email";
+const MOBILE = "Mobile number";
 const PRIVATE_PHONE = "Private phone number";
 const WORK_PHONE = "Work phone number";
 
@@ -20,4 +21,14 @@ const DOMAIN_DEV = "https://localhost:5001/";
 
 const MESSAGE = "Don't have any user to show. Please press Create on the menu bar to add user.";
 const ERROR_CONNECTION = "Error: Can't connect to server.";
+
+const REQUIRED_NOTICE = "This field is required.";
+const WRONG_NOTICE = "This is wrong.";
+const SAME_NOTICE = "Not the same value";
+
+const YES = "Yes";
+const NO = "No";
+const SUCCESS = "Successfully";
+const DONE = "Done!";
+const CREATE_CONFIRM = "Are you sure you want to create new User?";
 

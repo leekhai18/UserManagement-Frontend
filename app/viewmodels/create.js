@@ -2,19 +2,11 @@ define(['knockout',
     'durandal/app',
     'plugins/http',
     'plugins/router',
-<<<<<<< HEAD
-    'factoryObjects',
-    'utilities',
-    'knockout.validation',
-    'constants/constants'
-], function (ko, $, app, http, httpGet, router, factoryObjects, utilities) {
-=======
     'helpers/factoryObjects',
     'helpers/utilities',
     'services/getAvailables',
     'knockout.validation'
 ], function (ko, app, http, router, factoryObjects, utilities, services) {
->>>>>>> 310988b95ebbfe4fd8c595aca79d36167afa0fe7
 
     var knockoutValidationSettings = {
         grouping: {
@@ -38,6 +30,17 @@ define(['knockout',
         self.labelPrivatePhone = PRIVATE_PHONE;
         self.labelWorkPhone = WORK_PHONE;
         self.labelEmail = EMAIL;
+
+        self.domainDev = DOMAIN_DEV;
+        self.requiredNotice = REQUIRED_NOTICE;
+        self.wrongNotice = WRONG_NOTICE;
+        self.sameNotice = SAME_NOTICE;
+
+        self.yes = YES;
+        self.no = NO;
+        self.success = SUCCESS;
+        self.done = DONE;
+        self.createConfirm = CREATE_CONFIRM;
 
         self.activate = function () {
             var result = services.getAvailables();
@@ -67,7 +70,7 @@ define(['knockout',
         self.titleMainEmail = ko.observable();
 
         // Init observable error show on popup
-        self.textFieldRequired = ko.observable("This field is required");
+        self.textFieldRequired = ko.observable(self.requiredNotice);
 
         // Init error when server sendback
         self.errorList = ko.observableArray([]);
@@ -75,13 +78,13 @@ define(['knockout',
         self.init = function () {
             self.errorList([]);
 
-            self.firstName = ko.observable("").extend({ required: { params: true, message: 'This field is required.' } });
-            self.lastName = ko.observable("").extend({ required: { params: true, message: 'This field is required.' } });
+            self.firstName = ko.observable("").extend({ required: { params: true, message: self.requiredNotice} });
+            self.lastName = ko.observable("").extend({ required: { params: true, message: self.requiredNotice } });
             self.fullName = ko.computed(function () {
                 return self.firstName() + " " + self.lastName();
             });
 
-            self.personnelID = ko.observable("").extend({ required: { params: true, message: 'This field is required.' } });
+            self.personnelID = ko.observable("").extend({ required: { params: true, message: self.requiredNotice } });
 
             // Init for main Field
             self.mainGroup = ko.observable(0).extend({ required: { params: true, message: '_' } });
@@ -162,7 +165,7 @@ define(['knockout',
                     .extend({
                         required: true,
                         pattern: {
-                            message: 'This number is wrong.',
+                            message: self.wrongNotice,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
@@ -170,11 +173,11 @@ define(['knockout',
 
             self.privatePhoneNumbers = ko.observableArray([{
                 value: ko.observable("")
-                    .extend({ required: { params: false, message: 'This field is required.' } })
+                    .extend({ required: { params: false, message: self.requiredNotice } })
                     .extend({
                         required: true,
                         pattern: {
-                            message: 'This number is wrong.',
+                            message: self.wrongNotice,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
@@ -185,15 +188,15 @@ define(['knockout',
                     .extend({
                         required: true,
                         pattern: {
-                            message: 'This number is wrong.',
+                            message: self.wrongNotice,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
             }]);
 
             self.emailValue = ko.observable("")
-                .extend({ required: { params: true, message: 'This field is required.' } })
-                .extend({ email: { params: true, message: 'This email is wrong.' } });
+                .extend({ required: { params: true, message: self.requiredNotice } })
+                .extend({ email: { params: true, message: self.wrongNotice } });
             self.emailValue.subscribe(function (value) {
                 self.titleMainEmail(value);
             });
@@ -208,9 +211,6 @@ define(['knockout',
         // START UPLOAD IMAGE
         self.imageUpload = function (data, e) {
             var file = e.target.files[0];
-
-            console.log("file----------------------------");
-            console.log(file);
 
             var reader = new FileReader();
 
@@ -261,7 +261,7 @@ define(['knockout',
                     .extend({
                         required: true,
                         pattern: {
-                            message: 'This number is wrong.',
+                            message: self.wrongNotice,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
@@ -275,11 +275,11 @@ define(['knockout',
         self.addPrivatePhoneNumber = function () {
             self.privatePhoneNumbers.push({
                 value: ko.observable("")
-                    .extend({ required: { params: false, message: 'This field is required.' } })
+                    .extend({ required: { params: false, message: self.requiredNotice } })
                     .extend({
                         required: false,
                         pattern: {
-                            message: 'This number is wrong.',
+                            message: self.wrongNotice,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
@@ -296,7 +296,7 @@ define(['knockout',
                     .extend({
                         required: true,
                         pattern: {
-                            message: 'This number is wrong.',
+                            message: self.wrongNotice,
                             params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
                         }
                     })
@@ -309,8 +309,8 @@ define(['knockout',
         // Functions on Email
         self.addWorkEmail = function () {
             let emailValue = ko.observable("")
-                .extend({ required: { params: true, message: 'This field is required.' } })
-                .extend({ email: { params: true, message: 'This email is wrong.' } });
+                .extend({ required: { params: true, message: self.requiredNotice } })
+                .extend({ email: { params: true, message: self.wrongNotice } });
             emailValue.subscribe(function (value) {
                 self.titleMainEmail(value);
             });
@@ -327,7 +327,7 @@ define(['knockout',
                 self.validated.errors.showAllMessages();
             } else {
 
-                app.showMessage('Are you sure you want to create new User?', 'Verify', ['Yes', 'No']).then(function (result) {
+                app.showMessage(self.createConfirm, 'Verify', [self.yes, self.no]).then(function (result) {
                     if (result == 'Yes') {
                         // Contract create
                         var newProfile = {
@@ -344,14 +344,11 @@ define(['knockout',
                             profileImage: self.profileImage
                         };
 
-                        http.post('https://localhost:5001/api/user', newProfile)
+                        http.post(self.domainDev + 'api/user', newProfile)
                             .then(function (response) {
                                 // Created new user
-                                console.log('Creatting new user');
-                                console.log(newProfile);
-                                console.log('------------------');
 
-                                app.showMessage('Done!', 'Successfully', ['Yes']).then(function (result) {
+                                app.showMessage(self.done, self.success, [self.yes]).then(function (result) {
                                     if (result == 'Yes') {
                                         //refreshView
                                         self.init();
@@ -363,9 +360,6 @@ define(['knockout',
 
                             }, function (response) {
                                 if (response.status != 200) {
-                                    console.log('ERROR when Create new user');
-                                    console.log(response);
-                                    console.log('--------------------------');
 
                                     self.errorList.removeAll();
 

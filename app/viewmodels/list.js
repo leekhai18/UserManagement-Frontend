@@ -3,13 +3,11 @@ define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables'],
 
         var ProfileModel = function () {
             //create variable
-            //Start here
             var self = this;
             var timeout = null; //variable to set time out for search feature
-            //End here
+            // --------
 
             //set String value from constant.js file to label
-            //Start here
             self.labelOrganization = ORGANIZATION;
             self.labelGroup = GROUP;
             self.labelRole = ROLE;
@@ -18,7 +16,8 @@ define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables'],
 
             self.domainDev = DOMAIN_DEV;
             self.errorConnection = ERROR_CONNECTION;
-            // End here
+            // --------
+            
             self.activate = function () {
                 var promises = [];
                 promises.push(services.getAvailabelOrganizations());

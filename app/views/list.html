@@ -3,6 +3,7 @@
     <div class="row">
       <div class="col-xs-12 col-md-2 wrapper-search">
 
+        <!-- seach feature -->
         <div class="search-fixed">
 
           <div class="wrapper-box-search-simple">
@@ -19,7 +20,7 @@
 
           </div>
 
-
+          <!-- display when user click Advanced search button -->
           <div data-bind="visible: isShowAdvancedSearch" class="warpper-form-search-adv">
             <div class="form-group">
               <label data-bind="text: labelOrganization"></label>
@@ -50,14 +51,17 @@
                                                 value: selectedRole"
                 class="form-control border-input"></select>
             </div>
-
           </div>
-
+          <!-- -------- -->
         </div>
+        <!-- -------- -->
 
+        <!-- message to show when dont have any users to show -->
       </div>
       <p id="message" data-bind="visible: displayMess, text: labelMessage"></p>
+      <!-- -------- -->
 
+      <!-- show users list from db -->
       <div class="col-xs-12 col-md-10 col-md-offset-2 content-items">
         <div class="row wrapper-profile" data-bind="foreach: usersList, visible: usersList().length > 0">
 
@@ -82,7 +86,6 @@
             </div>
           </div>
         </div>
-
       </div>
       <!-- End -->
     </div>
