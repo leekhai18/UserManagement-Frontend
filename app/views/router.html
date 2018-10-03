@@ -3,7 +3,7 @@
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">
-                    <span class="logo">Rosen</span>
+                    <span class="logo" data-bind="text: logo"></span>
                 </a>
             </div>
 
@@ -13,26 +13,6 @@
                 </li>
             </ul>
 
-            <!-- <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1"> -->
-
-            <!-- <ul class="nav navbar-nav" data-bind="foreach: router.navigationModel">
-                        <li data-bind="css: { active: isActive }">
-                            <a data-bind="attr: { href: hash }, text: title"></a>
-                        </li>
-                    </ul> -->
-
-            <!-- <ul class="nav navbar-nav navbar-right">
-                        <li class="loader" data-bind="css: { active: router.isNavigating }">
-                            <i class="fa fa-spinner fa-spin fa-2x"></i>
-                        </li>
-                    </ul> -->
-
-            <!-- <form class="navbar-form navbar-right" role="search" data-bind="submit:search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                        </div>
-                    </form> -->
-            <!-- </div> -->
         </div>
     </nav>
 
@@ -42,7 +22,7 @@
 
     <div class="footer">
         <div class="container">
-            <p>© 2018 Rosen | Design by Intern Team</p>
+            <p data-bind="text: copyright"></p>
         </div>
     </div>
 </div>

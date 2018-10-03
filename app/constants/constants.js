@@ -34,3 +34,6 @@ const CREATE_CONFIRM = "Are you sure you want to create new User?";
 const EDIT_CONFIRM = "Are you sure you want to edit User?";
 const DELETE_CONFIRM = "Do you really want to delete this user profile permanently?";
 
+const COPYRIGHT = "© 2018 Rosen | Design by Intern Team";
+const LOGO = "Rosen";
+
