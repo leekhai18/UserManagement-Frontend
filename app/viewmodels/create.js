@@ -20,6 +20,8 @@ define(['knockout',
     var ProfileModel = function () {
         var self = this;
 
+        // Constants on view
+        self.pageTitle = CREATE_TITLE;
         self.labelOrganization = ORGANIZATION;
         self.labelGroup = GROUP;
         self.labelRole = ROLE;
@@ -30,12 +32,16 @@ define(['knockout',
         self.labelPrivatePhone = PRIVATE_PHONE;
         self.labelWorkPhone = WORK_PHONE;
         self.labelEmail = EMAIL;
-
         self.sameNotice = SAME_NOTICE;
+        // Constants on view
 
-        self.pageTitle = CREATE_TITLE;
+        self.activate = function (idUserEdit) {
+            self.isEditing = (idUserEdit != undefined) ? true : false;
+            
+            if (self.isEditing) {
+                self.pageTitle = `${EDIT_TITLE}: ${idUserEdit}`;
+            }
 
-        self.activate = function () {
             var result = services.getAvailables();
 
             return  result.then(function(availables) {

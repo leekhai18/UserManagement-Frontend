@@ -158,7 +158,7 @@ define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables'],
 
                 timeout = setTimeout(function (e) {
                     self.searchUser(self.keySearch());
-                }, 1000);
+                }, 400);
             };
         }
 
