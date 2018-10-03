@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-define(['knockout', 'plugins/http', './httpGet', 'plugins/router', 'jquery', 'knockout.validation', 'bootstrap.multiselect', 'constants/constants'],
-    function (ko, http, httpGet, router, $) {
-=======
 define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables'],
     function (ko, http, router, services) {
->>>>>>> 310988b95ebbfe4fd8c595aca79d36167afa0fe7
 
         var ProfileModel = function () {
             //create variable
@@ -13,7 +8,6 @@ define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables'],
             var timeout = null; //variable to set time out for search feature
             //End here
 
-<<<<<<< HEAD
             //set String value from constant.js file to label
             //Start here
             self.labelOrganization = ORGANIZATION;
@@ -25,7 +19,6 @@ define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables'],
             self.domainDev = DOMAIN_DEV;
             self.errorConnection = ERROR_CONNECTION;
             // End here
-=======
             self.activate = function () {
                 var promises = [];
                 promises.push(services.getAvailabelOrganizations());
@@ -48,7 +41,6 @@ define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables'],
             self.availableGroups = [];
             self.availableOrganizations = [];
             self.availableRoles = [];
->>>>>>> 310988b95ebbfe4fd8c595aca79d36167afa0fe7
 
             //list of users
             self.usersList = ko.observableArray([]);
