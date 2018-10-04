@@ -8,7 +8,7 @@ define(['knockout',
     function (ko, http, router, servicesAPI) {
 
         var ProfileModel = function () {
-            //create variable
+            //create.variable
             var self = this;
             var timeout = null; //variable to set time out for search feature
             // --------
@@ -16,6 +16,7 @@ define(['knockout',
             //set String value from constant.js file to label
             self.text_ListModel = new List();
             self.text_constantUI = new ConstantUI(LIST_TITLE);
+            self.variable = new Variable(ko);
 
             // --------
             
@@ -26,7 +27,7 @@ define(['knockout',
                 promises.push(servicesAPI.getAvailabelRoles());
     
                 var result =  Promise.all(promises).then(function(resultOfAllPromises) {
-                    [self.availableOrganizations, self.availableGroups, self.availableRoles] = resultOfAllPromises;
+                    [self.variable.availableOrganizations, self.variable.availableGroups, self.variable.availableRoles] = resultOfAllPromises;
                 });
     
                 return  result.then(function() {       
@@ -37,41 +38,26 @@ define(['knockout',
                         });
             };
 
-            // init available
-            self.availableGroups = [];
-            self.availableOrganizations = [];
-            self.availableRoles = [];
+            // for (var i = 0; i < self.variable.availableGroups.length; i++) {
+            //     self.variable.availableGroupsBelongOrg.push(self.variable.availableGroups[i]);
+            // };
 
-            //list of users
-            self.usersList = ko.observableArray([]);
-            self.keySearch = ko.observable();
-            self.isShowAdvancedSearch = ko.observable(false);
-            self.displayMess = ko.observable(false);
-
-            
-            self.availableGroupsBelongOrg = ko.observableArray([]);
-            for (var i = 0; i < self.availableGroups.length; i++) {
-                self.availableGroupsBelongOrg.push(self.availableGroups[i]);
-            };
-            self.selectedGroup = ko.observable();
-            self.selectedGroup.subscribe(function () {
+            self.variable.selectedGroup.subscribe(function () {
                 self.searchUser('');
             });
 
-            
-            self.selectedOrganization = ko.observable();
-            self.selectedOrganization.subscribe(function (value) {
-                self.availableGroupsBelongOrg([]);
+            self.variable.selectedOrganization.subscribe(function (value) {
+                self.variable.availableGroupsBelongOrg([]);
 
-                for (var i = 0; i < self.availableGroups.length; i++) {
-                    if (self.availableGroups[i].organization.id == value) {
-                        self.availableGroupsBelongOrg.push(self.availableGroups[i]);
+                for (var i = 0; i < self.variable.availableGroups.length; i++) {
+                    if (self.variable.availableGroups[i].organization.id == value) {
+                        self.variable.availableGroupsBelongOrg.push(self.variable.availableGroups[i]);
                     }
                 }
 
                 if (value == null) {
-                    for (var i = 0; i < self.availableGroups.length; i++) {
-                        self.availableGroupsBelongOrg.push(self.availableGroups[i]);
+                    for (var i = 0; i < self.variable.availableGroups.length; i++) {
+                        self.variable.availableGroupsBelongOrg.push(self.variable.availableGroups[i]);
                     };
                 }
 
@@ -79,8 +65,7 @@ define(['knockout',
             });
 
             
-            self.selectedRole = ko.observable();
-            self.selectedRole.subscribe(function () {
+            self.variable.selectedRole.subscribe(function () {
                 self.searchUser('');
             });
 
@@ -90,23 +75,23 @@ define(['knockout',
 
             self.showMessage = function(list){
                 if(list().length == 0){
-                    self.displayMess(true);
+                    self.variable.displayMess(true);
                 }
                 else{
-                    self.displayMess(false);
+                    self.variable.displayMess(false);
                 }
             }
 
             self.getAllUsers = function () {
 
                 //clear
-                self.usersList.removeAll();
+                self.variable.usersList.removeAll();
 
                 http.get(DOMAIN_DEV + "api/user/light")
                     .then(function (u) {
-                        self.usersList(u);
+                        self.variable.usersList(u);
 
-                        self.showMessage(self.usersList);
+                        self.showMessage(self.variable.usersList);
 
                     }, function (error) {
                         alert(ERROR_CONNECTION);
@@ -114,22 +99,22 @@ define(['knockout',
             }
 
             self.searchUser = function (keySearch) {
-                self.usersList.removeAll();
+                self.variable.usersList.removeAll();
 
                 var groupName = '';
-                if (self.selectedGroup() != null) {
-                    groupName = self.selectedGroup();
+                if (self.variable.selectedGroup() != null) {
+                    groupName = self.variable.selectedGroup();
                 }
 
                 var roleName = '';
-                if (self.selectedRole() != null) {
-                    roleName = self.selectedRole();
+                if (self.variable.selectedRole() != null) {
+                    roleName = self.variable.selectedRole();
                 }
 
                 var organizationName = '';
-                for (var i = 0; i < self.availableOrganizations.length; i++) {
-                    if (self.availableOrganizations[i].id == self.selectedOrganization()) {
-                        organizationName = self.availableOrganizations[i].name;
+                for (var i = 0; i < self.variable.availableOrganizations.length; i++) {
+                    if (self.variable.availableOrganizations[i].id == self.variable.selectedOrganization()) {
+                        organizationName = self.variable.availableOrganizations[i].name;
                         break;
                     }
                 };
@@ -139,9 +124,9 @@ define(['knockout',
                                                         '&groupName=' + groupName + 
                                                         '&roleName=' + roleName)
                     .then(function (u) {
-                        self.usersList(u);
+                        self.variable.usersList(u);
 
-                        self.showMessage(self.usersList);
+                        self.showMessage(self.variable.usersList);
 
                     }, function (error) {
                         alert(ERROR_CONNECTION);
@@ -154,14 +139,14 @@ define(['knockout',
 
 
             self.toggleVisibility = function () {
-                self.isShowAdvancedSearch(!self.isShowAdvancedSearch());
+                self.variable.isShowAdvancedSearch(!self.variable.isShowAdvancedSearch());
             };
 
             self.search = function () {
                 clearTimeout(timeout);
 
                 timeout = setTimeout(function (e) {
-                    self.searchUser(self.keySearch());
+                    self.searchUser(self.variable.keySearch());
                 }, 400);
             };
         }
