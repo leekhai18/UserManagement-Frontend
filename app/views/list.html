@@ -11,44 +11,44 @@
               <form class="wrapper-form-search col-md-12 col-xs-6 col-xs-offset-1" role="search">
                 <div class="form-group form-search">
                   <input style="color:black;" type="text" class="form-control" placeholder="Search" title="Search User"
-                    data-bind="textInput: keySearch, event: { keyup: search }, valuaUpdate: keyup">
+                    data-bind="textInput: variable.keySearch, event: { keyup: search }, valuaUpdate: keyup">
                 </div>
               </form>
 
-              <button data-bind="click: toggleVisibility, text: advancedSearch" class="btn-search col-md-12 col-xs-3 col-xs-offset-1"></button>
+              <button data-bind="click: toggleVisibility, text: text_ListModel.advancedSearch" class="btn-search col-md-12 col-xs-3 col-xs-offset-1"></button>
             </div>
 
           </div>
 
           <!-- display when user click Advanced search button -->
-          <div data-bind="visible: isShowAdvancedSearch" class="warpper-form-search-adv">
+          <div data-bind="visible: variable.isShowAdvancedSearch" class="warpper-form-search-adv">
             <div class="form-group">
-              <label data-bind="text: labelOrganization"></label>
-              <select data-bind="       options: availableOrganizations,
+              <label data-bind="text: text_constantUI.labelOrganization"></label>
+              <select data-bind="       options: variable.availableOrganizations,
                                                 optionsText: 'name',
                                                 optionsValue: 'id',
                                                 optionsCaption: 'Choose',
-                                                value: selectedOrganization"
+                                                value: variable.selectedOrganization"
                 class="form-control border-input"></select>
             </div>
 
             <div class="form-group">
-              <label data-bind="text: labelGroup"></label>
-              <select data-bind="       options: availableGroupsBelongOrg,
+              <label data-bind="text: text_constantUI.labelGroup"></label>
+              <select data-bind="       options: variable.availableGroupsBelongOrg,
                                                 optionsText: 'name',
                                                 optionsValue: 'name',
                                                 optionsCaption: 'Choose',
-                                                value: selectedGroup"
+                                                value: variable.selectedGroup"
                 class="form-control border-input"></select>
             </div>
 
             <div class="form-group">
-              <label data-bind="text: labelRole"></label>
-              <select data-bind="       options: availableRoles,
+              <label data-bind="text: text_constantUI.labelRole"></label>
+              <select data-bind="       options: variable.availableRoles,
                                                 optionsText: 'name',
                                                 optionsValue: 'name',
                                                 optionsCaption: 'Choose',
-                                                value: selectedRole"
+                                                value: variable.selectedRole"
                 class="form-control border-input"></select>
             </div>
           </div>
@@ -58,12 +58,12 @@
 
         <!-- message to show when dont have any users to show -->
       </div>
-      <p id="message" data-bind="visible: displayMess, text: labelMessage"></p>
+      <p id="message" data-bind="visible: variable.displayMess, text: text_ListModel.labelMessage"></p>
       <!-- -------- -->
 
       <!-- show users list from db -->
       <div class="col-xs-12 col-md-10 col-md-offset-2 content-items">
-        <div class="row wrapper-profile" data-bind="foreach: usersList, visible: usersList().length > 0">
+        <div class="row wrapper-profile" data-bind="foreach: variable.usersList, visible: variable.usersList().length > 0">
 
           <div class="col-sm-4 col-xs-6 col-lg-3">
             <div class="ih-item circle effect5" title="Click here to view detail">

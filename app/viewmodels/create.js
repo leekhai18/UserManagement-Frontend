@@ -35,6 +35,8 @@ define(['knockout',
             if (self.isEditing) {
                 self.constantUI.pageTitle = `${EDIT_TITLE}: ${idUserEdit}`;
                 promises.push(servicesAPI.getUser(idUserEdit));  
+            } else {
+                self.constantUI.pageTitle = CREATE_TITLE;
             }
 
             var  result =  Promise.all(promises).then(function(resultOfAllPromises) {

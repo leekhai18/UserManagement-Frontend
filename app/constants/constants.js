@@ -14,6 +14,7 @@ const ROLE = "Role / Job title";
 const CREATE_TITLE = "Create A New User Profile";
 const DETAIL_TITLE = "Detail profile: ";
 const EDIT_TITLE = "Edit Profile";
+const LIST_TITLE = "List of Users"
 
 const ADVANCED_SEARCH = "Advanced search";
 const SEARCH = "Search";
@@ -39,4 +40,9 @@ const COPYRIGHT = "© 2018 Rosen | Design by Intern Team";
 const LOGO = "Rosen";
 
 const PARAMS_PATTERN_PHONE_NUMBER = "([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})";
+
+const LOADGROUP_ERROR = "Load groups failed!";
+const LOADORGANIZATION_ERROR = "Load organizations failed!";
+const LOADROLE_ERROR ="Load roles failed!";
+
 

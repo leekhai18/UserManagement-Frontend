@@ -9,7 +9,7 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
                     .then(function (response) { 
                         resolve(response);
                     }, function(error) {
-                        var err = 'Load organizations failed!';
+                        var err = LOADORGANIZATION_ERROR;
                         reject(err);
                         app.showMessage(err, 'Error', ['Yes'])
                     }
@@ -23,9 +23,9 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
                     .then(function (response) {
                         resolve(response);
                     }, function (error) {
-                        var err = 'Load roles failed!';
+                        var err = LOADROLE_ERROR;
                         reject(err);
-                        app.showMessage(err, 'Error', ['Yes'])
+                        app.showMessage(err, 'Error', [YES])
                     }
                 );
             });
@@ -37,9 +37,9 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
                     .then(function (response) {
                         resolve(response);
                     }, function (error) {
-                        var err = 'Load groups failed!';
+                        var err = LOADGROUP_ERROR;
                         reject(err);
-                        app.showMessage(err, 'Error', ['Yes'])
+                        app.showMessage(err, 'Error', [YES])
                     }
                 );
             });
@@ -53,7 +53,7 @@ define(['durandal/app', 'plugins/http'], function (app, http) {
                     },
                     function (error) {
                         reject(error.statusText + " " + error.responseText);
-                        app.showMessage(error.statusText + " " + error.responseText, 'Error!', ['Yes']);
+                        app.showMessage(error.statusText + " " + error.responseText, 'Error!', [YES]);
                     }
                 );
             });
