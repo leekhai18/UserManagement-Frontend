@@ -13,11 +13,8 @@ define(['knockout',
             // --------
 
             //set String value from constant.js file to label
-            self.labelOrganization = ORGANIZATION;
-            self.labelGroup = GROUP;
-            self.labelRole = ROLE;
-            self.advancedSearch = ADVANCED_SEARCH;
-            self.labelMessage = MESSAGE;
+            self.text = new List();
+
             // --------
             
             self.activate = function () {

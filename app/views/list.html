@@ -15,7 +15,7 @@
                 </div>
               </form>
 
-              <button data-bind="click: toggleVisibility, text: advancedSearch" class="btn-search col-md-12 col-xs-3 col-xs-offset-1"></button>
+              <button data-bind="click: toggleVisibility, text: text_ListModel.advancedSearch" class="btn-search col-md-12 col-xs-3 col-xs-offset-1"></button>
             </div>
 
           </div>
@@ -58,7 +58,7 @@
 
         <!-- message to show when dont have any users to show -->
       </div>
-      <p id="message" data-bind="visible: displayMess, text: labelMessage"></p>
+      <p id="message" data-bind="visible: displayMess, text: text_ListModel.labelMessage"></p>
       <!-- -------- -->
 
       <!-- show users list from db -->

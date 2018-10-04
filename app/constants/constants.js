@@ -38,3 +38,7 @@ const DELETE_CONFIRM = "Do you really want to delete this user profile permanent
 const COPYRIGHT = "© 2018 Rosen | Design by Intern Team";
 const LOGO = "Rosen";
 
+const LOADGROUP_ERROR = "Load groups failed!";
+const LOADORGANIZATION_ERROR = "Load organizations failed!";
+const LOADROLE_ERROR ="Load roles failed!";
+
