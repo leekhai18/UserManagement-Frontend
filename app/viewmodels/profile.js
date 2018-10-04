@@ -1,8 +1,8 @@
 define([
     'plugins/router',
-    'services/getUsers',
+    'services/servicesAPI',
     'models/profileModel'
-], function (router, services) {
+], function (router, servicesAPI) {
 
     var ProfileModel = function () {
         var self = this;
@@ -10,7 +10,7 @@ define([
         self.constantUI = new ConstantUI();
 
         self.activate = function (id) {
-            var result = services.getUser(id);
+            var result = servicesAPI.getUser(id);
 
             return  result.then(function(profile) {
                         self.model = new Profile(profile);
@@ -21,7 +21,7 @@ define([
         };
 
         self.edit = function () {
-            router.navigate('editProfile/' + self.personalID);
+            router.navigate('edit/' + self.personalID);
         };
     };
 

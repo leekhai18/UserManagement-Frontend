@@ -1,5 +1,10 @@
-define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables', 'models/listModel'],
-    function (ko, http, router, services) {
+define(['knockout',
+        'plugins/http', 
+        'plugins/router', 
+        'services/servicesAPI', 
+        'models/listModel'
+    ],
+    function (ko, http, router, servicesAPI) {
 
         var ProfileModel = function () {
             //create variable
@@ -17,9 +22,9 @@ define(['knockout', 'plugins/http', 'plugins/router', 'services/getAvailables', 
             
             self.activate = function () {
                 var promises = [];
-                promises.push(services.getAvailabelOrganizations());
-                promises.push(services.getAvailabelGroups());
-                promises.push(services.getAvailabelRoles());
+                promises.push(servicesAPI.getAvailabelOrganizations());
+                promises.push(servicesAPI.getAvailabelGroups());
+                promises.push(servicesAPI.getAvailabelRoles());
     
                 var result =  Promise.all(promises).then(function(resultOfAllPromises) {
                     [self.availableOrganizations, self.availableGroups, self.availableRoles] = resultOfAllPromises;

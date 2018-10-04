@@ -4,9 +4,9 @@ define(['knockout',
     'plugins/router',
     'helpers/factoryObjects',
     'helpers/utilities',
-    'services/getAvailables',
+    'services/servicesAPI',
     'knockout.validation'
-], function (ko, app, http, router, factoryObjects, utilities, services) {
+], function (ko, app, http, router, factoryObjects, utilities, servicesAPI) {
 
     var knockoutValidationSettings = {
         grouping: {
@@ -36,22 +36,42 @@ define(['knockout',
         // Constants on view
 
         self.activate = function (idUserEdit) {
+            var promises = [];
+            promises.push(servicesAPI.getAvailabelOrganizations());
+            promises.push(servicesAPI.getAvailabelGroups());
+            promises.push(servicesAPI.getAvailabelRoles());
+
+            var result;
+
             self.isEditing = (idUserEdit != undefined) ? true : false;
-            
             if (self.isEditing) {
                 self.pageTitle = `${EDIT_TITLE}: ${idUserEdit}`;
+                promises.push(servicesAPI.getUser(idUserEdit));
+
+                result =  Promise.all(promises).then(function(resultOfAllPromises) {
+                    [self.availableOrganizations, self.availableGroups, self.availableRoles, self.profileEdit] = resultOfAllPromises;
+                });
+            } else {
+                result =  Promise.all(promises).then(function(resultOfAllPromises) {
+                    [self.availableOrganizations, self.availableGroups, self.availableRoles] = resultOfAllPromises; 
+                });
             }
 
-            var result = services.getAvailables();
+            return  result.then(function() {
+                        if (self.profileEdit != undefined && self.isEditing) {
+                        
+                        } else {
 
-            return  result.then(function(availables) {
-                        [self.availableOrganizations, self.availableGroups, self.availableRoles] = availables;
+                        }
+
+                        console.log('Test');
 
                         self.init();
                         self.validated = ko.validatedObservable(self);
                     }, 
                     function(error) {
-                        throw new Error(error);
+                        console.log(error);
+                        //throw new Error(error);
                     });
         };
 

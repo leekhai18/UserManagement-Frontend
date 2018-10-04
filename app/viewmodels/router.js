@@ -7,7 +7,7 @@
             router.map([
                 { route: '', title: 'Home', moduleId: 'viewmodels/list', nav: true },
                 { route: 'profile/:id', title: '', moduleId: 'viewmodels/profile', nav: false },
-                { route: ['create', 'editProfile/:id'], title: '', moduleId: 'viewmodels/create', nav: true },
+                { route: ['create', 'edit/:id'], title: '', moduleId: 'viewmodels/create', nav: true },
                 // { route: 'editProfile/:id', title: '', moduleId: 'viewmodels/editProfile', nav: false },
             ]).buildNavigationModel();
 
