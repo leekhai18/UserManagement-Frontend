@@ -1,6 +1,6 @@
 <div class="content">
     <div class="container">
-        <h2 class="col-lg-8 col-md-7" data-bind="text: pageTitle"></h2>
+        <h2 class="col-lg-8 col-md-7" data-bind="text: constantUI.pageTitle"></h2>
         <div class="row">
 
             <!-- Profile -->
@@ -11,14 +11,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label data-bind="text: labelFirstName"></label>
+                                        <label data-bind="text: constantUI.labelFirstName"></label>
                                         <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                         <input data-bind="textInput: firstName, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="First Name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label data-bind="text: labelLastName"></label>
+                                        <label data-bind="text: constantUI.labelLastName"></label>
                                         <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                         <input data-bind="textInput: lastName, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Last Name">
                                     </div>
@@ -28,7 +28,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label data-bind="text: labelPersonnelID"></label>
+                                        <label data-bind="text: constantUI.labelPersonnelID"></label>
                                         <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                         <input data-bind="textInput: personnelID, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Personnel ID" >
                                     </div>
@@ -38,7 +38,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label data-bind="text: labelOrganization"></label>
+                                        <label data-bind="text: constantUI.labelOrganization"></label>
                                         <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                         <select data-bind="     options: availableOrganizations,
                                                                 optionsText: 'name',
@@ -52,7 +52,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="icon-container">
-                                            <label data-bind="text: labelGroup"></label>
+                                            <label data-bind="text: constantUI.labelGroup"></label>
                                             <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                             <span data-bind="click: addGroup, visible: selectedGroups().length < availableGroupsBelongOrg().length" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
@@ -70,13 +70,13 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <span data-bind="text: sameNotice, visible: groupsIsSame" class="validationMessage"></span>
+                                        <span data-bind="text: constantUI.sameNotice, visible: groupsIsSame" class="validationMessage"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="icon-container">
-                                            <label data-bind="text: labelRole"></label>
+                                            <label data-bind="text: constantUI.labelRole"></label>
                                             <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                             <span data-bind="click: addRole, visible: selectedRoles().length < availableRoles.length" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
@@ -94,7 +94,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <span data-bind="text: sameNotice, visible: rolesIsSame" class="validationMessage"></span>
+                                        <span data-bind="text: constantUI.sameNotice, visible: rolesIsSame" class="validationMessage"></span>
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="icon-container">
-                                            <label data-bind="text: labelWorkPhone"></label>
+                                            <label data-bind="text: constantUI.labelWorkPhone"></label>
                                             <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                             <span data-bind="click: addWorkPhoneNumber" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
@@ -125,7 +125,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="icon-container">
-                                            <label data-bind="text: labelMobilePhone"></label>
+                                            <label data-bind="text: constantUI.labelMobilePhone"></label>
                                             <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                             <span data-bind="click: addMobileNumber" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
@@ -149,7 +149,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="icon-container">
-                                            <label data-bind="text: labelPrivatePhone"></label>
+                                            <label data-bind="text: constantUI.labelPrivatePhone"></label>
                                             <span data-bind="click: addPrivatePhoneNumber" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <span class="title-main">main</span>
@@ -171,7 +171,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="icon-container">
-                                            <label data-bind="text: labelEmail"></label>
+                                            <label data-bind="text: constantUI.labelEmail"></label>
                                             <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
                                             <span data-bind="click: addWorkEmail" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>

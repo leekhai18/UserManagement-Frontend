@@ -5,7 +5,8 @@ define(['knockout',
     'helpers/factoryObjects',
     'helpers/utilities',
     'services/servicesAPI',
-    'knockout.validation'
+    'knockout.validation',
+    'models/constantUI'
 ], function (ko, app, http, router, factoryObjects, utilities, servicesAPI) {
 
     var knockoutValidationSettings = {
@@ -20,20 +21,8 @@ define(['knockout',
     var ProfileModel = function () {
         var self = this;
 
-        // Constants on view
-        self.pageTitle = CREATE_TITLE;
-        self.labelOrganization = ORGANIZATION;
-        self.labelGroup = GROUP;
-        self.labelRole = ROLE;
-        self.labelFirstName = FIRS_TNAME;
-        self.labelLastName = LAST_NAME;
-        self.labelPersonnelID = PERSONNEL_ID;
-        self.labelMobilePhone = MOBILE;
-        self.labelPrivatePhone = PRIVATE_PHONE;
-        self.labelWorkPhone = WORK_PHONE;
-        self.labelEmail = EMAIL;
-        self.sameNotice = SAME_NOTICE;
-        // Constants on view
+        self.constantUI = new ConstantUI(CREATE_TITLE);
+        console.log(self.constantUI);
 
         self.activate = function (idUserEdit) {
             var promises = [];
@@ -45,7 +34,7 @@ define(['knockout',
 
             self.isEditing = (idUserEdit != undefined) ? true : false;
             if (self.isEditing) {
-                self.pageTitle = `${EDIT_TITLE}: ${idUserEdit}`;
+                self.constantUI.pageTitle = `${EDIT_TITLE}: ${idUserEdit}`;
                 promises.push(servicesAPI.getUser(idUserEdit));
 
                 result =  Promise.all(promises).then(function(resultOfAllPromises) {
@@ -64,14 +53,11 @@ define(['knockout',
 
                         }
 
-                        console.log('Test');
-
                         self.init();
                         self.validated = ko.validatedObservable(self);
                     }, 
                     function(error) {
-                        console.log(error);
-                        //throw new Error(error);
+                        throw new Error(error);
                     });
         };
 

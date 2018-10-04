@@ -14,20 +14,3 @@ class Profile {
         this.workEmails = props.email;
     }   
 }
-
-class ConstantUI {
-    constructor() {
-        this.pageTitle = DETAIL_TITLE;
-
-        this.labelOrganization = ORGANIZATION;
-        this.labelGroup = GROUP;
-        this.labelRole = ROLE;
-        this.labelFirstName = FIRS_TNAME;
-        this.labelLastName = LAST_NAME;
-        this.labelPersonnelID = PERSONNEL_ID;
-        this.labelMobilePhone = MOBILE;
-        this.labelPrivatePhone = PRIVATE_PHONE;
-        this.labelWorkPhone = WORK_PHONE;
-        this.labelEmail = EMAIL;
-    }   
-}
