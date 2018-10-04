@@ -2,7 +2,8 @@ define(['knockout',
         'plugins/http', 
         'plugins/router', 
         'services/servicesAPI', 
-        'models/listModel'
+        'models/listModel',
+        'models/constantUI'
     ],
     function (ko, http, router, servicesAPI) {
 
@@ -13,7 +14,8 @@ define(['knockout',
             // --------
 
             //set String value from constant.js file to label
-            self.text = new List();
+            self.text_ListModel = new List();
+            self.text_constantUI = new ConstantUI(LIST_TITLE);
 
             // --------
             

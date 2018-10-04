@@ -14,6 +14,7 @@ const ROLE = "Role / Job title";
 const CREATE_TITLE = "Create A New User Profile";
 const DETAIL_TITLE = "Detail profile: ";
 const EDIT_TITLE = "Edit Profile";
+const LIST_TITLE = "List of Users"
 
 const ADVANCED_SEARCH = "Advanced search";
 const SEARCH = "Search";

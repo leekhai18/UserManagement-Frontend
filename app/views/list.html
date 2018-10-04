@@ -23,7 +23,7 @@
           <!-- display when user click Advanced search button -->
           <div data-bind="visible: isShowAdvancedSearch" class="warpper-form-search-adv">
             <div class="form-group">
-              <label data-bind="text: labelOrganization"></label>
+              <label data-bind="text: text_constantUI.labelOrganization"></label>
               <select data-bind="       options: availableOrganizations,
                                                 optionsText: 'name',
                                                 optionsValue: 'id',
@@ -33,7 +33,7 @@
             </div>
 
             <div class="form-group">
-              <label data-bind="text: labelGroup"></label>
+              <label data-bind="text: text_constantUI.labelGroup"></label>
               <select data-bind="       options: availableGroupsBelongOrg,
                                                 optionsText: 'name',
                                                 optionsValue: 'name',
@@ -43,7 +43,7 @@
             </div>
 
             <div class="form-group">
-              <label data-bind="text: labelRole"></label>
+              <label data-bind="text: text_constantUI.labelRole"></label>
               <select data-bind="       options: availableRoles,
                                                 optionsText: 'name',
                                                 optionsValue: 'name',
