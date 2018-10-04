@@ -13,14 +13,14 @@
                                     <div class="form-group">
                                         <label data-bind="text: constantUI.labelFirstName"></label>
                                         <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
-                                        <input data-bind="textInput: firstName, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="First Name">
+                                        <input data-bind="textInput: model.firstName, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="First Name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label data-bind="text: constantUI.labelLastName"></label>
                                         <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
-                                        <input data-bind="textInput: lastName, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Last Name">
+                                        <input data-bind="textInput: model.lastName, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Last Name">
                                     </div>
                                 </div>
                             </div>
@@ -30,7 +30,7 @@
                                     <div class="form-group">
                                         <label data-bind="text: constantUI.labelPersonnelID"></label>
                                         <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
-                                        <input data-bind="textInput: personnelID, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Personnel ID" >
+                                        <input data-bind="textInput: model.personnelID, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input" placeholder="Personnel ID" >
                                     </div>
                                 </div>
                             </div>
@@ -40,10 +40,10 @@
                                     <div class="form-group">
                                         <label data-bind="text: constantUI.labelOrganization"></label>
                                         <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
-                                        <select data-bind="     options: availableOrganizations,
+                                        <select data-bind="     options: model.availableOrganizations,
                                                                 optionsText: 'name',
                                                                 optionsValue: 'id',
-                                                                value: selectedOrganization" class="form-control border-input"></select>
+                                                                value: model.selectedOrganization" class="form-control border-input"></select>
                                     </div>
                                 </div>
                             </div>
@@ -54,23 +54,23 @@
                                         <div class="icon-container">
                                             <label data-bind="text: constantUI.labelGroup"></label>
                                             <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
-                                            <span data-bind="click: addGroup, visible: selectedGroups().length < availableGroupsBelongOrg().length" class="ti-plus" style="margin-left: 10px"></span>
+                                            <span data-bind="click: addGroup, visible: model.selectedGroups().length < model.availableGroupsBelongOrg().length" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <span class="title-main">main</span>
-                                        <div data-bind="foreach: selectedGroups">
+                                        <div data-bind="foreach: model.selectedGroups">
                                             <div class="input-group" style="float: left">
                                                 <div class="checked-main">
-                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainGroup" />
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.model.mainGroup" />
                                                 </div>
-                                                <select data-bind=" options: $root.availableGroupsBelongOrg,
+                                                <select data-bind=" options: $root.model.availableGroupsBelongOrg,
                                                                         optionsText: 'name',
                                                                         value: value" class="form-control border-input option-field"></select>
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeGroup, enable: $root.selectedGroups().length > 1" class="btn btn-default" type="button">X</button>
+                                                    <button data-bind="click: $root.removeGroup, enable: $root.model.selectedGroups().length > 1" class="btn btn-default" type="button">X</button>
                                                 </span>
                                             </div>
                                         </div>
-                                        <span data-bind="text: constantUI.sameNotice, visible: groupsIsSame" class="validationMessage"></span>
+                                        <span data-bind="text: constantUI.sameNotice, visible: model.isSameGroups" class="validationMessage"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -78,23 +78,23 @@
                                         <div class="icon-container">
                                             <label data-bind="text: constantUI.labelRole"></label>
                                             <span class="field-required" data-bind="tooltip: {title: textFieldRequired, placement: 'top'}">*</span>
-                                            <span data-bind="click: addRole, visible: selectedRoles().length < availableRoles.length" class="ti-plus" style="margin-left: 10px"></span>
+                                            <span data-bind="click: addRole, visible: model.selectedRoles().length < model.availableRoles.length" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <span class="title-main">main</span>
-                                        <div data-bind="foreach: selectedRoles">
+                                        <div data-bind="foreach: model.selectedRoles">
                                             <div class="input-group" style="float: left">
                                                 <div class="checked-main">
-                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainRole" />
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.model.mainRole" />
                                                 </div>
-                                                <select data-bind=" options: $root.availableRoles,
+                                                <select data-bind=" options: $root.model.availableRoles,
                                                                         optionsText: 'name',
                                                                         value: value" class="form-control border-input option-field"></select>
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeRole, enable: $root.selectedRoles().length > 1" class="btn btn-default" type="button">X</button>
+                                                    <button data-bind="click: $root.removeRole, enable: $root.model.selectedRoles().length > 1" class="btn btn-default" type="button">X</button>
                                                 </span>
                                             </div>
                                         </div>
-                                        <span data-bind="text: constantUI.sameNotice, visible: rolesIsSame" class="validationMessage"></span>
+                                        <span data-bind="text: constantUI.sameNotice, visible: model.isSameRoles" class="validationMessage"></span>
                                     </div>
                                 </div>
                             </div>
@@ -108,18 +108,19 @@
                                             <span data-bind="click: addWorkPhoneNumber" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <span class="title-main">main</span>
-                                        <div data-bind="foreach: workPhoneNumbers">
+                                        <div data-bind="foreach: model.workPhoneNumbers">
                                             <div class="input-group" style="float: left">
                                                 <div class="checked-main">
-                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainWorkPhoneNumber"/>
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.model.mainWorkPhoneNumber"/>
                                                 </div>
                                                 <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input option-field" placeholder="+49-151-1265-007">
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeWorkPhoneNumber, enable: $root.workPhoneNumbers().length > 1" class="btn btn-default"
+                                                    <button data-bind="click: $root.removeWorkPhoneNumber, enable: $root.model.workPhoneNumbers().length > 1" class="btn btn-default"
                                                         type="button">X</button>
                                                 </span>
                                             </div>
                                         </div>
+                                        <span data-bind="text: constantUI.sameNotice, visible: model.isSameWorkPhoneNumbers" class="validationMessage"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -130,17 +131,18 @@
                                             <span data-bind="click: addMobileNumber" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <span class="title-main">main</span>
-                                        <div data-bind="foreach: mobileNumbers">
+                                        <div data-bind="foreach: model.mobileNumbers">
                                             <div class="input-group" style="float: left">
                                                 <div class="checked-main">
-                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainMobileNumber" />
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.model.mainMobileNumber" />
                                                 </div>
                                                 <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input option-field" placeholder="+49-151-1265498">
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeMobileNumber, enable: $root.mobileNumbers().length > 1" class="btn btn-default" type="button">X</button>
+                                                    <button data-bind="click: $root.removeMobileNumber, enable: $root.model.mobileNumbers().length > 1" class="btn btn-default" type="button">X</button>
                                                 </span>
                                             </div>
                                         </div>
+                                        <span data-bind="text: constantUI.sameNotice, visible: model.isSameMobilePhoneNumbers" class="validationMessage"></span>
                                     </div>
                                 </div>
                             </div>
@@ -153,18 +155,19 @@
                                             <span data-bind="click: addPrivatePhoneNumber" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <span class="title-main">main</span>
-                                        <div data-bind="foreach: privatePhoneNumbers">
+                                        <div data-bind="foreach: model.privatePhoneNumbers">
                                             <div class="input-group" style="float: left">
                                                 <div class="checked-main">
-                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainPrivatePhoneNumber" />
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.model.mainPrivatePhoneNumber" />
                                                 </div>
                                                 <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input option-field" placeholder="+49-151-1265-007">
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removePrivatePhoneNumber, enable: $root.privatePhoneNumbers().length > 1" class="btn btn-default"
+                                                    <button data-bind="click: $root.removePrivatePhoneNumber, enable: $root.model.privatePhoneNumbers().length > 1" class="btn btn-default"
                                                         type="button">X</button>
                                                 </span>
                                             </div>
                                         </div>
+                                        <span data-bind="text: constantUI.sameNotice, visible: model.isSamePrivatePhoneNumbers" class="validationMessage"></span>
                                     </div>
                                 </div>
 
@@ -176,17 +179,18 @@
                                             <span data-bind="click: addWorkEmail" class="ti-plus" style="margin-left: 10px"></span>
                                         </div>
                                         <span class="title-main">main</span>
-                                        <div data-bind="foreach: workEmails">
+                                        <div data-bind="foreach: model.workEmails">
                                             <div class="input-group" style="float: left">
                                                 <div class="checked-main">
-                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.mainWorkEmail" />
+                                                    <input type="radio" data-bind="checkedValue: $index, checked: $root.model.mainWorkEmail" />
                                                 </div>
                                                 <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" class="form-control border-input option-field" placeholder="Work E-Mail">
                                                 <span class="input-group-btn">
-                                                    <button data-bind="click: $root.removeWorkEmail, enable: $root.workEmails().length > 1" class="btn btn-default" type="button">X</button>
+                                                    <button data-bind="click: $root.removeWorkEmail, enable: $root.model.workEmails().length > 1" class="btn btn-default" type="button">X</button>
                                                 </span>
                                             </div>
                                         </div>
+                                        <span data-bind="text: constantUI.sameNotice, visible: model.isSameWorkEmails" class="validationMessage"></span>
                                     </div>
                                 </div>
                             </div>
@@ -210,10 +214,10 @@
                     </div>
                     <div class="content">
                         <div class="author">
-                            <img class="avatar border-white" data-bind="attr: {src:photoUrl() || 'assets/img/faces/face-2.jpg'}" />
-                            <input type="file" accept="image/*" style="margin: 0 auto;    padding-bottom: 20px;color:transparent; width:70px;" data-bind="event:{change: imageUpload}">
-                            <h3 data-bind="text: fullName()" class="title">Full Name</h3>
-                            <p data-bind="text: personnelID" class="title">ID</p>
+                            <img class="avatar border-white" data-bind="attr: { src: model.profileImage }" />
+                            <input type="file" accept="image/*" data-bind="event: { change: imageUpload }" style="margin: 0 auto;    padding-bottom: 20px;color:transparent; width:70px;">
+                            <h3 data-bind="text: model.fullName" class="title">Full Name</h3>
+                            <p data-bind="text: model.personnelID" class="title">ID</p>
                             <p data-bind="text: titleOrganization" class="title">Organization</p>
                             <p data-bind="text: titleMainGroup" class="title">Main Group</p>
                             <p data-bind="text: titleMainRole" class="title">Main Role</p>

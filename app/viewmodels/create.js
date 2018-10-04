@@ -2,13 +2,12 @@ define(['knockout',
     'durandal/app',
     'plugins/http',
     'plugins/router',
-    'helpers/factoryObjects',
     'helpers/utilities',
     'services/servicesAPI',
     'knockout.validation',
-    'models/constantUI'
-], function (ko, app, http, router, factoryObjects, utilities, servicesAPI) {
-
+    'models/constantUI',
+    'models/createModel'
+], function (ko, app, http, router, utilities, servicesAPI) {
     var knockoutValidationSettings = {
         grouping: {
             deep: true,
@@ -17,12 +16,14 @@ define(['knockout',
     };
     ko.validation.init(knockoutValidationSettings, true);
 
+    ko.options.deferUpdates = true;
 
-    var ProfileModel = function () {
+    var CreateViewModel = function () {
         var self = this;
 
+        self.model = new ProfileEnableInteraction(ko);
+
         self.constantUI = new ConstantUI(CREATE_TITLE);
-        console.log(self.constantUI);
 
         self.activate = function (idUserEdit) {
             var promises = [];
@@ -30,30 +31,27 @@ define(['knockout',
             promises.push(servicesAPI.getAvailabelGroups());
             promises.push(servicesAPI.getAvailabelRoles());
 
-            var result;
-
             self.isEditing = (idUserEdit != undefined) ? true : false;
             if (self.isEditing) {
                 self.constantUI.pageTitle = `${EDIT_TITLE}: ${idUserEdit}`;
-                promises.push(servicesAPI.getUser(idUserEdit));
-
-                result =  Promise.all(promises).then(function(resultOfAllPromises) {
-                    [self.availableOrganizations, self.availableGroups, self.availableRoles, self.profileEdit] = resultOfAllPromises;
-                });
-            } else {
-                result =  Promise.all(promises).then(function(resultOfAllPromises) {
-                    [self.availableOrganizations, self.availableGroups, self.availableRoles] = resultOfAllPromises; 
-                });
+                promises.push(servicesAPI.getUser(idUserEdit));  
             }
+
+            var  result =  Promise.all(promises).then(function(resultOfAllPromises) {
+                [   self.model.availableOrganizations, 
+                    self.model.availableGroups, 
+                    self.model.availableRoles, 
+                    self.profileEdit    ] = resultOfAllPromises;
+            });
 
             return  result.then(function() {
                         if (self.profileEdit != undefined && self.isEditing) {
-                        
+                            self.model.initializeWithUserProfile(self.profileEdit);
                         } else {
-
+                            self.model.initialize(ko, self.titleMainGroup, self.titleMainRole, self.titleMainEmail);
                         }
 
-                        self.init();
+                        self.errorList([]);
                         self.validated = ko.validatedObservable(self);
                     }, 
                     function(error) {
@@ -61,12 +59,9 @@ define(['knockout',
                     });
         };
 
-        // Init for available
-        self.availableOrganizations = [];
-        self.availableGroups = [];
-        self.availableRoles = [];
-
-        self.availableGroupsBelongOrg = ko.observableArray([]);
+        self.detached = function () {
+            self.model.refreshValue(ko);
+        }
 
         // Main title
         self.titleOrganization = ko.observable();
@@ -74,298 +69,116 @@ define(['knockout',
         self.titleMainRole = ko.observable();
         self.titleMainEmail = ko.observable();
 
+        self.model.subscribeTitleMainGroup(self.titleMainGroup);
+        self.model.subscribeTitleMainRole(self.titleMainRole);
+        self.model.subscribeTitleMainEmail(self.titleMainEmail);
+        self.model.subscribeSelectedOrganization(self.titleOrganization, self.titleMainGroup, ko);
+
         // Init observable error show on popup
         self.textFieldRequired = ko.observable(REQUIRED_NOTICE);
 
         // Init error when server sendback
         self.errorList = ko.observableArray([]);
 
-        self.init = function () {
-            self.errorList([]);
+        // Rewrite adds func because of reference knockout
+        self.addGroup = function() {
+            self.model.addGroup(ko, self.titleMainGroup);
+        }
 
-            self.firstName = ko.observable("").extend({ required: { params: true, message: REQUIRED_NOTICE} });
-            self.lastName = ko.observable("").extend({ required: { params: true, message: REQUIRED_NOTICE } });
-            self.fullName = ko.computed(function () {
-                return self.firstName() + " " + self.lastName();
-            });
+        self.addRole = function() {
+            self.model.addRole(ko, self.titleMainRole);
+        }
 
-            self.personnelID = ko.observable("").extend({ required: { params: true, message: REQUIRED_NOTICE } });
+        self.addWorkPhoneNumber = function() {
+            self.model.addWorkPhoneNumber(ko);
+        }
 
-            // Init for main Field
-            self.mainGroup = ko.observable(0).extend({ required: { params: true, message: '_' } });
-            self.mainRole = ko.observable(0).extend({ required: { params: true, message: '_' } });
-            self.mainWorkPhoneNumber = ko.observable(0).extend({ required: { params: true, message: '_' } });
-            self.mainMobileNumber = ko.observable(0).extend({ required: { params: true, message: '_' } });
-            self.mainPrivatePhoneNumber = ko.observable(0).extend({ required: { params: true, message: '_' } });
-            self.mainWorkEmail = ko.observable(0).extend({ required: { params: true, message: '_' } });
+        self.addPrivatePhoneNumber = function() {
+            self.model.addPrivatePhoneNumber(ko);
+        }
 
-            // subscribe for set main title
-            self.mainGroup.subscribe(function (value) {
-                self.titleMainGroup(self.selectedGroups()[value].value().name);
-            });
+        self.addMobileNumber = function() {
+            self.model.addMobileNumber(ko);
+        }
 
-            self.mainRole.subscribe(function (value) {
-                self.titleMainRole(self.selectedRoles()[value].value().name);
-            });
+        self.addWorkEmail = function() {
+            self.model.addWorkEmail(ko, self.titleMainEmail);
+        }
 
-            self.mainWorkEmail.subscribe(function (value) {
-                self.titleMainEmail(self.workEmails()[value].value());
-            });
+        // Rewrite removes func because of only current context can detect obj to remove
+        self.removeGroup = function(group) {
+            self.model.removeGroup(group);
+        }
 
-            // Init for isSameValue
-            self.groupsIsSame = ko.observable(false);
-            self.rolesIsSame = ko.observable(false);
+        self.removeRole = function(role) {
+            self.model.removeRole(role);
+        }
 
-            //  Init for selectedOranization
-            self.selectedOrganization = ko.observable();
-            self.selectedOrganization.subscribe(function (value) {
-                // Clear
-                self.availableGroupsBelongOrg.removeAll();
-                self.selectedGroups.removeAll();
+        self.removeWorkPhoneNumber = function(workPhoneNumber) {
+            self.model.removeWorkPhoneNumber(workPhoneNumber);
+        }
 
-                // Set default one field 
-                self.addGroup();
+        self.removePrivatePhoneNumber = function(privatePhoneNumber) {
+            self.model.removePrivatePhoneNumber(privatePhoneNumber);
+        }
 
-                for (i = 0; i < self.availableGroups.length; i++) {
-                    if (self.availableGroups[i].organization.id == value) {
-                        self.availableGroupsBelongOrg.push(self.availableGroups[i]);
-                    }
-                }
+        self.removeMobileNumber = function(mobileNumber) {
+            self.model.removeMobileNumber(mobileNumber);
+        }
 
-                // Set title
-                self.availableOrganizations.forEach(element => {
-                    if (element.id == value) {
-                        self.titleOrganization(element.name);
-                    }
-                });
-            });
+        self.removeWorkEmail = function(workEmail) {
+            self.model.removeWorkEmail(workEmail);
+        }
 
-            //  Init for selectedGroup
-            self.groupValue = ko.observable(self.availableGroupsBelongOrg()[0]);
-            self.groupValue.subscribe(function (value) {
-                factoryObjects.handleOnSameSelected(self.selectedGroups, self.groupsIsSame);
-
-                if (self.selectedGroups().map(e => e.value()).indexOf(value) == self.mainGroup()) {
-                    self.titleMainGroup(value.name);
-                }
-            });
-
-            self.selectedGroups = ko.observableArray([{ value: self.groupValue }]);
-
-            //  Init for selectedRole
-            self.roleValue = ko.observable();
-            self.roleValue.subscribe(function (value) {
-                factoryObjects.handleOnSameSelected(self.selectedRoles, self.rolesIsSame);
-
-                if (self.selectedRoles().map(e => e.value()).indexOf(value) == self.mainRole()) {
-                    self.titleMainRole(value.name);
-                }
-            });
-
-            self.selectedRoles = ko.observableArray([{ value: self.roleValue }]);
-
-            ////////////////////////////////////////
-            self.workPhoneNumbers = ko.observableArray([{
-                value: ko.observable("")
-                    .extend({
-                        required: true,
-                        pattern: {
-                            message: WRONG_NOTICE,
-                            params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                        }
-                    })
-            }]);
-
-            self.privatePhoneNumbers = ko.observableArray([{
-                value: ko.observable("")
-                    .extend({ required: { params: false, message: REQUIRED_NOTICE } })
-                    .extend({
-                        required: true,
-                        pattern: {
-                            message: WRONG_NOTICE,
-                            params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                        }
-                    })
-            }]);
-
-            self.mobileNumbers = ko.observableArray([{
-                value: ko.observable("")
-                    .extend({
-                        required: true,
-                        pattern: {
-                            message: WRONG_NOTICE,
-                            params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                        }
-                    })
-            }]);
-
-            self.emailValue = ko.observable("")
-                .extend({ required: { params: true, message: REQUIRED_NOTICE } })
-                .extend({ email: { params: true, message: WRONG_NOTICE } });
-            self.emailValue.subscribe(function (value) {
-                self.titleMainEmail(value);
-            });
-
-            self.workEmails = ko.observableArray([{ value: self.emailValue }]);
-
-            self.profileImage = "";
-            self.photoUrl = ko.observable('assets/img/faces/face-2.jpg');
-        };
-
-        // 
-        // START UPLOAD IMAGE
+        // Upload Image
         self.imageUpload = function (data, e) {
             var file = e.target.files[0];
 
             var reader = new FileReader();
 
             reader.onloadend = function (onloadend_e) {
-                self.profileImage = reader.result; // Here is your base 64 encoded file
-                self.photoUrl(self.profileImage);
+                self.model.profileImage(reader.result);
             };
 
             if (file) {
                 reader.readAsDataURL(file);
             }
         }
-        // END UPLOAD IMAGE
-        //    
 
-        // Functions on Group
-        self.addGroup = function () {
-            factoryObjects.addIntelValue(self.availableGroupsBelongOrg(), self.selectedGroups, self.groupsIsSame, self.mainGroup, self.titleMainGroup);
-        };
-
-        self.removeGroup = function (group) {
-            self.selectedGroups.remove(group);
-            factoryObjects.handleOnSameSelected(self.selectedGroups, self.groupsIsSame);
-
-            if (self.mainGroup() == self.selectedGroups().length && self.selectedGroups().length > 0) {
-                self.mainGroup(self.selectedGroups().length - 1)
-            }
-        };
-
-        // Functions on Role
-        self.addRole = function () {
-            factoryObjects.addIntelValue(self.availableRoles, self.selectedRoles, self.rolesIsSame, self.mainRole, self.titleMainRole);
-        };
-
-        self.removeRole = function (role) {
-            self.selectedRoles.remove(role);
-            factoryObjects.handleOnSameSelected(self.selectedRoles, self.rolesIsSame);
-
-            if (self.mainRole() == self.selectedRoles().length && self.selectedRoles().length > 0) {
-                self.mainRole(self.selectedRoles().length - 1)
-            }
-        };
-
-        // Functions on WorkPhoneNumber
-        self.addWorkPhoneNumber = function () {
-            self.workPhoneNumbers.push({
-                value: ko.observable("")
-                    .extend({
-                        required: true,
-                        pattern: {
-                            message: WRONG_NOTICE,
-                            params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                        }
-                    })
-            });
-        };
-        self.removeWorkPhoneNumber = function (workPhoneNumber) {
-            self.workPhoneNumbers.remove(workPhoneNumber);
-        };
-
-        // Functions on PrivateNumber
-        self.addPrivatePhoneNumber = function () {
-            self.privatePhoneNumbers.push({
-                value: ko.observable("")
-                    .extend({ required: { params: false, message: REQUIRED_NOTICE } })
-                    .extend({
-                        required: false,
-                        pattern: {
-                            message: WRONG_NOTICE,
-                            params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                        }
-                    })
-            });
-        };
-        self.removePrivatePhoneNumber = function (privatePhoneNumber) {
-            self.privatePhoneNumbers.remove(privatePhoneNumber);
-        };
-
-        // Functions on MobileNumber
-        self.addMobileNumber = function () {
-            self.mobileNumbers.push({
-                value: ko.observable("")
-                    .extend({
-                        required: true,
-                        pattern: {
-                            message: WRONG_NOTICE,
-                            params: '([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})'
-                        }
-                    })
-            });
-        };
-        self.removeMobileNumber = function (mobileNumber) {
-            self.mobileNumbers.remove(mobileNumber);
-        };
-
-        // Functions on Email
-        self.addWorkEmail = function () {
-            let emailValue = ko.observable("")
-                .extend({ required: { params: true, message: REQUIRED_NOTICE } })
-                .extend({ email: { params: true, message: WRONG_NOTICE } });
-            emailValue.subscribe(function (value) {
-                self.titleMainEmail(value);
-            });
-
-            self.workEmails.push({ value: emailValue });
-        };
-        self.removeWorkEmail = function (workEmail) {
-            self.workEmails.remove(workEmail);
-        };
-
-        // Submit form
+        // Create func onClick
         self.create = function () {
-            if (!self.validated.isValid() || self.rolesIsSame() || self.groupsIsSame()) {
+            if ( !self.validated.isValid() || self.model.isSameGroups() || self.model.isSameRoles() 
+            || self.model.isSameWorkPhoneNumbers() || self.model.isSamePrivatePhoneNumbers() 
+            || self.model.isSameMobilePhoneNumbers() || self.model.isSameWorkEmails() ) {
                 self.validated.errors.showAllMessages();
             } else {
 
                 app.showMessage(CREATE_CONFIRM, 'Verify', [YES, NO]).then(function (result) {
                     if (result == YES) {
-                        // Contract create
                         var newProfile = {
-                            id: self.personnelID(),
-                            firstName: self.firstName(),
-                            lastName: self.lastName(),
-                            organizationId: self.selectedOrganization(),
-                            groups: utilities.jsonSerializeSelected(self.selectedGroups(), self.mainGroup()),
-                            roles: utilities.jsonSerializeSelected(self.selectedRoles(), self.mainRole()),
-                            workPhone: utilities.jsonSerializeInputTextForNumber(self.workPhoneNumbers(), self.mainWorkPhoneNumber()),
-                            privatePhone: utilities.jsonSerializeInputTextForNumber(self.privatePhoneNumbers(), self.mainPrivatePhoneNumber()),
-                            mobile: utilities.jsonSerializeInputTextForNumber(self.mobileNumbers(), self.mainMobileNumber()),
-                            email: utilities.jsonSerializeInputTextForEmail(self.workEmails(), self.mainWorkEmail()),
-                            profileImage: self.profileImage
+                            id: self.model.personnelID(),
+                            firstName: self.model.firstName(),
+                            lastName: self.model.lastName(),
+                            organizationId: self.model.selectedOrganization(),
+                            groups: utilities.jsonSerializeSelected(self.model.selectedGroups(), self.model.mainGroup()),
+                            roles: utilities.jsonSerializeSelected(self.model.selectedRoles(), self.model.mainRole()),
+                            workPhone: utilities.jsonSerializeInputTextForNumber(self.model.workPhoneNumbers(), self.model.mainWorkPhoneNumber()),
+                            privatePhone: utilities.jsonSerializeInputTextForNumber(self.model.privatePhoneNumbers(), self.model.mainPrivatePhoneNumber()),
+                            mobile: utilities.jsonSerializeInputTextForNumber(self.model.mobileNumbers(), self.model.mainMobileNumber()),
+                            email: utilities.jsonSerializeInputTextForEmail(self.model.workEmails(), self.model.mainWorkEmail()),
+                            profileImage: self.model.profileImage()
                         };
 
                         http.post(DOMAIN_DEV + 'api/user', newProfile)
                             .then(function (response) {
-                                // Created new user
-
                                 app.showMessage(DONE, SUCCESS, [YES]).then(function (result) {
                                     if (result == YES) {
-                                        //refreshView
-                                        self.init();
-
-                                        //navigateToProfile via id
                                         router.navigate('profile/' + response);
                                     }
                                 });
 
                             }, function (response) {
                                 if (response.status != 200) {
-
                                     self.errorList.removeAll();
 
                                     if (response.responseJSON != null) {
@@ -376,12 +189,18 @@ define(['knockout',
                                         self.errorList.push(response.responseText);
                                     }
                                 }
-                            });
+                            }
+                        );
                     }
                 });
             }
         };
+
+        // Edit func onClick
+        self.edit = function() {
+
+        }
     }
 
-    return new ProfileModel();
+    return new CreateViewModel();
 });

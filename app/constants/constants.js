@@ -38,3 +38,5 @@ const DELETE_CONFIRM = "Do you really want to delete this user profile permanent
 const COPYRIGHT = "© 2018 Rosen | Design by Intern Team";
 const LOGO = "Rosen";
 
+const PARAMS_PATTERN_PHONE_NUMBER = "([+]{1})([0-9]{2})([ .-]?)([0-9]{3})([ .-]?)([0-9]{4})([ .-]?)([0-9]{3})";
+

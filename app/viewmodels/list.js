@@ -5,6 +5,7 @@ define(['knockout',
         'models/listModel'
     ],
     function (ko, http, router, servicesAPI) {
+        ko.options.deferUpdates = true;
 
         var ProfileModel = function () {
             //create variable

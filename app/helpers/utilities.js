@@ -72,8 +72,11 @@ define([
             let result = [];
 
             for (i = 0; i < arr.length; i++) {
-                if (arr[i].value == "")
+
+                if (arr[i].value == undefined) {
                     break;
+                }
+                    
 
                 if (mainIndex == i) {
                     result.push({

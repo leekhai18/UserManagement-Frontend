@@ -5,7 +5,7 @@ define([
     'models/constantUI'
 ], function (router, servicesAPI) {
 
-    var ProfileModel = function () {
+    var ProfileViewModel = function () {
         var self = this;
 
         self.constantUI = new ConstantUI(DETAIL_TITLE);
@@ -26,5 +26,5 @@ define([
         };
     };
 
-    return new ProfileModel();
+    return new ProfileViewModel();
 });
