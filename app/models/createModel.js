@@ -32,44 +32,95 @@ class ProfileEnableInteraction {
         this.isSameMobilePhoneNumbers = ko.observable(false);
         this.isSameWorkEmails = ko.observable(false);
 
-        this.profileImage = ko.observable('assets/img/faces/face-2.jpg');
+        this.profileImage = ko.observable("assets/img/faces/face-2.jpg");
+        this.promise = undefined;
     }
 
-    initializeWithUserProfile(profile) {
+    initializeWithUserProfile(knockout, profile, titleMainGroup, titleMainRole, titleMainEmail) {
         this.personnelID(profile.id);
         this.firstName(profile.firstName);
         this.lastName(profile.lastName);
+        this.profileImage(profile.profileImage);
+        this.selectedOrganization(profile.organization.id);
 
+        var self = this;
+        this.promise.then(function() {
+            self.selectedGroups.removeAll();
 
-        // ông làm tiếp nhé.. 6h rồi t đi ngủ phát :v 
-        // Công việc còn lại:
-        // hoàn thành func này nè
-        // tách css
-        // xư lý mấy nút edit, delete, cancle
-        // xong nhớ del file editprofile luôn hé...
-        // ... xử đẹp đi nhen chú ;) 
+            profile.groups.forEach(function(group, i) {
+                for (var i = 0; i < self.availableGroupsBelongOrg().length; i++) {
+                    if (group.id == self.availableGroupsBelongOrg()[i].id) {
+                        self.addGroup(knockout, titleMainGroup, self.availableGroupsBelongOrg()[i]);
+                        break;
+                    }
+                }
+
+                if (group.isMain)
+                    self.mainGroup(i);
+            });
+        });
+
+        profile.roles.forEach(function(role, i) {
+            for (var i = 0; i < self.availableRoles.length; i++) {
+                if (self.availableRoles[i].id == role.id) {
+                    self.addRole(knockout, titleMainRole, self.availableRoles[i]);
+                    break;
+                }    
+            }
+
+            if (role.isMain)
+                self.mainRole(i);
+        });
+
+        profile.workPhone.forEach(function(workPhone, i) {
+            self.addWorkPhoneNumber(knockout, workPhone.number);
+
+            if (workPhone.isMain)
+                self.mainWorkPhoneNumber(i);
+        });
+
+        profile.mobile.forEach(function(mobile, i) {
+            self.addMobileNumber(knockout, mobile.number);
+
+            if (mobile.isMain)
+                self.mainMobileNumber(i);
+        });
+
+        profile.privatePhone.forEach(function(privatePhone, i) {
+            self.addPrivatePhoneNumber(knockout, privatePhone.number);
+
+            if (privatePhone.isMain)
+                self.mainPrivatePhoneNumber(i);
+        });
+
+        profile.email.forEach(function(email, i) {
+            self.addWorkEmail(knockout, titleMainEmail, email.address);
+
+            if (email.isMain)
+                self.mainWorkEmail(i);
+        });
     }
 
-    initialize(knockout, titleMainGroup, titleMainRole, titleMainEmail) {
-        this.addGroup(knockout, titleMainGroup);
-        this.addRole(knockout, titleMainRole);
-        this.addWorkPhoneNumber(knockout);
-        this.addMobileNumber(knockout);
-        this.addPrivatePhoneNumber(knockout);
-        this.addWorkEmail(knockout, titleMainEmail);
-
+    initialize(knockout, titleMainGroup, titleMainRole, titleMainEmail) {XMLDocument
         this.mainRole(0);
         this.mainGroup(0);
         this.mainWorkPhoneNumber(0);
         this.mainPrivatePhoneNumber(0);
         this.mainMobileNumber(0);
         this.mainWorkEmail(0);
+
+        this.addRole(knockout, titleMainRole);
+        this.addWorkPhoneNumber(knockout);
+        this.addMobileNumber(knockout);
+        this.addPrivatePhoneNumber(knockout);
+        this.addWorkEmail(knockout, titleMainEmail);
     }
 
-    refreshValue(knockout) {
-        this.personnelID = knockout.observable("").extend({ required: { params: true, message: REQUIRED_NOTICE } });
-        this.firstName = knockout.observable("").extend({ required: { params: true, message: REQUIRED_NOTICE} });
-        this.lastName = knockout.observable("").extend({ required: { params: true, message: REQUIRED_NOTICE } });
+    refreshValue() {
+        this.personnelID("");
+        this.firstName("");
+        this.lastName("");
+        this.profileImage("assets/img/faces/face-2.jpg");
 
         this.selectedOrganization(this.availableOrganizations[0]);
         this.selectedGroups([]);
@@ -82,7 +133,8 @@ class ProfileEnableInteraction {
 
     subscribeTitleMainGroup(titleMainGroup) {
         this.mainGroup.subscribe( (index) => {
-            titleMainGroup(this.selectedGroups()[index].value().name);
+            if (this.selectedGroups()[index] != undefined)
+                titleMainGroup(this.selectedGroups()[index].value().name);
         });
     }
 
@@ -99,64 +151,92 @@ class ProfileEnableInteraction {
     }
 
     subscribeSelectedOrganization(titleOrganization, titleMainGroup, knockout) {
-        this.selectedOrganization.subscribe( (idOrganizationSelected) => {
-            this.selectedGroups.removeAll();
-            this.addGroup(knockout, titleMainGroup);
+        var self = this;
+        this.promise = new Promise(function (resolve, reject) {
+            self.selectedOrganization.subscribe( (idOrganizationSelected) => {
+                self.selectedGroups.removeAll();
+                self.addGroup(knockout, titleMainGroup);
+                self.mainGroup(0);
+    
+                self.availableGroupsBelongOrg.removeAll();
+                self.availableGroups.forEach(avaiGroup => {
+                    if (avaiGroup.organization.id == idOrganizationSelected) {
+                        self.availableGroupsBelongOrg.push(avaiGroup);
+                    }
+                });
+    
+                self.availableOrganizations.forEach(org => {
+                    if (org.id == idOrganizationSelected) {
+                        titleOrganization(org.name);
+                    }
+                });
 
-            this.availableGroupsBelongOrg.removeAll();
-            this.availableGroups.forEach(avaiGroup => {
-                if (avaiGroup.organization.id == idOrganizationSelected) {
-                    this.availableGroupsBelongOrg.push(avaiGroup);
-                }
+                resolve(self.availableGroupsBelongOrg());
             });
-
-            this.availableOrganizations.forEach(org => {
-                if (org.id == idOrganizationSelected) {
-                    titleOrganization(org.name);
-                }
-            });
-        });
+        }); 
     }
 
-    addGroup(knockout, titleMainGroup) {
+    addGroup(knockout, titleMainGroup, preValue = undefined) {
         var group = this.getUniqueValueOn(this.availableGroupsBelongOrg(), this.selectedGroups, this.isSameGroups, this.mainGroup, titleMainGroup, knockout);
+        if (preValue != undefined) 
+            group(preValue);  
+
         this.selectedGroups.push({ value: group });
     }
 
-    addRole(knockout, titleMainRole) {
+    addRole(knockout, titleMainRole, preValue = undefined) {
         var role = this.getUniqueValueOn(this.availableRoles, this.selectedRoles, this.isSameRoles, this.mainRole, titleMainRole, knockout);
+        if (preValue != undefined) 
+            role(preValue); 
+
         this.selectedRoles.push({ value: role });
     }
 
-    addWorkPhoneNumber(knockout) {
+    addWorkPhoneNumber(knockout, preValue = undefined) {
         var workPhoneNumber = this.getValueFollow(true, PARAMS_PATTERN_PHONE_NUMBER, knockout);
+        if (preValue != undefined) 
+            workPhoneNumber(preValue); 
+
         workPhoneNumber.subscribe( () => {
             this.isSameWorkPhoneNumbers(this.checkSelectedListIsSame(this.workPhoneNumbers));
         });
+
         this.workPhoneNumbers.push({ value: workPhoneNumber });
     }
 
-    addPrivatePhoneNumber(knockout) {
+    addPrivatePhoneNumber(knockout, preValue = undefined) {
         var privatePhoneNumber = this.getValueFollow(false, PARAMS_PATTERN_PHONE_NUMBER, knockout);
+        if (preValue != undefined) 
+            privatePhoneNumber(preValue); 
+
         privatePhoneNumber.subscribe( () => {
             this.isSamePrivatePhoneNumbers(this.checkSelectedListIsSame(this.privatePhoneNumbers));
         });
+
         this.privatePhoneNumbers.push({ value: privatePhoneNumber });
     }
 
-    addMobileNumber(knockout) {
+    addMobileNumber(knockout, preValue = undefined) {
         var mobileNumber = this.getValueFollow(true, PARAMS_PATTERN_PHONE_NUMBER, knockout);
+        if (preValue != undefined) 
+            mobileNumber(preValue); 
+        
         mobileNumber.subscribe( () => {
             this.isSameMobilePhoneNumbers(this.checkSelectedListIsSame(this.mobileNumbers));
         });
+        
         this.mobileNumbers.push({ value: mobileNumber });
     }
 
-    addWorkEmail(knockout, titleMainEmail) {
+    addWorkEmail(knockout, titleMainEmail, preValue = undefined) {
         var workEmail = knockout.observable().extend({
             required: { params: true, message: REQUIRED_NOTICE },
             email: { params: true, message: WRONG_NOTICE }
         });
+
+        if (preValue != undefined) 
+            workEmail(preValue); 
+
         workEmail.subscribe( (value) => {
             if (this.workEmails()[this.mainWorkEmail()].value() == value) {
                 titleMainEmail(value);
@@ -255,5 +335,21 @@ class ProfileEnableInteraction {
         if (mainIndex() == selectedList().length && selectedList().length > 0) {
             mainIndex(selectedList().length - 1)
         }
+    }
+
+    getContract(utilities) {
+        return {
+            id: this.personnelID(),
+            firstName: this.firstName(),
+            lastName: this.lastName(),
+            organizationId: this.selectedOrganization(),
+            groups: utilities.jsonSerializeSelected(this.selectedGroups(), this.mainGroup()),
+            roles: utilities.jsonSerializeSelected(this.selectedRoles(), this.mainRole()),
+            workPhone: utilities.jsonSerializeInputTextForNumber(this.workPhoneNumbers(), this.mainWorkPhoneNumber()),
+            privatePhone: utilities.jsonSerializeInputTextForNumber(this.privatePhoneNumbers(), this.mainPrivatePhoneNumber()),
+            mobile: utilities.jsonSerializeInputTextForNumber(this.mobileNumbers(), this.mainMobileNumber()),
+            email: utilities.jsonSerializeInputTextForEmail(this.workEmails(), this.mainWorkEmail()),
+            profileImage: this.profileImage()
+        };
     }
 }
