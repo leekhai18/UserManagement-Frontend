@@ -4,10 +4,11 @@ define(['knockout',
     'plugins/router',
     'helpers/utilities',
     'services/servicesAPI',
+    'helpers/cssLoader',
     'knockout.validation',
     'models/constantUI',
     'models/createModel'
-], function (ko, app, http, router, utilities, servicesAPI) {
+], function (ko, app, http, router, utilities, servicesAPI, cssLoader) {
     var knockoutValidationSettings = {
         grouping: {
             deep: true,
@@ -28,6 +29,9 @@ define(['knockout',
         self.isEditing = ko.observable(false);
 
         self.activate = function (idUserEdit) {
+            // Load css
+            cssLoader.loadCss("app/css/createStyle.css", "createStyle");
+
             var promises = [];
             promises.push(servicesAPI.getAvailabelOrganizations());
             promises.push(servicesAPI.getAvailabelGroups());
@@ -73,6 +77,10 @@ define(['knockout',
 
             return true;
         }
+
+        self.detached = function () {
+            cssLoader.removeModuleCss("createStyle");
+        };
 
         // Main title
         self.titleOrganization = ko.observable();

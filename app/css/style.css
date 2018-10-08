@@ -1,0 +1,28 @@
+/**
+ * 
+ * Header
+ * 
+*/
+
+.logo {
+    color: rgb(10, 10, 192);
+}
+
+.navbar-header {
+   float: left;
+}
+
+/**
+ * 
+ * Footer
+ * 
+*/
+
+.footer {
+    text-align: center;
+    background-color: #e2e2e2;
+    padding-top: 13px;
+    padding-bottom: 5px;
+}
+
+
