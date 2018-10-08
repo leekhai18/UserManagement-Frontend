@@ -2,10 +2,11 @@ define(['knockout',
         'plugins/http', 
         'plugins/router', 
         'services/servicesAPI', 
+        'helpers/cssLoader',
         'models/listModel',
         'models/constantUI'
     ],
-    function (ko, http, router, servicesAPI) {
+    function (ko, http, router, servicesAPI, cssLoader) {
         ko.options.deferUpdates = true;
 
         var ProfileModel = function () {
@@ -22,6 +23,9 @@ define(['knockout',
             // --------
             
             self.activate = function () {
+                // Load css
+                cssLoader.loadCss("app/css/listStyle.css", "listStyle");
+
                 var promises = [];
                 promises.push(servicesAPI.getAvailabelOrganizations());
                 promises.push(servicesAPI.getAvailabelGroups());
@@ -38,6 +42,11 @@ define(['knockout',
                             throw new Error(error);
                         });
             };
+
+            self.detached = function () {
+                cssLoader.removeModuleCss("listStyle");
+                return true;
+            }
 
             // for (var i = 0; i < self.variable.availableGroups.length; i++) {
             //     self.variable.availableGroupsBelongOrg.push(self.variable.availableGroups[i]);

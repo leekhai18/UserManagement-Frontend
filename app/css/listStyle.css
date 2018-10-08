@@ -1,0 +1,148 @@
+ .page-host {
+    margin-top: 75px;
+ } 
+
+ .wrapper-search {
+    position: fixed;
+    top: 100px;
+    z-index: 10;
+ }
+
+ .form-search {
+    border: 1px solid #d6d3ca;
+    padding: 1px
+ }
+
+ .form-search input {
+    height: 28px !important; 
+ }
+
+ .btn-search {
+    max-width: 125px;
+    padding: 0;
+    float: right;
+    background-color: #e2e2e2;
+    border: 1px solid #cacaca;
+ }
+
+ .wrapper-search .navbar-form {
+    padding: 0;
+    width: 100%;
+ }
+
+ .wrapper-form-search {
+     padding: 0;
+     /* margin: 0; */
+
+ }
+
+ .warpper-form-search-adv {
+    border: 1px dashed rgb(226, 226, 226);
+    padding: 5px 0px 0px;
+    margin-top: 6px;
+    background: #f4f3ef;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 2px;
+}
+
+.warpper-form-search-adv label{
+    font-weight: 500;
+}
+
+.warpper-form-search-adv select{
+    height: 34px;
+    border-radius: 1px;
+}
+
+
+
+.wrapper-box-search-simple {
+    /* position: absolute; */
+    background-color: #f4f3ef;
+    padding: 8px 6px;
+    border-radius: 3px;
+    border: 1px solid #e2e2e2;
+}
+
+.wrapper-box-search-simple .row {
+    margin: 0;
+}
+
+.wrapper-box-search-simple .wrapper-form-search .form-group {
+    margin-bottom: 11px;
+}
+
+.wrapper-profile {
+    /* margin-top: 20px; */
+    min-height: 500px;
+    /* padding-left: 4px; */
+}
+
+.content-items {
+    margin-top: 18px;
+}
+
+
+@media (min-width: 992px) { 
+    .wrapper-form-search {
+        margin: 0;
+    }
+}
+
+@media (max-width: 991px) {
+
+    .wrapper-search {
+        /* margin-bottom: 18px; */
+        /* position: inherit; */
+        top: 70px;
+        max-width: 86%;
+    }
+
+    .content-items {
+        margin-top: 75px;
+    }
+
+    .warpper-form-search-adv {
+        width: 100%;
+    }
+
+    .btn-search {
+        float: left;
+        margin-top: 5px;
+    }
+
+    .wrapper-box-search-simple .wrapper-form-search .form-group {
+        margin-bottom: 0px;
+    }
+
+    .open .dropdown-menu {
+        width: 100%;
+    }
+
+    button.multiselect.dropdown-toggle.btn.btn-default {
+        text-align: left;
+    }
+
+    .wrapper-box-search-simple {
+        margin-top: 15px;
+    }
+}
+
+@media(max-width: 687px) {
+    .ih-item.circle {
+        width: 165px;
+        height: 165px;
+    }
+
+    .content-items {
+        margin-top: 82px;
+    }
+}
+
+
+@media (min-width: 1240px) {
+    .wrapper-search {
+        max-width: 210px;
+    }
+}

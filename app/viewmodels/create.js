@@ -4,10 +4,11 @@ define(['knockout',
     'plugins/router',
     'helpers/utilities',
     'services/servicesAPI',
+    'helpers/cssLoader',
     'knockout.validation',
     'models/constantUI',
     'models/createModel'
-], function (ko, app, http, router, utilities, servicesAPI) {
+], function (ko, app, http, router, utilities, servicesAPI, cssLoader) {
     var knockoutValidationSettings = {
         grouping: {
             deep: true,
@@ -26,6 +27,9 @@ define(['knockout',
         self.constantUI = new ConstantUI(CREATE_TITLE);
 
         self.activate = function (idUserEdit) {
+            // Load css
+            cssLoader.loadCss("app/css/createStyle.css", "createStyle");
+
             var promises = [];
             promises.push(servicesAPI.getAvailabelOrganizations());
             promises.push(servicesAPI.getAvailabelGroups());
@@ -63,7 +67,11 @@ define(['knockout',
 
         self.detached = function () {
             self.model.refreshValue(ko);
-        }
+            cssLoader.removeModuleCss("createStyle");
+        };
+
+      
+
 
         // Main title
         self.titleOrganization = ko.observable();

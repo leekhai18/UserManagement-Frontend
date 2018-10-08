@@ -1,0 +1,83 @@
+
+.option-field {
+    width: 89% !important; 
+    float: right !important;
+}
+
+.checked-main input {
+    margin: 0;
+    padding: 0;
+}
+
+.checked-main {
+    width: 11%;
+    float: left;
+    border: 1px solid #CCC5B9;
+    border-right: none;
+    text-align: center;
+    height: 40px;
+    padding-top: 12px;
+    border-radius: 4px 0 0 4px;
+    padding-left: 3px;
+}
+
+
+
+span.title-main {
+    display: inline-block;
+    margin-bottom: 2px;
+    font-size: 12px;
+    color: #000;
+    background-color: #f4f3ef;
+    padding: 0px 7px 2px 7px;
+    border-radius: 1px;
+}
+
+.icon-container {
+    float: none !important;
+    padding-bottom: 4px !important;
+}
+
+
+/** 
+ * 
+ * Style tooltip
+ * 
+ **/
+
+.tooltip.top .tooltip-arrow {
+    /* margin-left: -25px; */
+}
+
+span.field-required {
+    color: red;
+    font-weight: 700;
+}
+
+.tooltip-inner {
+    color: red;
+    background-color: #f5f5f5;
+}
+
+.tooltip.top .tooltip-arrow {
+    border-top-color:  #f5f5f5;
+}
+
+/**
+ * 
+ * Other
+ * 
+  */
+
+ .icon-container [class^="ti-"],
+ .icon-container [class*=" ti-"] {
+     color: #000;
+     position: absolute;
+     margin-top: 3px;
+     transition: .3s;
+ }
+ .icon-container:hover [class^="ti-"],
+ .icon-container:hover [class*=" ti-"] {
+     font-size: 2.2em;
+     margin-top: -5px;
+ }
