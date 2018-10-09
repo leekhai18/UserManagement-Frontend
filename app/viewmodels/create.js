@@ -78,10 +78,6 @@ define(['knockout',
             return true;
         }
 
-        self.detached = function () {
-            cssLoader.removeModuleCss("createStyle");
-        };
-
         // Main title
         self.titleOrganization = ko.observable();
         self.titleMainGroup = ko.observable();
